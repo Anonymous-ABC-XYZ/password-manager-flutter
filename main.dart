@@ -13,27 +13,55 @@ import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 Future main() async {
   sqfliteFfiInit();
   databaseFactory = databaseFactoryFfi;
+
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode _themeMode = ThemeMode.dark;
+
+  void toggleTheme() {
+    setState(() {
+      if (_themeMode == ThemeMode.dark) {
+        _themeMode = ThemeMode.light;
+      } else {
+        _themeMode = ThemeMode.dark;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    ThemeMode themeMode = ThemeMode.dark;
     return MaterialApp(
       title: 'Password Manager',
-      home: const MyHomePage(),
+      debugShowCheckedModeBanner: false,
+      home: MyHomePage(
+        toggleTheme: toggleTheme,
+        isDark: _themeMode == ThemeMode.dark,
+      ),
       theme: ThemeData(colorScheme: lightColorScheme),
       darkTheme: ThemeData(colorScheme: darkColorScheme),
-      themeMode: themeMode,
+      themeMode: _themeMode,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  final VoidCallback toggleTheme;
+  final bool isDark;
+
+  const MyHomePage({
+    super.key,
+    required this.toggleTheme,
+    required this.isDark,
+  });
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -41,17 +69,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
+  var defaultIcon = Icon(Icons.light_mode);
 
   @override
   Widget build(BuildContext context) {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = const HomeScreen();
-        break;
+        page = HomeScreen();
       case 1:
         page = PasswordsPage();
-        break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -61,8 +88,10 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           SafeArea(
             child: NavigationRail(
+              elevation: 500,
+              groupAlignment: -1,
               extended: false,
-              destinations: const [
+              destinations: [
                 NavigationRailDestination(
                   icon: Icon(Icons.home),
                   label: Text('Home'),
@@ -78,6 +107,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   selectedIndex = value;
                 });
               },
+              trailing: Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0,0,0,15),
+                    child: FloatingActionButton(
+                    onPressed: () {
+                      setState(() {
+                        widget.toggleTheme();
+                      });
+                    },
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
+                    child: Icon(
+                      widget.isDark ? Icons.light_mode : Icons.dark_mode,
+                    ),
+                  ),
+                  ),
+                ),
+              ),
             ),
           ),
           Expanded(
@@ -270,7 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void emailGenerator() async {
     final dio = Dio();
     const String authKey =
-        ''; 
+        '';
 
     final headers = {
       'Accept': '*/*',
@@ -371,125 +420,127 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(1.0),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 16.0, 0, 0),
+    return SizedBox(
+      height: double.infinity,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 60.0, 0, 0),
+                  child: Text(
+                    "Add Details",
+                    style: GoogleFonts.bricolageGrotesque(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 50, 0, 50),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: OutlinedTextField(
+                        "Website",
+                        Icons.language,
+                        websiteController,
+                      ),
+                    ),
+                    FrontPageButtons("Search", () {
+                      searchFn(context);
+                    }),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 30, 0, 50),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: OutlinedTextField(
+                        "Username",
+                        Icons.person,
+                        userNameController,
+                      ),
+                    ),
+                    FrontPageButtons("Search", () {
+                      searchFn(context);
+                    }),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 30, 0, 70),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: OutlinedTextField(
+                        "Email",
+                        Icons.email,
+                        emailController,
+                      ),
+                    ),
+                    FrontPageButtons("Acquire", () {
+                      emailGenerator();
+                    }),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: OutlinedTextField(
+                        "Password",
+                        Icons.password,
+                        passwordController,
+                      ),
+                    ),
+                    FrontPageButtons("Create", () {
+                      generatePassword();
+                    }),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 25.0, 0, 0),
+              child: AnimatedButton(
+                width: MediaQuery.sizeOf(context).width - 130,
+                height: 70,
+                color: Color(0xffDA253C),
+                onPressed: () {
+                  addData(context);
+                },
                 child: Text(
-                  "Add Details",
+                  "Add",
                   style: GoogleFonts.bricolageGrotesque(
                     fontWeight: FontWeight.bold,
-                    fontSize: 25,
+                    fontSize: 23,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                 ),
               ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 50, 0, 50),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: OutlinedTextField(
-                      "Website",
-                      Icons.language,
-                      websiteController,
-                    ),
-                  ),
-                  FrontPageButtons("Search", () {
-                    searchFn(context);
-                  }),
-                ],
-              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 30, 0, 50),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: OutlinedTextField(
-                      "Username",
-                      Icons.person,
-                      userNameController,
-                    ),
-                  ),
-                  FrontPageButtons("Search", () {
-                    searchFn(context);
-                  }),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 30, 0, 70),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: OutlinedTextField(
-                      "Email",
-                      Icons.email,
-                      emailController,
-                    ),
-                  ),
-                  FrontPageButtons("Acquire", () {
-                    emailGenerator();
-                  }),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: OutlinedTextField(
-                      "Password",
-                      Icons.password,
-                      passwordController,
-                    ),
-                  ),
-                  FrontPageButtons("Create", () {
-                    generatePassword();
-                  }),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 25.0, 0, 0),
-            child: AnimatedButton(
-              width: MediaQuery.sizeOf(context).width - 130,
-              height: 70,
-              color: Color(0xffDA253C),
-              onPressed: () {
-                addData(context);
-              },
-              child: Text(
-                "Add",
-                style: GoogleFonts.bricolageGrotesque(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 23,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                ),
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -551,7 +602,9 @@ class PasswordsPage extends StatelessWidget {
         ''');
       },
     );
-    var count = await db.rawDelete('DELETE FROM demo WHERE Website=?', [websiteToDelete]);
+    var count = await db.rawDelete('DELETE FROM demo WHERE Website=?', [
+      websiteToDelete,
+    ]);
   }
 
   @override
@@ -590,7 +643,6 @@ class PasswordsPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Title row with delete icon
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -611,16 +663,18 @@ class PasswordsPage extends StatelessWidget {
                                 context,
                               ).colorScheme.onPrimaryContainer,
                             ),
-                            onPressed: () { removeSite(website);},
+                            onPressed: () {
+                              removeSite(website);
+                            },
                           ),
                         ],
                       ),
                       SizedBox(height: 10),
-                      Boxes(identifier: userName, icon: Icons.person,),
+                      Boxes(identifier: userName, icon: Icons.person),
                       SizedBox(height: 15),
-                      Boxes(identifier: email, icon: Icons.email,),
+                      Boxes(identifier: email, icon: Icons.email),
                       SizedBox(height: 15),
-                      Boxes(identifier: password, icon: Icons.password,),
+                      Boxes(identifier: password, icon: Icons.password),
                       SizedBox(height: 15),
                     ],
                   ),
@@ -652,7 +706,12 @@ class Boxes extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Icon(icon),
-          Text(identifier),
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: Text(identifier),
+            ),
+          ),
           IconButton(
             onPressed: () {
               Clipboard.setData(ClipboardData(text: identifier));
