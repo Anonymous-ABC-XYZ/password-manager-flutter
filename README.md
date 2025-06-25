@@ -1,1 +1,3 @@
-# password-manager-flutter
+# password_manager
+
+A new Flutter project.
