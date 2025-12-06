@@ -5,7 +5,6 @@ import 'package:password_manager/settings_screen.dart';
 import 'color-schemes.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-
 Future main() async {
   sqfliteFfiInit();
   databaseFactory = databaseFactoryFfi;
@@ -142,10 +141,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
-
-
-
-
-

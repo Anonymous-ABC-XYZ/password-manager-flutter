@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sqflite/sqflite.dart';
+import 'alert_button.dart';
 import 'front_page_entries.dart';
 import 'dbinit.dart';
 
@@ -28,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _authKey;
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     loadKey();
   }
@@ -39,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _authKey = readKey;
     });
-
   }
 
   void searchFn(BuildContext context) async {
@@ -68,30 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
               actions: [
                 Column(
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        Clipboard.setData(
-                          ClipboardData(text: result[0]['Email'].toString()),
-                        );
-                      },
-                      child: Text("Email: ${result[0]['Email']}"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Clipboard.setData(
-                          ClipboardData(text: result[0]['Password'].toString()),
-                        );
-                      },
-                      child: Text("Password: ${result[0]['Password']}"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Clipboard.setData(
-                          ClipboardData(text: result[0]['Username'].toString()),
-                        );
-                      },
-                      child: Text("Username: ${result[0]['Username']}"),
-                    ),
+                    AlertButton(result[0]['Username'], 'Username'),
+                    AlertButton(result[0]['Email'], 'Email'),
+                    AlertButton(result[0]['Password'], 'Password'),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
@@ -100,13 +79,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                         style: ButtonStyle(
                           backgroundColor: WidgetStatePropertyAll<Color>(
-                            Theme
-                                .of(context)
-                                .colorScheme
-                                .secondary,
+                            Theme.of(context).colorScheme.secondary,
                           ),
                         ),
-                        child: Text("Ok"),
+                        child: Text(
+                          "Ok",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSecondary,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -182,7 +163,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void emailGenerator(BuildContext context) async {
     final dio = Dio();
 
-
     final headers = {
       'Accept': '*/*',
       'Accept-Encoding': 'gzip, deflate, br',
@@ -209,13 +189,21 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 
       emailAddress =
-      '${response.data['address']}'
+          '${response.data['address']}'
           '@duck.com';
     } catch (e) {
       if (context.mounted) {
-        showDialog(context: context, builder: (BuildContext context) {
-          return AlertDialog(title: Text("Error"),content: Text("Could not fetch the email. \nCheck if you have a working Internet connection. "),);
-        });
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Error"),
+              content: Text(
+                "Could not fetch the email. \nCheck if you have a working Internet connection. ",
+              ),
+            );
+          },
+        );
       }
     }
     emailController.text = emailAddress;
@@ -235,7 +223,6 @@ class _HomeScreenState extends State<HomeScreen> {
       'Email': email,
       'Password': password,
     }, conflictAlgorithm: ConflictAlgorithm.replace);
-
 
     if (context.mounted) {
       showDialog(
@@ -259,6 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
       passwordController.text = "";
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -296,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
               "Password",
               Icons.password,
               passwordController,
-                  () {
+              () {
                 generatePassword();
               },
               "Create",

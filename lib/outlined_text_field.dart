@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class OutlinedTextField extends StatelessWidget {
   final String fieldName;
   final IconData fieldIcon;
@@ -9,11 +8,11 @@ class OutlinedTextField extends StatelessWidget {
   final Function function;
 
   const OutlinedTextField(
-      this.fieldName,
-      this.fieldIcon,
-      this.controller,
-      this.function,
-      );
+    this.fieldName,
+    this.fieldIcon,
+    this.controller,
+    this.function,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +24,9 @@ class OutlinedTextField extends StatelessWidget {
         onSubmitted: (value) {
           function();
         },
+        style: GoogleFonts.bricolageGrotesque(
+          color: Theme.of(context).colorScheme.onSecondary,
+        ),
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(color: Colors.transparent),
@@ -36,7 +38,11 @@ class OutlinedTextField extends StatelessWidget {
           ),
           prefixIcon: Icon(fieldIcon, color: theme.onSecondary),
           hintText: fieldName,
-          hintStyle: GoogleFonts.bricolageGrotesque(color: theme.onSecondary),
+          hintStyle: GoogleFonts.bricolageGrotesque(
+            color: theme.onSecondary,
+            fontSize: 17,
+            fontWeight: FontWeight.w400,
+          ),
           filled: true,
           fillColor: Theme.of(context).colorScheme.secondary,
         ),
