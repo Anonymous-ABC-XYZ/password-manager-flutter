@@ -10,9 +10,13 @@ import 'package:sqflite/sqflite.dart';
 import 'alert_button.dart';
 import 'front_page_entries.dart';
 import 'dbinit.dart';
+import 'gmail_service.dart';
+import 'otp_input_field.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final GmailService gmailService;
+
+  const HomeScreen({super.key, required this.gmailService});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -26,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
+  final otpController = TextEditingController();
   String? _authKey;
 
   @override
@@ -288,6 +293,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 generatePassword();
               },
               "Create",
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
+              child: OTPInputField(
+                controller: otpController,
+                gmailService: widget.gmailService,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 25.0, 0, 0),

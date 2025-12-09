@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:password_manager/home_screen.dart';
 import 'package:password_manager/passwords_page.dart';
 import 'package:password_manager/settings_screen.dart';
+import 'package:password_manager/auth_wrapper.dart';
+import 'package:password_manager/gmail_service.dart';
 import 'color-schemes.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   sqfliteFfiInit();
   databaseFactory = databaseFactoryFfi;
 
@@ -37,7 +40,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Password Manager',
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(
+      home: AuthWrapper(
         toggleTheme: toggleTheme,
         isDark: _themeMode == ThemeMode.dark,
       ),
@@ -51,11 +54,13 @@ class _MyAppState extends State<MyApp> {
 class MyHomePage extends StatefulWidget {
   final VoidCallback toggleTheme;
   final bool isDark;
+  final GmailService gmailService;
 
   const MyHomePage({
     super.key,
     required this.toggleTheme,
     required this.isDark,
+    required this.gmailService,
   });
 
   @override
@@ -71,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = HomeScreen();
+        page = HomeScreen(gmailService: widget.gmailService);
       case 1:
         page = PasswordsPage();
       case 2:

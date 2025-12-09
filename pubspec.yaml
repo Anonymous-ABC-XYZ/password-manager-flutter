@@ -21,6 +21,9 @@ dependencies:
   sqlite3: ^2.7.6
   path_provider: ^2.1.5
   flutter_secure_storage: ^9.2.4
+  googleapis: ^13.2.0
+  oauth2: ^2.0.2
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
