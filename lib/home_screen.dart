@@ -10,13 +10,10 @@ import 'package:sqflite/sqflite.dart';
 import 'alert_button.dart';
 import 'front_page_entries.dart';
 import 'dbinit.dart';
-import 'gmail_service.dart';
 import 'otp_input_field.dart';
 
 class HomeScreen extends StatefulWidget {
-  final GmailService gmailService;
-
-  const HomeScreen({super.key, required this.gmailService});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -30,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
+
   final otpController = TextEditingController();
   String? _authKey;
 
@@ -73,9 +71,9 @@ class _HomeScreenState extends State<HomeScreen> {
               actions: [
                 Column(
                   children: [
-                    AlertButton(result[0]['Username'], 'Username'),
-                    AlertButton(result[0]['Email'], 'Email'),
-                    AlertButton(result[0]['Password'], 'Password'),
+                    AlertButton(result[0]['Username'].toString(), 'Username'),
+                    AlertButton(result[0]['Email'].toString(), 'Email'),
+                    AlertButton(result[0]['Password'].toString(), 'Password'),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
@@ -296,10 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
-              child: OTPInputField(
-                controller: otpController,
-                gmailService: widget.gmailService,
-              ),
+              child: OTPInputField(controller: otpController),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 25.0, 0, 0),

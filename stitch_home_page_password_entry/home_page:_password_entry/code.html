@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Password Manager - Home Entry</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6d13ec",
+                        "primary-dark": "#560eb3",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#181022",
+                        "surface-dark": "#241933",
+                        "surface-hover": "#2f2240",
+                        "input-border": "#483267",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "2xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for better aesthetic in dark mode */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #181022; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #483267; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6d13ec; 
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen overflow-hidden flex transition-colors duration-200">
+<!-- Sidebar Navigation -->
+<aside class="hidden md:flex flex-col w-72 h-screen bg-surface-dark border-r border-input-border/30 p-6 gap-6 fixed left-0 top-0 z-20">
+<!-- Logo / Profile Area -->
+<div class="flex items-center gap-4 mb-4">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-12 shadow-md ring-2 ring-primary/30" data-alt="User profile abstract avatar with gradient" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBNhhk3IyXPJwyyW8luNtfjJGwRuUJ75I9bmhzuWGL-X3QYV69xhf7O4XG_M3-oL3dRYjnXIh_4sbVw80zGGOaE0sUVvUd9nqS35Eb69pB_TkaER4s79pArvwGZTU0PNB0H9c7rgr1MOvAtGkaK6bTtTcPu8LpXMjtfh4LJsfK1X7hv0PEWoKLOL0CodlOBViOJZ2_6a3-IgSXXaxJSOl-ri-NXz7o5Brp-6Dy5aCvNaqO65tSbvLzHmOg2DC3jhfgZboDWFa7dBhI");'>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold leading-tight">My Vault</h1>
+<p class="text-[#a992c9] text-xs font-medium uppercase tracking-wider">Premium Plan</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-2 flex-1">
+<a class="flex items-center gap-4 px-4 py-3 rounded-full bg-primary text-white shadow-lg shadow-primary/20 transition-all hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined">lock</span>
+<span class="text-sm font-semibold">Vault</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full hover:bg-surface-hover text-[#a992c9] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">send</span>
+<span class="text-sm font-medium">Send</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full hover:bg-surface-hover text-[#a992c9] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">autorenew</span>
+<span class="text-sm font-medium">Generator</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full hover:bg-surface-hover text-[#a992c9] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">shield</span>
+<span class="text-sm font-medium">Security</span>
+</a>
+</nav>
+<!-- Bottom Actions -->
+<div class="mt-auto pt-6 border-t border-input-border/30">
+<a class="flex items-center gap-4 px-4 py-3 rounded-full hover:bg-surface-hover text-[#a992c9] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-72 h-screen overflow-y-auto relative flex flex-col p-4 md:p-8 lg:p-12 gap-8">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row md:items-center justify-between gap-6 w-full max-w-6xl mx-auto">
+<div>
+<h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white mb-2">Google Account</h2>
+<div class="flex items-center gap-2 text-[#a992c9]">
+<span class="material-symbols-outlined text-sm">folder_open</span>
+<span class="text-sm">Personal &gt; Social Media</span>
+</div>
+</div>
+<!-- Search Bar -->
+<div class="relative w-full md:w-96 group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#a992c9] material-symbols-outlined group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-surface-dark border border-input-border rounded-full py-3.5 pl-12 pr-4 text-white placeholder-[#a992c9] focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search 245 passwords..." type="text"/>
+<div class="absolute right-2 top-1/2 -translate-y-1/2 bg-surface-hover px-2 py-1 rounded text-xs text-[#a992c9] border border-input-border hidden md:block">⌘K</div>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 pb-24">
+<!-- Identity Tile (Left Large) -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<!-- Website & Username Card -->
+<div class="bg-surface-dark border border-input-border/50 rounded-[2rem] p-6 md:p-8 shadow-xl relative overflow-hidden group">
+<!-- Subtle background effect -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-4">
+<div class="bg-white p-2 rounded-2xl size-14 flex items-center justify-center shadow-lg">
+<img alt="Google Logo" class="w-8 h-8" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6eLvwZMn-S8MLbcQXL2KFBcagFkuvyF_M8dF_0ppe0hb_dps-ppcMEut3_pPH0h_zsKDSOTNvKst1Z4iY51zJ29X_C-ZgrClmBnzTsm32gsSQ_ZMfRjzSojN_0h4AvhY3K0LNHdJPbijcIfhTjWYmseaGEdbgm8EYERk7d1j-MI0BheZ3cNO5dJjNYnfTK3QNocXlVXexWuCphK4IY3mmpw32_wtaRHPy5_sX-E-RTPDRW8pfRYaDyThLL9yzhev2p8MKjyGwJEA"/>
+</div>
+<h3 class="text-xl font-semibold text-white">Identity</h3>
+</div>
+<button class="text-[#a992c9] hover:text-white p-2 rounded-full hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div class="space-y-6">
+<!-- Website Field -->
+<div class="group/field relative">
+<label class="block text-sm font-medium text-[#a992c9] mb-2 pl-1">Website URL</label>
+<div class="relative flex items-center">
+<input class="w-full bg-background-dark/50 border border-input-border rounded-2xl py-4 pl-4 pr-24 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="text" value="https://google.com/login"/>
+<div class="absolute right-2 flex gap-1">
+<button class="p-2 text-[#a992c9] hover:text-primary hover:bg-primary/10 rounded-xl transition-colors" title="Launch">
+<span class="material-symbols-outlined text-[20px]">open_in_new</span>
+</button>
+<button class="p-2 text-[#a992c9] hover:text-primary hover:bg-primary/10 rounded-xl transition-colors" title="Copy">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Username Field -->
+<div class="group/field relative">
+<label class="block text-sm font-medium text-[#a992c9] mb-2 pl-1">Username</label>
+<div class="relative flex items-center">
+<input class="w-full bg-background-dark/50 border border-input-border rounded-2xl py-4 pl-4 pr-24 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="text" value="design_guru_2024"/>
+<div class="absolute right-2 flex gap-1">
+<button class="p-2 text-[#a992c9] hover:text-primary hover:bg-primary/10 rounded-xl transition-colors" title="Search similar">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</button>
+<button class="p-2 text-[#a992c9] hover:text-primary hover:bg-primary/10 rounded-xl transition-colors" title="Copy">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Notes Tile (Bottom Left - Optional Filler for Bento) -->
+<div class="bg-surface-dark border border-input-border/50 rounded-[2rem] p-6 flex-1 min-h-[160px] relative overflow-hidden group">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-[#a992c9]">description</span>
+<h3 class="text-lg font-medium text-white">Notes</h3>
+</div>
+<textarea class="w-full h-full bg-transparent border-none resize-none text-[#a992c9] placeholder:text-gray-600 focus:ring-0 text-sm leading-relaxed" placeholder="Add secure notes about this account..."></textarea>
+</div>
+</div>
+<!-- Right Column -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<!-- OTP Island (Top Right) -->
+<div class="bg-gradient-to-br from-surface-dark to-[#2a1e3b] border border-primary/30 rounded-[2rem] p-6 shadow-2xl relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4">
+<span class="flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</span>
+</div>
+<div class="flex flex-col h-full justify-between gap-4">
+<div>
+<p class="text-[#a992c9] text-sm font-medium uppercase tracking-wide mb-1">One-Time Password</p>
+<div class="flex items-baseline gap-1">
+<h2 class="text-4xl md:text-5xl font-mono font-bold text-white tracking-wider">593 201</h2>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-3 bg-background-dark/40 px-3 py-1.5 rounded-full border border-white/5">
+<div class="relative size-5">
+<svg class="size-full -rotate-90" viewbox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+<!-- Background Circle -->
+<path class="text-gray-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="100, 100" stroke-width="4"></path>
+<!-- Progress Circle -->
+<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="75, 100" stroke-width="4"></path>
+</svg>
+</div>
+<span class="text-sm text-white font-medium">24s left</span>
+</div>
+<button class="bg-primary hover:bg-primary-dark text-white text-sm font-bold py-2 px-5 rounded-full shadow-lg shadow-primary/20 transition-all active:scale-95">
+                                Copy Code
+                             </button>
+</div>
+</div>
+</div>
+<!-- Credentials Tile (Bottom Right) -->
+<div class="bg-surface-dark border border-input-border/50 rounded-[2rem] p-6 md:p-8 shadow-xl flex-1 flex flex-col justify-center">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-xl font-semibold text-white">Secure Credentials</h3>
+<span class="material-symbols-outlined text-[#a992c9]">vpn_key</span>
+</div>
+<div class="space-y-6">
+<!-- Email Field -->
+<div class="group/field relative">
+<label class="block text-sm font-medium text-[#a992c9] mb-2 pl-1">Registered Email</label>
+<div class="relative flex items-center">
+<input class="w-full bg-background-dark/50 border border-input-border rounded-2xl py-4 pl-4 pr-12 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="email" value="user@example.com"/>
+<div class="absolute right-2">
+<button class="p-2 text-[#a992c9] hover:text-primary hover:bg-primary/10 rounded-xl transition-colors">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Password Field -->
+<div class="group/field relative">
+<label class="block text-sm font-medium text-[#a992c9] mb-2 pl-1">Password</label>
+<div class="relative flex items-center">
+<input class="w-full bg-background-dark/50 border border-input-border rounded-2xl py-4 pl-4 pr-24 text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="password" value="SuperSecretPassword123!"/>
+<div class="absolute right-2 flex gap-1">
+<button class="p-2 text-[#a992c9] hover:text-primary hover:bg-primary/10 rounded-xl transition-colors" title="Show">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 text-[#a992c9] hover:text-primary hover:bg-primary/10 rounded-xl transition-colors" title="Generate New">
+<span class="material-symbols-outlined text-[20px]">autorenew</span>
+</button>
+</div>
+</div>
+<!-- Strength Indicator -->
+<div class="flex gap-1 mt-3 px-1">
+<div class="h-1 flex-1 rounded-full bg-green-500"></div>
+<div class="h-1 flex-1 rounded-full bg-green-500"></div>
+<div class="h-1 flex-1 rounded-full bg-green-500"></div>
+<div class="h-1 flex-1 rounded-full bg-surface-hover"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Action Button -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="group flex items-center gap-2 bg-primary hover:bg-primary-dark text-white rounded-2xl pl-4 pr-6 py-4 shadow-2xl shadow-primary/40 transition-all hover:-translate-y-1 hover:scale-105 active:scale-95">
+<div class="bg-white/20 rounded-xl p-1">
+<span class="material-symbols-outlined text-2xl">add</span>
+</div>
+<span class="font-bold text-lg tracking-wide">Add Entry</span>
+</button>
+</div>
+</main>
+</body></html>

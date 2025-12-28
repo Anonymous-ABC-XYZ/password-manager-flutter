@@ -1,18 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:password_manager/home_screen.dart';
 import 'package:password_manager/passwords_page.dart';
 import 'package:password_manager/settings_screen.dart';
 import 'package:password_manager/auth_wrapper.dart';
-import 'package:password_manager/gmail_service.dart';
+import 'package:password_manager/providers/auth_provider.dart';
 import 'color-schemes.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqlite3/open.dart';
+import 'dart:io';
+import 'dart:ffi'; // Required for DynamicLibrary
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  sqfliteFfiInit();
-  databaseFactory = databaseFactoryFfi;
 
-  runApp(const MyApp());
+  if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+
+  if (Platform.isLinux) {
+    open.overrideFor(
+      OperatingSystem.linux,
+      () => DynamicLibrary.open('libsqlcipher.so'),
+    );
+  } else if (Platform.isWindows) {
+    open.overrideFor(
+      OperatingSystem.windows,
+      () => DynamicLibrary.open('sqlcipher.dll'),
+    );
+  } else if (Platform.isMacOS) {
+    open.overrideFor(
+      OperatingSystem.macOS,
+      () => DynamicLibrary.open('libsqlcipher.dylib'),
+    );
+  }
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => AuthProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -54,13 +83,11 @@ class _MyAppState extends State<MyApp> {
 class MyHomePage extends StatefulWidget {
   final VoidCallback toggleTheme;
   final bool isDark;
-  final GmailService gmailService;
 
   const MyHomePage({
     super.key,
     required this.toggleTheme,
     required this.isDark,
-    required this.gmailService,
   });
 
   @override
@@ -76,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = HomeScreen(gmailService: widget.gmailService);
+        page = HomeScreen();
       case 1:
         page = PasswordsPage();
       case 2:

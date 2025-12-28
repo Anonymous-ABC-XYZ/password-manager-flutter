@@ -7,6 +7,15 @@ import 'dart:async';
 import 'dart:io';
 
 class GmailService {
+  // Singleton pattern
+  static final GmailService _instance = GmailService._internal();
+
+  factory GmailService() {
+    return _instance;
+  }
+
+  GmailService._internal();
+
   static const _scopes = ['https://www.googleapis.com/auth/gmail.readonly'];
   static final _storage = const FlutterSecureStorage();
   static final _authorizationEndpoint = Uri.parse(
@@ -226,9 +235,11 @@ class GmailService {
 
   Future<String?> fetchOTPFromGmail() async {
     print('fetchOTPFromGmail: Starting OTP fetch...');
-    
+
     if (_gmailApi == null) {
-      print('fetchOTPFromGmail: Gmail API not initialized, attempting sign in...');
+      print(
+        'fetchOTPFromGmail: Gmail API not initialized, attempting sign in...',
+      );
       final signedIn = await signIn();
       if (!signedIn) {
         print('fetchOTPFromGmail: Sign in failed');
@@ -251,12 +262,16 @@ class GmailService {
         return null;
       }
 
-      print('fetchOTPFromGmail: Found ${messagesResponse.messages!.length} messages');
+      print(
+        'fetchOTPFromGmail: Found ${messagesResponse.messages!.length} messages',
+      );
 
       for (int i = 0; i < messagesResponse.messages!.length; i++) {
         final message = messagesResponse.messages![i];
-        print('fetchOTPFromGmail: Processing message ${i + 1}/${messagesResponse.messages!.length}...');
-        
+        print(
+          'fetchOTPFromGmail: Processing message ${i + 1}/${messagesResponse.messages!.length}...',
+        );
+
         final fullMessage = await _gmailApi!.users.messages.get(
           'me',
           message.id!,
@@ -268,8 +283,12 @@ class GmailService {
         final body = _extractBody(fullMessage);
 
         print('fetchOTPFromGmail: Message ${i + 1} - Subject: $subject');
-        print('fetchOTPFromGmail: Message ${i + 1} - Snippet: ${snippet.length > 100 ? snippet.substring(0, 100) : snippet}');
-        print('fetchOTPFromGmail: Message ${i + 1} - Body length: ${body.length}');
+        print(
+          'fetchOTPFromGmail: Message ${i + 1} - Snippet: ${snippet.length > 100 ? snippet.substring(0, 100) : snippet}',
+        );
+        print(
+          'fetchOTPFromGmail: Message ${i + 1} - Body length: ${body.length}',
+        );
 
         final textToSearch = '$subject $snippet $body';
         final otp = _extractOTP(textToSearch);
@@ -286,17 +305,17 @@ class GmailService {
     } catch (e, stackTrace) {
       print('fetchOTPFromGmail: Error occurred: $e');
       print('fetchOTPFromGmail: Stack trace: $stackTrace');
-      
+
       // Check for specific Gmail API not enabled error
-      if (e.toString().contains('Gmail API has not been used') || 
+      if (e.toString().contains('Gmail API has not been used') ||
           e.toString().contains('it is disabled')) {
         throw Exception(
           'Gmail API is not enabled in your Google Cloud project.\n\n'
           'Please visit: https://console.developers.google.com/apis/api/gmail.googleapis.com/overview\n'
-          'and enable the Gmail API for your project.'
+          'and enable the Gmail API for your project.',
         );
       }
-      
+
       throw Exception('Failed to fetch emails from Gmail: $e');
     }
   }
@@ -317,12 +336,13 @@ class GmailService {
 
   String _extractBody(Message message) {
     String bodyData = '';
-    
+
     // Try to get body from the main message
-    if (message.payload?.body?.data != null && message.payload!.body!.data!.isNotEmpty) {
+    if (message.payload?.body?.data != null &&
+        message.payload!.body!.data!.isNotEmpty) {
       bodyData = message.payload!.body!.data!;
     }
-    
+
     // If not found, look in parts
     if (bodyData.isEmpty && message.payload?.parts != null) {
       for (final part in message.payload!.parts!) {
@@ -332,33 +352,35 @@ class GmailService {
           break;
         }
         // Fall back to text/html
-        if (bodyData.isEmpty && part.mimeType == 'text/html' && part.body?.data != null) {
+        if (bodyData.isEmpty &&
+            part.mimeType == 'text/html' &&
+            part.body?.data != null) {
           bodyData = part.body!.data!;
         }
         // Check nested parts (for multipart/alternative)
         if (bodyData.isEmpty && part.parts != null) {
           for (final nestedPart in part.parts!) {
-            if (nestedPart.mimeType == 'text/plain' && nestedPart.body?.data != null) {
+            if (nestedPart.mimeType == 'text/plain' &&
+                nestedPart.body?.data != null) {
               bodyData = nestedPart.body!.data!;
               break;
             }
-            if (bodyData.isEmpty && nestedPart.mimeType == 'text/html' && nestedPart.body?.data != null) {
+            if (bodyData.isEmpty &&
+                nestedPart.mimeType == 'text/html' &&
+                nestedPart.body?.data != null) {
               bodyData = nestedPart.body!.data!;
             }
           }
         }
       }
     }
-    
+
     if (bodyData.isEmpty) {
       return '';
     }
-    
-    // Decode base64url encoded data
+
     try {
-      // Gmail uses base64url encoding (- and _ instead of + and /)
       final normalized = bodyData.replaceAll('-', '+').replaceAll('_', '/');
-      // Add padding if needed
       final padding = (4 - normalized.length % 4) % 4;
       final padded = normalized + ('=' * padding);
       final decoded = utf8.decode(base64.decode(padded));
@@ -370,10 +392,11 @@ class GmailService {
   }
 
   String? _extractOTP(String text) {
-    print('_extractOTP: Searching for OTP in text (first 200 chars): ${text.length > 200 ? text.substring(0, 200) : text}');
-    
+    print(
+      '_extractOTP: Searching for OTP in text (first 200 chars): ${text.length > 200 ? text.substring(0, 200) : text}',
+    );
+
     final patterns = [
-      // Specific patterns with keywords (higher priority)
       RegExp(
         r'(?:code|otp|verification|verify|pin|token)[\s:]+(\d{4,8})',
         caseSensitive: false,
@@ -386,7 +409,6 @@ class GmailService {
         r'your (?:code|otp|verification|pin)[\s:]+(\d{4,8})',
         caseSensitive: false,
       ),
-      // Generic digit patterns (lower priority)
       RegExp(r'\b(\d{8})\b'), // 8 digits
       RegExp(r'\b(\d{7})\b'), // 7 digits
       RegExp(r'\b(\d{6})\b'), // 6 digits
@@ -399,7 +421,7 @@ class GmailService {
       final match = pattern.firstMatch(text);
       if (match != null) {
         final otp = match.group(1);
-        print('_extractOTP: Found OTP "$otp" using pattern ${i + 1}');
+        print('OTP: "$otp" with pattern ${i + 1}');
         return otp;
       }
     }

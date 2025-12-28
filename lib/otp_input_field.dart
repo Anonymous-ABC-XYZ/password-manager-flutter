@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'gmail_service.dart';
+import 'package:provider/provider.dart';
+import 'providers/auth_provider.dart';
 
 class OTPInputField extends StatefulWidget {
   final TextEditingController controller;
-  final GmailService gmailService;
 
-  const OTPInputField({
-    super.key,
-    required this.controller,
-    required this.gmailService,
-  });
+  const OTPInputField({super.key, required this.controller});
 
   @override
   State<OTPInputField> createState() => _OTPInputFieldState();
@@ -20,17 +17,20 @@ class _OTPInputFieldState extends State<OTPInputField> {
   bool _isLoading = false;
 
   Future<void> _fetchOTP() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
     setState(() {
       _isLoading = true;
     });
 
     try {
-      final otp = await widget.gmailService.fetchOTPFromGmail();
+      final otp = await authProvider.fetchOTP();
 
       print(otp);
       if (mounted) {
         if (otp != null) {
           widget.controller.text = otp;
+          Clipboard.setData(ClipboardData(text: otp));
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('OTP found: $otp'),
@@ -50,9 +50,10 @@ class _OTPInputFieldState extends State<OTPInputField> {
       print('_fetchOTP error: $e');
       if (mounted) {
         String errorMessage = 'Error fetching OTP';
-        
+
         if (e.toString().contains('Gmail API is not enabled')) {
-          errorMessage = 'Gmail API not enabled!\n\n'
+          errorMessage =
+              'Gmail API not enabled!\n\n'
               'Please enable it in Google Cloud Console:\n'
               'console.developers.google.com/apis/api/gmail.googleapis.com';
         } else if (e.toString().contains('Not signed in')) {
@@ -60,7 +61,7 @@ class _OTPInputFieldState extends State<OTPInputField> {
         } else {
           errorMessage = 'Error: ${e.toString()}';
         }
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorMessage),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 import 'splash_screen.dart';
 import 'main.dart';
-import 'gmail_service.dart';
+import 'providers/auth_provider.dart';
 
 class AuthWrapper extends StatefulWidget {
   final VoidCallback toggleTheme;
@@ -20,65 +21,69 @@ class AuthWrapper extends StatefulWidget {
 
 class _AuthWrapperState extends State<AuthWrapper> {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
-  final GmailService _gmailService = GmailService();
-
-  bool _isCheckingAuth = true;
-  bool _isAuthenticated = false;
+  late Future<String?> _authKeyFuture;
 
   @override
   void initState() {
     super.initState();
-    _checkAuthentication();
+    _authKeyFuture = _storage.read(key: 'authkey');
   }
 
-  Future<void> _checkAuthentication() async {
-    final duckAuth = await _storage.read(key: 'authkey');
-    final hasGoogleAuth = await _gmailService.isSignedIn;
-
-    if (duckAuth != null && hasGoogleAuth) {
-      final signInSuccess = await _gmailService.signIn();
-      setState(() {
-        _isAuthenticated = signInSuccess;
-        _isCheckingAuth = false;
-      });
-    } else {
-      setState(() {
-        _isAuthenticated = false;
-        _isCheckingAuth = false;
-      });
-    }
-  }
-
-  Future<void> _handleAuthComplete() async {
+  void _refreshAuthKey() {
     setState(() {
-      _isAuthenticated = true;
+      _authKeyFuture = _storage.read(key: 'authkey');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_isCheckingAuth) {
-      return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        body: Center(
-          child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-      );
-    }
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, child) {
+        // Show loading screen while initializing
+        if (authProvider.isInitializing) {
+          return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            body: Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          );
+        }
 
-    if (_isAuthenticated) {
-      return MyHomePage(
-        toggleTheme: widget.toggleTheme,
-        isDark: widget.isDark,
-        gmailService: _gmailService,
-      );
-    }
+        // Check for DuckDuckGo auth key
+        return FutureBuilder<String?>(
+          future: _authKeyFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Scaffold(
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                body: Center(
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              );
+            }
 
-    return SplashScreen(
-      onAuthComplete: (context, gmailService) {
-        _handleAuthComplete();
+            final hasDuckAuth = snapshot.data != null;
+            final isFullyAuthenticated =
+                hasDuckAuth && authProvider.isAuthenticated;
+
+            if (isFullyAuthenticated) {
+              return MyHomePage(
+                toggleTheme: widget.toggleTheme,
+                isDark: widget.isDark,
+              );
+            }
+
+            return SplashScreen(
+              onAuthComplete: (context) {
+                _refreshAuthKey();
+              },
+            );
+          },
+        );
       },
     );
   }

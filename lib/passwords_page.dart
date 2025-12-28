@@ -35,7 +35,7 @@ class _PasswordsPageState extends State<PasswordsPage> {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data == 0) {
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(child: Text('No websites found!'));
         } else {
           // Use the data from the snapshot to build the list

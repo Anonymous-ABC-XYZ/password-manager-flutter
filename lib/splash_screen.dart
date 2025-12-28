@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'gmail_service.dart';
+import 'package:provider/provider.dart';
+import 'providers/auth_provider.dart';
 
 class SplashScreen extends StatefulWidget {
-  final Function(BuildContext, GmailService)? onAuthComplete;
+  final Function(BuildContext)? onAuthComplete;
 
   const SplashScreen({super.key, this.onAuthComplete});
 
@@ -16,7 +17,6 @@ class _SplashScreenState extends State<SplashScreen> {
   final TextEditingController _duckAuthController = TextEditingController();
   final TextEditingController _clientIdController = TextEditingController();
   final TextEditingController _clientSecretController = TextEditingController();
-  final GmailService _gmailService = GmailService();
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   bool _isGoogleSignedIn = false;
@@ -31,6 +31,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkExistingAuth() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
     final duckAuth = await _storage.read(key: 'authkey');
     if (duckAuth != null) {
       setState(() {
@@ -49,14 +51,11 @@ class _SplashScreenState extends State<SplashScreen> {
         _showClientIdInput = false;
       });
 
-      final isSignedIn = await _gmailService.isSignedIn;
-      if (isSignedIn) {
-        final signInSuccess = await _gmailService.signIn();
-        if (signInSuccess) {
-          setState(() {
-            _isGoogleSignedIn = true;
-          });
-        }
+      // Check if already authenticated via AuthProvider
+      if (authProvider.isAuthenticated) {
+        setState(() {
+          _isGoogleSignedIn = true;
+        });
       }
     } else {
       setState(() {
@@ -66,6 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _handleGoogleSignIn() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final clientId = _clientIdController.text.trim();
     final clientSecret = _clientSecretController.text.trim();
 
@@ -90,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen> {
       _isLoading = true;
     });
 
-    final success = await _gmailService.authenticate(clientId, clientSecret);
+    final success = await authProvider.authenticate(clientId, clientSecret);
 
     setState(() {
       _isLoading = false;
@@ -158,7 +158,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     if (widget.onAuthComplete != null) {
-      widget.onAuthComplete!(context, _gmailService);
+      widget.onAuthComplete!(context);
     }
   }
 
@@ -276,11 +276,12 @@ class _SplashScreenState extends State<SplashScreen> {
                   const SizedBox(height: 12),
                   TextButton.icon(
                     onPressed: () async {
+                      final authProvider = Provider.of<AuthProvider>(context, listen: false);
                       setState(() {
                         _isGoogleSignedIn = false;
                         _showClientIdInput = true;
                       });
-                      await _gmailService.signOut();
+                      await authProvider.signOut();
                     },
                     icon: Icon(
                       Icons.settings,
