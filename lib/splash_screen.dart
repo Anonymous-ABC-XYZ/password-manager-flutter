@@ -255,59 +255,6 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Header
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [SplashColors.primary, SplashColors.secondary],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: SplashStyles.boxShadow,
-                        ),
-                        child: const Icon(Icons.lock_person, color: SplashColors.onPrimary, size: 24),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        'VaultApp',
-                        style: BentoStyles.header.copyWith(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: SplashColors.textWhite,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: SplashColors.surfaceDark,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.verified_user, size: 16, color: SplashColors.textMuted),
-                        const SizedBox(width: 8),
-                        Text(
-                          'END-TO-END ENCRYPTED',
-                          style: BentoStyles.body.copyWith(
-                            color: SplashColors.textMuted,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   const SizedBox(height: 48),
 
                   // Main Card

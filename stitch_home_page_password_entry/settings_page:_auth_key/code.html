@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Auth Key Settings - Password Manager</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        // Blue/Teal Palette derived from reference images (Sattis & Agate)
+                        "primary": "#00dfc3",      // Bright Cyan/Teal (Accents)
+                        "primary-light": "#70e9da",
+                        "primary-dark": "#019391", // Darker Teal
+                        "background-light": "#f0f8ff",
+                        "background-dark": "#03045a", // Deep Navy Blue Base (from dark palette ref)
+                        "surface-dark": "#023c85",    // Dark Blue Surface
+                        "surface-dark-hover": "#0172b0", // Lighter Blue Hover
+                        "surface-input": "#001e45",   // Darker Input Background
+                        "text-main": "#ffffff",       // White Text
+                        "text-secondary": "#a7dfea",  // Light Blue/Cyan Subtext
+                        "border-dark": "#0172b0",     // Surface Border
+                        // Functional Colors
+                        "success": "#00dfc3",         // Use Teal for success
+                        "warning": "#fde047",         // Yellow
+                        "danger": "#ef4444",          // Red
+                        "info": "#0090bf",            // Blue Info
+                        // Accents from references
+                        "teal-dark": "#00606c",       
+                        "teal-mid": "#019391",
+                        "ocean": "#266ca9",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem", 
+                        "lg": "1.5rem", 
+                        "xl": "2rem",     
+                        "2xl": "2.5rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "glow": "0 0 20px -5px rgba(0, 223, 195, 0.25)", // Teal glow
+                    }
+                },
+            },
+        }
+    </script>
+<style>::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #03045a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #023c85; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0172b0; 
+        }.transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.2, 0, 0, 1);transition-duration: 400ms;
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s cubic-bezier(0.2, 0, 0, 1) forwards;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-text-main transition-colors duration-200 selection:bg-primary/30 selection:text-white">
+<div class="relative flex h-screen w-full flex-row overflow-hidden">
+<nav class="flex h-full w-20 lg:w-72 flex-col justify-between border-r border-gray-200 dark:border-border-dark/30 bg-background-light dark:bg-background-dark p-4 transition-all duration-300">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-4 px-2 lg:px-4 py-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-2xl size-10 shrink-0 shadow-lg shadow-black/20" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDt4f1bwLWUsn-KzxhyVUm0LrL70OQfZpasPw8ZK-vRgIdefI4Dss0rg8PwMUdRuUGW6GE1LFcvaswMmEaY3nH9mpfl0VpCdzAninmmwB3F0Lubv2Bgp0AVYptHpbuY4DsS2Dx2ANJeIqg406D2ZiIafxZGjgG2Bevl3nGMWGEwSt0_oqxaMn8poX9C-tuiXz2j6cdHwh1_v20fHcuddW_L9YJzFmpSw4QoO_5GgnbZsvddkHwp5XJcsew-d6eVJ98feq-gmc0Y8ug");'></div>
+<h1 class="text-xl font-bold tracking-tight hidden lg:block text-gray-900 dark:text-white">PassManager</h1>
+</div>
+<div class="flex flex-col gap-2">
+<a class="group flex items-center gap-4 px-4 py-3.5 rounded-full hover:bg-gray-200 dark:hover:bg-surface-dark-hover transition-all text-gray-600 dark:text-text-secondary" href="#">
+<span class="material-symbols-outlined shrink-0 group-hover:text-primary transition-colors">lock</span>
+<p class="text-sm font-medium leading-normal hidden lg:block group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Vault</p>
+</a>
+<a class="group flex items-center gap-4 px-4 py-3.5 rounded-full bg-primary/10 dark:bg-surface-dark text-primary dark:text-primary" href="#">
+<span class="material-symbols-outlined shrink-0 text-primary" style="font-variation-settings: 'FILL' 1;">settings</span>
+<p class="text-sm font-medium leading-normal hidden lg:block">Settings</p>
+</a>
+<a class="group flex items-center gap-4 px-4 py-3.5 rounded-full hover:bg-gray-200 dark:hover:bg-surface-dark-hover transition-all text-gray-600 dark:text-text-secondary" href="#">
+<span class="material-symbols-outlined shrink-0 group-hover:text-primary transition-colors">shield_person</span>
+<p class="text-sm font-medium leading-normal hidden lg:block group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Identity</p>
+</a>
+<a class="group flex items-center gap-4 px-4 py-3.5 rounded-full hover:bg-gray-200 dark:hover:bg-surface-dark-hover transition-all text-gray-600 dark:text-text-secondary" href="#">
+<span class="material-symbols-outlined shrink-0 group-hover:text-primary transition-colors">account_circle</span>
+<p class="text-sm font-medium leading-normal hidden lg:block group-hover:text-gray-900 dark:group-hover:text-white transition-colors">Profile</p>
+</a>
+</div>
+</div>
+<div class="px-2 hidden lg:block">
+<div class="p-5 rounded-2xl bg-gray-100 dark:bg-surface-dark/50 border border-gray-200 dark:border-border-dark/30">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-warning">workspace_premium</span>
+<span class="text-xs font-bold uppercase tracking-wider text-text-secondary">Premium Plan</span>
+</div>
+<p class="text-xs text-text-secondary mb-3 opacity-80">Your subscription renews on Nov 24.</p>
+</div>
+</div>
+</nav>
+<main class="flex-1 overflow-y-auto h-full relative bg-background-light dark:bg-background-dark">
+<div class="max-w-4xl mx-auto px-6 py-10 lg:px-12 lg:py-14 flex flex-col gap-8">
+<nav class="flex items-center gap-2 text-sm text-text-secondary">
+<a class="hover:text-primary transition-colors" href="#">Settings</a>
+<span class="material-symbols-outlined text-[16px] opacity-50">chevron_right</span>
+<span class="text-gray-900 dark:text-white font-medium">Encryption &amp; Auth</span>
+</nav>
+<div class="flex flex-col gap-4 animate-fade-in-up">
+<h1 class="text-4xl md:text-5xl font-display font-bold text-gray-900 dark:text-white tracking-tight">
+                        Encryption <span class="text-primary">&amp;</span> Auth
+                    </h1>
+<p class="text-lg text-gray-600 dark:text-text-secondary max-w-2xl font-light leading-relaxed">
+                        Manage your Master Auth Key and advanced security preferences. Keep this key safe; it's the lifeline to your data.
+                    </p>
+</div>
+<section class="mt-4 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark overflow-hidden shadow-sm dark:shadow-glow transition-all hover:border-primary/30 group/card">
+<div class="p-6 md:p-8 flex flex-col gap-8">
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
+<div class="flex-1">
+<h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+<span class="p-1.5 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-[20px]">key</span>
+</span>
+                                    Master Auth Key
+                                </h3>
+<p class="text-gray-600 dark:text-text-secondary text-sm leading-relaxed max-w-lg mt-3">
+                                    This unique key is used to decrypt your vault on new devices. We do not store a copy of this key. If you lose it, we cannot recover your account.
+                                </p>
+</div>
+<div class="shrink-0">
+<span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-success/10 text-success text-xs font-semibold border border-success/20">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+</span>
+                                    Active &amp; Encrypted
+                                </span>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<label class="sr-only">Auth Key Value</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-text-secondary group-focus-within:text-primary transition-colors">vpn_key</span>
+</div>
+<input class="w-full bg-gray-50 dark:bg-surface-input border border-gray-200 dark:border-border-dark text-gray-900 dark:text-text-main text-lg font-mono rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary py-4 pl-12 pr-36 transition-all shadow-inner" id="authKeyInput" readonly="" type="password" value="8372-9182-7364-0192-8374-1029-3847-5610"/>
+<div class="absolute inset-y-0 right-2 flex items-center gap-1">
+<button class="p-2 hover:bg-gray-200 dark:hover:bg-surface-dark-hover rounded-lg text-text-secondary hover:text-primary transition-colors" onclick="toggleVisibility()" title="Toggle Visibility">
+<span class="material-symbols-outlined text-[20px]" id="visibilityIcon">visibility_off</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-surface-input text-sm font-semibold rounded-lg shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95 ml-1">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+</div>
+<p class="text-xs text-text-secondary pl-2 opacity-60">Last regenerated: October 24, 2023</p>
+</div>
+<div class="pt-6 border-t border-gray-100 dark:border-border-dark/50 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-3 p-3 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 max-w-md">
+<span class="material-symbols-outlined shrink-0 text-[20px]">warning</span>
+<p class="text-xs font-medium opacity-90">Warning: Regenerating this key will disconnect all other logged-in devices immediately.</p>
+</div>
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 dark:border-border-dark hover:border-danger/50 hover:bg-danger/10 text-gray-600 dark:text-text-secondary hover:text-danger dark:hover:text-danger transition-all group">
+<span class="material-symbols-outlined text-[20px] group-hover:rotate-180 transition-transform duration-500">refresh</span>
+<span class="text-sm font-medium">Regenerate Key</span>
+</button>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="p-6 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark flex flex-col gap-4 hover:border-primary/20 transition-colors">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-lg bg-info/10 text-info">
+<span class="material-symbols-outlined">timer</span>
+</div>
+<h4 class="text-lg font-semibold text-gray-900 dark:text-white">Vault Timeout</h4>
+</div>
+<p class="text-sm text-gray-600 dark:text-text-secondary mb-2 opacity-80">Lock the vault automatically after a period of inactivity.</p>
+<div class="mt-auto">
+<select class="w-full bg-gray-50 dark:bg-surface-input border border-gray-200 dark:border-border-dark text-gray-900 dark:text-text-main text-sm rounded-lg focus:ring-primary focus:border-primary p-3">
+<option>Immediately</option>
+<option>After 1 minute</option>
+<option selected="">After 5 minutes</option>
+<option>After 1 hour</option>
+<option>Never</option>
+</select>
+</div>
+</div>
+<div class="p-6 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark flex flex-col gap-4 hover:border-primary/20 transition-colors">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="p-2 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">fingerprint</span>
+</div>
+<h4 class="text-lg font-semibold text-gray-900 dark:text-white">Biometric Unlock</h4>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-12 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/20 rounded-full peer dark:bg-surface-input peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+<p class="text-sm text-gray-600 dark:text-text-secondary opacity-80">Use TouchID or FaceID to unlock your vault without typing your master password.</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+        function toggleVisibility() {
+            const input = document.getElementById('authKeyInput');
+            const icon = document.getElementById('visibilityIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.innerText = 'visibility';
+            } else {
+                input.type = 'password';
+                icon.innerText = 'visibility_off';
+            }
+        }
+    </script>
+</body></html>

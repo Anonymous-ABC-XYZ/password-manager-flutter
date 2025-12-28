@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Password Manager - Home Entry - Blue/Teal Theme</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        // Blue / Teal Palette derived from reference images
+                        "background-dark": "#01082D", // Deep Navy Base (from darkest ref)
+                        "surface-dark": "#041D56",    // Dark Blue Surface
+                        "surface-hover": "#0F2573",   // Lighter Navy Overlay
+                        "input-bg": "#0B1A40",        // Muted bg for inputs
+                        "input-border": "#266CA9",    // Mid Blue Border
+                        // Accents
+                        "primary": "#00DFC3",         // Vibrant Teal/Cyan (Sattis Palette)
+                        "primary-hover": "#00C4AC",   
+                        "on-primary": "#001E26",      // Dark text on vibrant teal
+                        "secondary": "#ADE1FB",       // Pale Blue/Sky
+                        "tertiary": "#F6C177",        // Gold (Kept for small accents like keys, or maybe switch to a teal variant? User asked for blue/teal scheme mainly. Let's make tertiary a bright cyan for consistency or keep gold for high contrast? Reference images show mostly blues/teals/white. Let's make tertiary a light cyan.)
+                        "tertiary": "#45C2DB",        // Bright Cyan
+                        "otp-island": "#019391",      // Deep Teal (Sattis Palette)
+                        // Text
+                        "text-main": "#FFFFFF",       // Pure White for high contrast on dark blue
+                        "text-muted": "#89D6E8",      // Muted Cyan/Blue text
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "2xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #01082D; }
+        ::-webkit-scrollbar-thumb { background: #266CA9; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00DFC3; }
+    </style>
+</head>
+<body class="font-display bg-background-dark text-text-main min-h-screen overflow-hidden flex transition-colors duration-200 selection:bg-primary/30 selection:text-white">
+<aside class="hidden md:flex flex-col w-72 h-screen bg-surface-dark border-r border-input-border p-6 gap-6 fixed left-0 top-0 z-20">
+<div class="flex items-center gap-4 mb-4">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-12 shadow-md ring-2 ring-primary/20" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBNhhk3IyXPJwyyW8luNtfjJGwRuUJ75I9bmhzuWGL-X3QYV69xhf7O4XG_M3-oL3dRYjnXIh_4sbVw80zGGOaE0sUVvUd9nqS35Eb69pB_TkaER4s79pArvwGZTU0PNB0H9c7rgr1MOvAtGkaK6bTtTcPu8LpXMjtfh4LJsfK1X7hv0PEWoKLOL0CodlOBViOJZ2_6a3-IgSXXaxJSOl-ri-NXz7o5Brp-6Dy5aCvNaqO65tSbvLzHmOg2DC3jhfgZboDWFa7dBhI");'>
+</div>
+<div class="flex flex-col">
+<h1 class="text-text-main text-lg font-bold leading-tight">My Vault</h1>
+<p class="text-text-muted text-xs font-medium uppercase tracking-wider">Premium Plan</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2 flex-1">
+<a class="flex items-center gap-4 px-4 py-3 rounded-full bg-primary text-on-primary shadow-lg shadow-primary/10 transition-all hover:scale-[1.02]" href="#">
+<span class="material-symbols-outlined">lock</span>
+<span class="text-sm font-bold">Vault</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full hover:bg-surface-hover text-text-muted hover:text-text-main transition-colors" href="#">
+<span class="material-symbols-outlined">send</span>
+<span class="text-sm font-medium">Send</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full hover:bg-surface-hover text-text-muted hover:text-text-main transition-colors" href="#">
+<span class="material-symbols-outlined">autorenew</span>
+<span class="text-sm font-medium">Generator</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-full hover:bg-surface-hover text-text-muted hover:text-text-main transition-colors" href="#">
+<span class="material-symbols-outlined">shield</span>
+<span class="text-sm font-medium">Security</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-input-border">
+<a class="flex items-center gap-4 px-4 py-3 rounded-full hover:bg-surface-hover text-text-muted hover:text-text-main transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</div>
+</aside>
+<main class="flex-1 md:ml-72 h-screen overflow-y-auto relative flex flex-col p-4 md:p-8 lg:p-12 gap-8 bg-background-dark">
+<header class="flex flex-col md:flex-row md:items-center justify-between gap-6 w-full max-w-6xl mx-auto">
+<div>
+<h2 class="text-3xl md:text-4xl font-bold tracking-tight text-text-main mb-2">Google Account</h2>
+<div class="flex items-center gap-2 text-text-muted">
+<span class="material-symbols-outlined text-sm">folder_open</span>
+<span class="text-sm">Personal &gt; Social Media</span>
+</div>
+</div>
+<div class="relative w-full md:w-96 group">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted material-symbols-outlined group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-surface-dark border border-input-border rounded-full py-3.5 pl-12 pr-12 text-text-main placeholder-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all shadow-sm" placeholder="Search 245 passwords..." type="text"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 bg-surface-hover px-2 py-1 rounded text-xs text-text-muted border border-input-border hidden md:block">⌘K</div>
+</div>
+</header>
+<div class="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 pb-24">
+<div class="lg:col-span-7 flex flex-col gap-6">
+<div class="bg-surface-dark border border-input-border rounded-[2rem] p-6 md:p-8 shadow-xl relative overflow-hidden group">
+<div class="absolute -top-10 -right-10 w-64 h-64 bg-secondary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-8 relative z-10">
+<div class="flex items-center gap-4">
+<div class="bg-white p-2 rounded-2xl size-14 flex items-center justify-center shadow-lg ring-1 ring-input-border">
+<img alt="Google Logo" class="w-8 h-8" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6eLvwZMn-S8MLbcQXL2KFBcagFkuvyF_M8dF_0ppe0hb_dps-ppcMEut3_pPH0h_zsKDSOTNvKst1Z4iY51zJ29X_C-ZgrClmBnzTsm32gsSQ_ZMfRjzSojN_0h4AvhY3K0LNHdJPbijcIfhTjWYmseaGEdbgm8EYERk7d1j-MI0BheZ3cNO5dJjNYnfTK3QNocXlVXexWuCphK4IY3mmpw32_wtaRHPy5_sX-E-RTPDRW8pfRYaDyThLL9yzhev2p8MKjyGwJEA"/>
+</div>
+<h3 class="text-xl font-semibold text-text-main">Identity</h3>
+</div>
+<button class="text-text-muted hover:text-text-main p-2 rounded-full hover:bg-surface-hover transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div class="space-y-6 relative z-10">
+<div class="group/field relative">
+<label class="block text-sm font-medium text-text-muted mb-2 pl-1">Website URL</label>
+<div class="relative flex items-center">
+<input class="w-full bg-input-bg border border-input-border rounded-2xl py-4 pl-4 pr-24 text-text-main focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all placeholder-text-muted/50" type="text" value="https://google.com/login"/>
+<div class="absolute right-2 flex gap-1">
+<button class="p-2 text-text-muted hover:text-secondary hover:bg-secondary/10 rounded-xl transition-colors" title="Launch">
+<span class="material-symbols-outlined text-[20px]">open_in_new</span>
+</button>
+<button class="p-2 text-text-muted hover:text-secondary hover:bg-secondary/10 rounded-xl transition-colors" title="Copy">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group/field relative">
+<label class="block text-sm font-medium text-text-muted mb-2 pl-1">Username</label>
+<div class="relative flex items-center">
+<input class="w-full bg-input-bg border border-input-border rounded-2xl py-4 pl-4 pr-24 text-text-main focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all" type="text" value="design_guru_2024"/>
+<div class="absolute right-2 flex gap-1">
+<button class="p-2 text-text-muted hover:text-secondary hover:bg-secondary/10 rounded-xl transition-colors" title="Search similar">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</button>
+<button class="p-2 text-text-muted hover:text-secondary hover:bg-secondary/10 rounded-xl transition-colors" title="Copy">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-dark border border-input-border rounded-[2rem] p-6 flex-1 min-h-[160px] relative overflow-hidden group">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-text-muted">description</span>
+<h3 class="text-lg font-medium text-text-main">Notes</h3>
+</div>
+<textarea class="w-full h-full bg-transparent border-none resize-none text-text-main placeholder:text-text-muted/50 focus:ring-0 text-sm leading-relaxed scrollbar-thin" placeholder="Add secure notes about this account..."></textarea>
+</div>
+</div>
+<div class="lg:col-span-5 flex flex-col gap-6">
+<div class="bg-otp-island border border-white/10 rounded-[2rem] p-6 shadow-2xl relative overflow-hidden group hover:shadow-otp-island/20 transition-all duration-300">
+<div class="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
+<div class="absolute top-0 right-0 p-5">
+<span class="flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-white opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+</span>
+</div>
+<div class="flex flex-col h-full justify-between gap-5 relative z-10">
+<div>
+<p class="text-white/70 text-sm font-bold uppercase tracking-widest mb-2 font-mono">2FA Code</p>
+<div class="flex items-baseline gap-1">
+<h2 class="text-5xl font-mono font-bold text-white tracking-widest drop-shadow-sm">593 201</h2>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-3 bg-black/20 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
+<div class="relative size-5">
+<svg class="size-full -rotate-90" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+<path class="text-white/20" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
+<path class="text-white drop-shadow-[0_0_2px_rgba(255,255,255,0.8)]" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="75, 100" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+</div>
+<span class="text-sm text-white font-medium font-mono">24s</span>
+</div>
+<button class="bg-white text-otp-island hover:bg-white/90 font-bold py-2 px-5 rounded-full shadow-lg transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+</div>
+</div>
+<div class="bg-surface-dark border border-input-border rounded-[2rem] p-6 md:p-8 shadow-xl flex-1 flex flex-col justify-center">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-xl font-semibold text-text-main">Secure Credentials</h3>
+<span class="material-symbols-outlined text-tertiary">vpn_key</span>
+</div>
+<div class="space-y-6">
+<div class="group/field relative">
+<label class="block text-sm font-medium text-text-muted mb-2 pl-1">Registered Email</label>
+<div class="relative flex items-center">
+<input class="w-full bg-input-bg border border-input-border rounded-2xl py-4 pl-4 pr-12 text-text-main focus:border-tertiary focus:ring-1 focus:ring-tertiary outline-none transition-all" type="email" value="user@example.com"/>
+<div class="absolute right-2">
+<button class="p-2 text-text-muted hover:text-tertiary hover:bg-tertiary/10 rounded-xl transition-colors">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</button>
+</div>
+</div>
+</div>
+<div class="group/field relative">
+<label class="block text-sm font-medium text-text-muted mb-2 pl-1">Password</label>
+<div class="relative flex items-center">
+<input class="w-full bg-input-bg border border-input-border rounded-2xl py-4 pl-4 pr-24 text-text-main focus:border-tertiary focus:ring-1 focus:ring-tertiary outline-none transition-all" type="password" value="SuperSecretPassword123!"/>
+<div class="absolute right-2 flex gap-1">
+<button class="p-2 text-text-muted hover:text-tertiary hover:bg-tertiary/10 rounded-xl transition-colors" title="Show">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+<button class="p-2 text-text-muted hover:text-tertiary hover:bg-tertiary/10 rounded-xl transition-colors" title="Generate New">
+<span class="material-symbols-outlined text-[20px]">autorenew</span>
+</button>
+</div>
+</div>
+<div class="flex gap-1.5 mt-4 px-1">
+<div class="h-1.5 flex-1 rounded-full bg-secondary"></div>
+<div class="h-1.5 flex-1 rounded-full bg-secondary"></div>
+<div class="h-1.5 flex-1 rounded-full bg-secondary"></div>
+<div class="h-1.5 flex-1 rounded-full bg-surface-hover"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fixed bottom-8 right-8 z-50">
+<button class="group flex items-center gap-3 bg-primary hover:bg-primary-hover text-on-primary rounded-2xl pl-5 pr-7 py-4 shadow-2xl shadow-black/50 transition-all hover:-translate-y-1 hover:scale-105 active:scale-95 ring-1 ring-white/10">
+<span class="material-symbols-outlined text-3xl">add_circle</span>
+<span class="font-bold text-lg tracking-wide">Add Entry</span>
+</button>
+</div>
+</main>
+</body></html>

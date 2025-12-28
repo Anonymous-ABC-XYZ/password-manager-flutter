@@ -2,30 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BentoColors {
-  // Catppuccin Mocha Palette
-  static const primary = Color(0xFFb4befe); // Lavender
-  static const onPrimary = Color(0xFF1e1e2e); // Base (Dark text on pastel)
-  static const primaryDark = Color(0xFF89b4fa); // Blue (Accents)
+  // Deep Navy & Neon Teal Palette
+  static const primary = Color(0xFF00DFC3); // Vibrant Cyan/Teal
+  static const onPrimary = Color(0xFF001E26); // Dark text on vibrant teal
+  static const primaryDark = Color(0xFF019391); // Deep Teal
   
-  static const backgroundLight = Color(0xFFeff1f5); // Latte Base
-  static const backgroundDark = Color(0xFF1e1e2e); // Mocha Base
+  static const backgroundLight = Color(0xFFF0F9FF);
+  static const backgroundDark = Color(0xFF01082D); // Deep Navy Base
   
-  static const sidebarBg = Color(0xFF181825); // Mocha Mantle
-  static const surfaceDark = Color(0xFF313244); // Mocha Surface0
-  static const surfaceHover = Color(0xFF45475a); // Mocha Surface1
+  static const sidebarBg = Color(0xFF041D56); // Dark Navy Surface
+  static const surfaceDark = Color(0xFF041D56); // Dark Blue Surface
+  static const surfaceHover = Color(0xFF0F2573); // Lighter Navy Overlay
   
-  static const inputBg = Color(0xFF313244); // Surface0
-  static const inputBorder = Color(0xFF45475a); // Surface1
+  static const inputBg = Color(0xFF0B1A40); // Muted bg for inputs
+  static const inputBorder = Color(0xFF266CA9); // Mid Blue Border
   
-  static const textWhite = Color(0xFFcdd6f4); // Text
-  static const textMuted = Color(0xFFbac2de); // Subtext1
+  static const textWhite = Color(0xFFFFFFFF); // Pure White
+  static const textMuted = Color(0xFF89D6E8); // Muted Cyan/Blue text
   
-  static const secondary = Color(0xFF94e2d5); // Teal/Sage
-  static const tertiary = Color(0xFFfab387); // Peach
-  static const error = Color(0xFFf38ba8); // Red
-  static const success = Color(0xFFa6e3a1); // Green
+  static const secondary = Color(0xFFADE1FB); // Pale Blue/Sky
+  static const tertiary = Color(0xFF45C2DB); // Bright Cyan
+  static const error = Color(0xFFEF4444); // Red
+  static const success = Color(0xFF00DFC3); // Teal
   
-  static const otpIsland = Color(0xFF89dceb); // Sky
+  static const otpIsland = Color(0xFF019391); // Deep Teal
 }
 
 class BentoStyles {
