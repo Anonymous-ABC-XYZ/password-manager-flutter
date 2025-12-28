@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
+import 'splash_constants.dart';
+import 'bento_constants.dart';
 
 class SplashScreen extends StatefulWidget {
   final Function(BuildContext)? onAuthComplete;
@@ -22,7 +23,6 @@ class _SplashScreenState extends State<SplashScreen> {
   bool _isGoogleSignedIn = false;
   bool _isDuckAuthSaved = false;
   bool _isLoading = false;
-  bool _showClientIdInput = false;
 
   @override
   void initState() {
@@ -45,22 +45,18 @@ class _SplashScreenState extends State<SplashScreen> {
     final clientSecret = await _storage.read(key: 'google_client_secret');
 
     if (clientId != null && clientSecret != null) {
-      setState(() {
-        _clientIdController.text = clientId;
-        _clientSecretController.text = clientSecret;
-        _showClientIdInput = false;
-      });
+      _clientIdController.text = clientId;
+      _clientSecretController.text = clientSecret;
 
-      // Check if already authenticated via AuthProvider
       if (authProvider.isAuthenticated) {
         setState(() {
           _isGoogleSignedIn = true;
         });
       }
-    } else {
-      setState(() {
-        _showClientIdInput = true;
-      });
+    }
+    
+    if (_isGoogleSignedIn && _isDuckAuthSaved) {
+       // Ideally wait a moment or show a "Proceeding..." state
     }
   }
 
@@ -70,19 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final clientSecret = _clientSecretController.text.trim();
 
     if (clientId.isEmpty || clientSecret.isEmpty) {
-      setState(() {
-        _showClientIdInput = true;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text(
-              'Please enter OAuth Client ID and Secret first',
-            ),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
-      }
+      _showGoogleConfigDialog();
       return;
     }
 
@@ -96,40 +80,24 @@ class _SplashScreenState extends State<SplashScreen> {
       _isLoading = false;
       if (success) {
         _isGoogleSignedIn = true;
-        _showClientIdInput = false;
       }
     });
 
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Successfully signed in to Google!'),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-        ),
+        const SnackBar(content: Text('Successfully signed in to Google!'), backgroundColor: SplashColors.primary),
       );
+      _checkCompletion();
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text(
-            'Google Sign-In failed. Check your credentials and try again.',
-          ),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
+        const SnackBar(content: Text('Google Sign-In failed.'), backgroundColor: Colors.red),
       );
     }
   }
 
   Future<void> _handleDuckAuthSave() async {
     final authKey = _duckAuthController.text.trim();
-    if (authKey.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Please enter a valid auth key'),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
-      return;
-    }
+    if (authKey.isEmpty) return;
 
     await _storage.write(key: 'authkey', value: authKey);
     setState(() {
@@ -138,384 +106,381 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('DuckDuckGo auth key saved'),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-        ),
+        const SnackBar(content: Text('DuckDuckGo auth key saved'), backgroundColor: SplashColors.primary),
       );
+      Navigator.of(context).pop(); // Close dialog
+      _checkCompletion();
     }
   }
 
-  Future<void> _handleContinue() async {
-    if (!_isGoogleSignedIn || !_isDuckAuthSaved) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Please complete both authentication steps'),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
-      return;
-    }
-
-    if (widget.onAuthComplete != null) {
-      widget.onAuthComplete!(context);
+  void _checkCompletion() {
+    if (_isGoogleSignedIn && _isDuckAuthSaved) {
+       if (widget.onAuthComplete != null) {
+          widget.onAuthComplete!(context);
+       }
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme theme = Theme.of(context).colorScheme;
-
-    return Scaffold(
-      backgroundColor: theme.primaryContainer,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 500),
-            padding: const EdgeInsets.all(32.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.lock_outlined, size: 80, color: theme.primary),
-                const SizedBox(height: 24),
-                Text(
-                  'Password Manager',
-                  style: GoogleFonts.bricolageGrotesque(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: theme.onPrimaryContainer,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                const SizedBox(height: 48),
-                _buildGoogleSignInCard(theme),
-                const SizedBox(height: 24),
-                _buildDuckAuthCard(theme),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: _isGoogleSignedIn && _isDuckAuthSaved
-                      ? _handleContinue
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.primary,
-                    foregroundColor: theme.onPrimary,
-                    disabledBackgroundColor: theme.surfaceContainerHighest,
-                    disabledForegroundColor: theme.onSurface.withOpacity(0.5),
-                    minimumSize: const Size(double.infinity, 56),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: _isGoogleSignedIn && _isDuckAuthSaved ? 2 : 0,
-                  ),
-                  child: Text(
-                    'Continue to App',
-                    style: GoogleFonts.bricolageGrotesque(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ],
+  void _showGoogleConfigDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: SplashColors.surfaceDark,
+        title: Text('Configure Google OAuth', style: BentoStyles.header.copyWith(color: SplashColors.textWhite)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _clientIdController,
+              style: BentoStyles.body.copyWith(color: SplashColors.textWhite),
+              decoration: InputDecoration(
+                labelText: 'Client ID',
+                labelStyle: BentoStyles.body.copyWith(color: SplashColors.textMuted),
+                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: SplashColors.textMuted)),
+                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: SplashColors.primary)),
+              ),
             ),
-          ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _clientSecretController,
+              obscureText: true,
+              style: BentoStyles.body.copyWith(color: SplashColors.textWhite),
+              decoration: InputDecoration(
+                labelText: 'Client Secret',
+                labelStyle: BentoStyles.body.copyWith(color: SplashColors.textMuted),
+                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: SplashColors.textMuted)),
+                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: SplashColors.primary)),
+              ),
+            ),
+          ],
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel', style: BentoStyles.body.copyWith(color: SplashColors.textMuted)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _handleGoogleSignIn();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: SplashColors.primary,
+              foregroundColor: SplashColors.onPrimary,
+            ),
+            child: Text('Sign In', style: BentoStyles.body.copyWith(fontWeight: FontWeight.bold)),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildGoogleSignInCard(ColorScheme theme) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: theme.surface,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+  void _showDuckConfigDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: SplashColors.surfaceDark,
+        title: Text('Configure DuckDuckGo', style: BentoStyles.header.copyWith(color: SplashColors.textWhite)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _duckAuthController,
+              obscureText: true,
+              style: BentoStyles.body.copyWith(color: SplashColors.textWhite),
+              decoration: InputDecoration(
+                labelText: 'Authorization Key',
+                labelStyle: BentoStyles.body.copyWith(color: SplashColors.textMuted),
+                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: SplashColors.textMuted)),
+                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: SplashColors.primary)),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel', style: BentoStyles.body.copyWith(color: SplashColors.textMuted)),
+          ),
+          ElevatedButton(
+            onPressed: _handleDuckAuthSave,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: SplashColors.primary,
+              foregroundColor: SplashColors.onPrimary,
+            ),
+            child: Text('Save', style: BentoStyles.body.copyWith(fontWeight: FontWeight.bold)),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: SplashColors.backgroundDark,
+      body: Stack(
         children: [
-          Row(
-            children: [
-              Icon(Icons.email, color: theme.primary, size: 28),
-              const SizedBox(width: 12),
-              Text(
-                'Google Account',
-                style: GoogleFonts.bricolageGrotesque(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: theme.onSurface,
-                ),
+          // Background Blobs
+          Positioned(
+            top: -100,
+            left: -100,
+            child: Container(
+              width: 500,
+              height: 500,
+              decoration: BoxDecoration(
+                color: SplashColors.primary.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+                boxShadow: const [BoxShadow(blurRadius: 120, color: SplashColors.primary)],
               ),
-            ],
+            ),
           ),
-          const SizedBox(height: 16),
-          if (_isGoogleSignedIn)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+          Positioned(
+            bottom: -100,
+            right: -100,
+            child: Container(
+              width: 500,
+              height: 500,
+              decoration: BoxDecoration(
+                color: SplashColors.primary.withValues(alpha: 0.05),
+                shape: BoxShape.circle,
+                boxShadow: const [BoxShadow(blurRadius: 100, color: SplashColors.primary)],
+              ),
+            ),
+          ),
+          
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Header
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [SplashColors.primary, SplashColors.secondary],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: SplashStyles.boxShadow,
+                        ),
+                        child: const Icon(Icons.lock_person, color: SplashColors.onPrimary, size: 24),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'VaultApp',
+                        style: BentoStyles.header.copyWith(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: SplashColors.textWhite,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: SplashColors.surfaceDark,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.verified_user, size: 16, color: SplashColors.textMuted),
+                        const SizedBox(width: 8),
+                        Text(
+                          'END-TO-END ENCRYPTED',
+                          style: BentoStyles.body.copyWith(
+                            color: SplashColors.textMuted,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 48),
+
+                  // Main Card
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: 500),
+                    padding: const EdgeInsets.all(40),
+                    decoration: BoxDecoration(
+                      color: SplashColors.surfaceDark,
+                      borderRadius: SplashStyles.borderRadius,
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.3),
+                          blurRadius: 30,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Let's get you secured",
+                          textAlign: TextAlign.center,
+                          style: BentoStyles.header.copyWith(
+                            fontSize: 32,
+                            fontWeight: FontWeight.w900,
+                            color: Colors.white,
+                            letterSpacing: -0.5,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          "Your digital safe house is ready. Choose your preferred secure method to create your encrypted vault.",
+                          textAlign: TextAlign.center,
+                          style: BentoStyles.body.copyWith(
+                            color: SplashColors.textMuted,
+                            fontSize: 16,
+                            height: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: 32),
+
+                        // Auth Options
+                        _buildAuthCard(
+                          icon: Icons.g_mobiledata, // Placeholder for Google Logo
+                          title: 'Continue with Google',
+                          subtitle: 'Fast and secure access',
+                          color: const Color(0xFF4285F4),
+                          isChecked: _isGoogleSignedIn,
+                          onTap: _isGoogleSignedIn ? null : (_clientIdController.text.isEmpty ? _showGoogleConfigDialog : _handleGoogleSignIn),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildAuthCard(
+                          icon: Icons.shield,
+                          title: 'Continue with DuckDuckGo',
+                          subtitle: 'Privacy-focused protection',
+                          color: const Color(0xFFDE5833),
+                          isChecked: _isDuckAuthSaved,
+                          onTap: _showDuckConfigDialog,
+                        ),
+                        
+                        const SizedBox(height: 24),
+                        const Row(
+                          children: [
+                            Expanded(child: Divider(color: Colors.white10)),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              child: Text('OR', style: TextStyle(color: Colors.white30, fontSize: 12, fontWeight: FontWeight.bold)),
+                            ),
+                            Expanded(child: Divider(color: Colors.white10)),
+                          ],
+                        ),
+                         const SizedBox(height: 24),
+                         
+                         TextButton.icon(
+                           onPressed: () {
+                             if (_isGoogleSignedIn && _isDuckAuthSaved) {
+                               _checkCompletion();
+                             } else {
+                               ScaffoldMessenger.of(context).showSnackBar(
+                                 const SnackBar(content: Text('Please complete setup first.')),
+                               );
+                             }
+                           },
+                           icon: const Icon(Icons.password, color: SplashColors.textMuted),
+                           label: Text(
+                             'Enter App',
+                             style: BentoStyles.body.copyWith(color: SplashColors.textWhite),
+                           ),
+                         ),
+                      ],
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  const Text(
+                    'Terms of Service • Privacy Policy',
+                    style: TextStyle(color: Colors.white30, fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (_isLoading)
+            Container(
+              color: Colors.black54,
+              child: const Center(child: CircularProgressIndicator(color: SplashColors.primary)),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAuthCard({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color color,
+    required bool isChecked,
+    VoidCallback? onTap,
+  }) {
+    return Material(
+      color: SplashColors.surfaceHover,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        hoverColor: SplashColors.surfaceHover.withValues(alpha: 0.8),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: color,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(isChecked ? Icons.check : icon, color: Colors.white, size: 24),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.check_circle, color: theme.primary, size: 20),
-                    const SizedBox(width: 8),
                     Text(
-                      'Signed in successfully',
-                      style: GoogleFonts.bricolageGrotesque(
-                        color: theme.primary,
-                        fontWeight: FontWeight.w500,
+                      title,
+                      style: BentoStyles.body.copyWith(
+                        color: SplashColors.textWhite,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      subtitle,
+                      style: BentoStyles.body.copyWith(
+                        color: SplashColors.textMuted,
+                        fontSize: 14,
                       ),
                     ),
                   ],
                 ),
-                if (!_showClientIdInput) ...[
-                  const SizedBox(height: 12),
-                  TextButton.icon(
-                    onPressed: () async {
-                      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                      setState(() {
-                        _isGoogleSignedIn = false;
-                        _showClientIdInput = true;
-                      });
-                      await authProvider.signOut();
-                    },
-                    icon: Icon(
-                      Icons.settings,
-                      size: 16,
-                      color: theme.onSurface.withOpacity(0.7),
-                    ),
-                    label: Text(
-                      'Reconfigure credentials',
-                      style: GoogleFonts.bricolageGrotesque(
-                        fontSize: 12,
-                        color: theme.onSurface.withOpacity(0.7),
-                      ),
-                    ),
-                  ),
-                ],
-              ],
-            )
-          else
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Sign in to fetch OTP codes from Gmail',
-                  style: GoogleFonts.bricolageGrotesque(
-                    color: theme.onSurface.withOpacity(0.7),
-                    fontSize: 14,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                if (_showClientIdInput) ...[
-                  TextField(
-                    controller: _clientIdController,
-                    style: GoogleFonts.bricolageGrotesque(
-                      color: theme.onSecondary,
-                    ),
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: theme.outline),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: theme.primary, width: 2),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      prefixIcon: Icon(Icons.badge, color: theme.onSecondary),
-                      hintText: 'OAuth Client ID',
-                      hintStyle: GoogleFonts.bricolageGrotesque(
-                        color: theme.onSurface.withOpacity(0.5),
-                        fontSize: 14,
-                      ),
-                      filled: true,
-                      fillColor: theme.surfaceContainerHighest,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  TextField(
-                    controller: _clientSecretController,
-                    obscureText: true,
-                    style: GoogleFonts.bricolageGrotesque(
-                      color: theme.onSecondary,
-                    ),
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: theme.outline),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: theme.primary, width: 2),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      prefixIcon: Icon(Icons.vpn_key, color: theme.onSecondary),
-                      hintText: 'OAuth Client Secret',
-                      hintStyle: GoogleFonts.bricolageGrotesque(
-                        color: theme.onSurface.withOpacity(0.5),
-                        fontSize: 14,
-                      ),
-                      filled: true,
-                      fillColor: theme.surfaceContainerHighest,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                ],
-                ElevatedButton.icon(
-                  onPressed: _isLoading ? null : _handleGoogleSignIn,
-                  icon: _isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white,
-                            ),
-                          ),
-                        )
-                      : const Icon(Icons.login),
-                  label: Text(
-                    _isLoading ? 'Signing in...' : 'Sign in with Google',
-                    style: GoogleFonts.bricolageGrotesque(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.primary,
-                    foregroundColor: theme.onPrimary,
-                    minimumSize: const Size(double.infinity, 48),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDuckAuthCard(ColorScheme theme) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: theme.surface,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.shield, color: theme.secondary, size: 28),
-              const SizedBox(width: 12),
-              Text(
-                'DuckDuckGo Email',
-                style: GoogleFonts.bricolageGrotesque(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: theme.onSurface,
-                ),
               ),
+              const Icon(Icons.arrow_forward_ios, color: Colors.white24, size: 16),
             ],
           ),
-          const SizedBox(height: 16),
-          if (_isDuckAuthSaved)
-            Row(
-              children: [
-                Icon(Icons.check_circle, color: theme.primary, size: 20),
-                const SizedBox(width: 8),
-                Text(
-                  'Auth key configured',
-                  style: GoogleFonts.bricolageGrotesque(
-                    color: theme.primary,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            )
-          else
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Enter your DuckDuckGo authorization key',
-                  style: GoogleFonts.bricolageGrotesque(
-                    color: theme.onSurface.withOpacity(0.7),
-                    fontSize: 14,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _duckAuthController,
-                  obscureText: true,
-                  style: GoogleFonts.bricolageGrotesque(
-                    color: theme.onSecondary,
-                  ),
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: theme.outline),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: theme.primary, width: 2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    prefixIcon: Icon(Icons.key, color: theme.onSecondary),
-                    hintText: 'Authorization Key',
-                    hintStyle: GoogleFonts.bricolageGrotesque(
-                      color: theme.onSurface.withOpacity(0.5),
-                      fontSize: 15,
-                    ),
-                    filled: true,
-                    fillColor: theme.surfaceContainerHighest,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ElevatedButton.icon(
-                  onPressed: _handleDuckAuthSave,
-                  icon: const Icon(Icons.save),
-                  label: Text(
-                    'Save Auth Key',
-                    style: GoogleFonts.bricolageGrotesque(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.secondary,
-                    foregroundColor: theme.onSecondary,
-                    minimumSize: const Size(double.infinity, 48),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-        ],
+        ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _duckAuthController.dispose();
-    _clientIdController.dispose();
-    _clientSecretController.dispose();
-    super.dispose();
   }
 }

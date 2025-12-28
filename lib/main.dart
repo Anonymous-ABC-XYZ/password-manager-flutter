@@ -10,6 +10,8 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqlite3/open.dart';
 import 'dart:io';
 import 'dart:ffi'; // Required for DynamicLibrary
+import 'bento_constants.dart';
+import 'sidebar_navigation.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,8 +75,15 @@ class _MyAppState extends State<MyApp> {
         toggleTheme: toggleTheme,
         isDark: _themeMode == ThemeMode.dark,
       ),
-      theme: ThemeData(colorScheme: lightColorScheme),
-      darkTheme: ThemeData(colorScheme: darkColorScheme),
+      theme: ThemeData(
+        colorScheme: lightColorScheme,
+        useMaterial3: true,
+      ),
+      darkTheme: ThemeData(
+        colorScheme: darkColorScheme,
+        useMaterial3: true,
+        scaffoldBackgroundColor: BentoColors.backgroundDark, // Enforce background
+      ),
       themeMode: _themeMode,
     );
   }
@@ -96,80 +105,85 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
-  var defaultIcon = Icon(Icons.light_mode);
 
   @override
   Widget build(BuildContext context) {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = HomeScreen();
+        page = HomeScreen(); // "Vault" -> Add Entry / Home
       case 1:
-        page = PasswordsPage();
+        page = PasswordsPage(); // "Credentials" -> List
       case 2:
         page = SettingsScreen();
-
       default:
-        throw UnimplementedError('no widget for $selectedIndex');
+        // Handle placeholders or unimplemented pages
+        page = const Center(child: Text("Coming Soon", style: TextStyle(color: Colors.white)));
     }
-    return Scaffold(
-      body: Row(
-        children: [
-          SafeArea(
-            child: NavigationRail(
-              elevation: 500,
-              groupAlignment: -1,
-              extended: false,
-              destinations: [
-                NavigationRailDestination(
-                  icon: Icon(Icons.home),
-                  label: Text('Home'),
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isDesktop = constraints.maxWidth > 800;
+
+        if (isDesktop) {
+          return Scaffold(
+            body: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SidebarNavigation(
+                  selectedIndex: selectedIndex,
+                  onDestinationSelected: (value) {
+                    setState(() {
+                      selectedIndex = value;
+                    });
+                  },
+                  onThemeToggle: widget.toggleTheme,
                 ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.password),
-                  label: Text('Favorites'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.settings),
-                  label: Text('Settings'),
-                ),
-              ],
-              selectedIndex: selectedIndex,
-              onDestinationSelected: (value) {
-                setState(() {
-                  selectedIndex = value;
-                });
-              },
-              trailing: Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        setState(() {
-                          widget.toggleTheme();
-                        });
-                      },
-                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                      backgroundColor: Theme.of(context).colorScheme.surface,
-                      child: Icon(
-                        widget.isDark ? Icons.light_mode : Icons.dark_mode,
-                      ),
-                    ),
+                Expanded(
+                  child: Container(
+                    color: BentoColors.backgroundDark,
+                    child: page,
                   ),
                 ),
-              ),
+              ],
             ),
-          ),
-          Expanded(
-            child: Container(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              child: page,
+          );
+        } else {
+          return Scaffold(
+            backgroundColor: BentoColors.backgroundDark,
+            body: page,
+            bottomNavigationBar: NavigationBar(
+              onDestinationSelected: (int index) {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+              selectedIndex: selectedIndex > 2 ? 0 : selectedIndex, // Handling placeholders safely
+              destinations: const <Widget>[
+                NavigationDestination(
+                  selectedIcon: Icon(Icons.lock),
+                  icon: Icon(Icons.lock_outline),
+                  label: 'Vault',
+                ),
+                NavigationDestination(
+                  selectedIcon: Icon(Icons.list_alt),
+                  icon: Icon(Icons.list),
+                  label: 'Credentials',
+                ),
+                NavigationDestination(
+                  selectedIcon: Icon(Icons.settings),
+                  icon: Icon(Icons.settings_outlined),
+                  label: 'Settings',
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
+             floatingActionButton: FloatingActionButton(
+               onPressed: widget.toggleTheme,
+               child: Icon(widget.isDark ? Icons.light_mode : Icons.dark_mode),
+             ),
+          );
+        }
+      },
     );
   }
 }

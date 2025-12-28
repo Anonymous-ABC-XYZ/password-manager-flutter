@@ -1,16 +1,18 @@
 import 'dart:math';
-import 'package:animated_button/animated_button.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sqflite/sqflite.dart';
-import 'alert_button.dart';
-import 'front_page_entries.dart';
+
 import 'dbinit.dart';
-import 'otp_input_field.dart';
+import 'bento_constants.dart';
+import 'identity_tile.dart';
+import 'notes_tile.dart';
+import 'otp_island.dart';
+import 'secure_credentials_tile.dart';
+import 'home_header.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,14 +23,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final websiteController = TextEditingController();
-
   final userNameController = TextEditingController();
-
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
-
   final otpController = TextEditingController();
+  
   String? _authKey;
 
   @override
@@ -54,46 +53,61 @@ class _HomeScreenState extends State<HomeScreen> {
     for (var l = 0; l < list.length; l++) {
       allWebsites.add(list[l]['Website'].toString());
     }
+
+    if (allWebsites.isEmpty) return;
+
     var correctWeb = extractOne(
       query: websiteController.text,
       choices: allWebsites,
     );
+    
     var result = await db.rawQuery("SELECT * FROM demo WHERE Website=?", [
       correctWeb.choice,
     ]);
+    
+    if (result.isEmpty) return;
+
     if (context.mounted) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return SizedBox(
             child: AlertDialog(
-              title: Text("${result[0]['Website']}"),
+              backgroundColor: BentoColors.surfaceDark,
+              title: Text("${result[0]['Website']}", style: const TextStyle(color: BentoColors.textWhite)),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                   ListTile(
+                     title: const Text('Username', style: TextStyle(color: BentoColors.textMuted)),
+                     subtitle: Text(result[0]['Username'].toString(), style: const TextStyle(color: BentoColors.textWhite)),
+                     trailing: IconButton(
+                       icon: const Icon(Icons.copy, color: BentoColors.primary),
+                       onPressed: () => Clipboard.setData(ClipboardData(text: result[0]['Username'].toString())),
+                     ),
+                   ),
+                   ListTile(
+                     title: const Text('Email', style: TextStyle(color: BentoColors.textMuted)),
+                     subtitle: Text(result[0]['Email'].toString(), style: const TextStyle(color: BentoColors.textWhite)),
+                      trailing: IconButton(
+                       icon: const Icon(Icons.copy, color: BentoColors.primary),
+                       onPressed: () => Clipboard.setData(ClipboardData(text: result[0]['Email'].toString())),
+                     ),
+                   ),
+                   ListTile(
+                     title: const Text('Password', style: TextStyle(color: BentoColors.textMuted)),
+                     subtitle: Text(result[0]['Password'].toString(), style: const TextStyle(color: BentoColors.textWhite)),
+                      trailing: IconButton(
+                       icon: const Icon(Icons.copy, color: BentoColors.primary),
+                       onPressed: () => Clipboard.setData(ClipboardData(text: result[0]['Password'].toString())),
+                     ),
+                   ),
+                ],
+              ),
               actions: [
-                Column(
-                  children: [
-                    AlertButton(result[0]['Username'].toString(), 'Username'),
-                    AlertButton(result[0]['Email'].toString(), 'Email'),
-                    AlertButton(result[0]['Password'].toString(), 'Password'),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll<Color>(
-                            Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                        child: Text(
-                          "Ok",
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSecondary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                 TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("Close", style: TextStyle(color: BentoColors.primary)),
                 ),
               ],
             ),
@@ -105,34 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void generatePassword() {
     var pass = [];
-    var letters = <String>[
-      'a',
-      'b',
-      'c',
-      'd',
-      'e',
-      'f',
-      'g',
-      'h',
-      'i',
-      'j',
-      'k',
-      'l',
-      'm',
-      'n',
-      'o',
-      'p',
-      'q',
-      'r',
-      's',
-      't',
-      'u',
-      'v',
-      'w',
-      'x',
-      'y',
-      'z',
-    ];
+    var letters = <String>['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
     var numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     var specialChars = ['!', '@', '#', '<', '%', '^', '&'];
     var numLetters = Random().nextInt(9) + 5;
@@ -191,19 +178,25 @@ class _HomeScreenState extends State<HomeScreen> {
         options: Options(headers: headers),
       );
 
-      emailAddress =
-          '${response.data['address']}'
-          '@duck.com';
+      emailAddress = '${response.data['address']}@duck.com';
     } catch (e) {
       if (context.mounted) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Error"),
-              content: Text(
-                "Could not fetch the email. \nCheck if you have a working Internet connection. ",
+              backgroundColor: BentoColors.surfaceDark,
+              title: const Text("Error", style: TextStyle(color: BentoColors.textWhite)),
+              content: const Text(
+                "Could not fetch the email. \nCheck if you have a working Internet connection.",
+                style: TextStyle(color: BentoColors.textMuted),
               ),
+              actions: [
+                 TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("OK", style: TextStyle(color: BentoColors.primary)),
+                ),
+              ],
             );
           },
         );
@@ -232,12 +225,13 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Success"),
-            content: Text("The details have been saved."),
+             backgroundColor: BentoColors.surfaceDark,
+            title: const Text("Success", style: TextStyle(color: BentoColors.textWhite)),
+            content: const Text("The details have been saved.", style: TextStyle(color: BentoColors.textMuted)),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text("OK"),
+                child: const Text("OK", style: TextStyle(color: BentoColors.primary)),
               ),
             ],
           );
@@ -252,71 +246,100 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: double.infinity,
-      child: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: BentoColors.backgroundDark,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 20.0, 0, 0.0),
-                  child: Text(
-                    "Add Details",
-                    style: GoogleFonts.bricolageGrotesque(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            FrontPageEntries("Website", Icons.language, websiteController, () {
-              searchFn(context);
-            }, "Search"),
-            FrontPageEntries("Username", Icons.person, userNameController, () {
-              searchFn(context);
-            }, "Find"),
-
-            FrontPageEntries("Email", Icons.email, emailController, () {
-              emailGenerator(context);
-            }, "Acquire"),
-
-            FrontPageEntries(
-              "Password",
-              Icons.password,
-              passwordController,
-              () {
-                generatePassword();
-              },
-              "Create",
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
-              child: OTPInputField(controller: otpController),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 25.0, 0, 0),
-              child: AnimatedButton(
-                width: MediaQuery.sizeOf(context).width - 130,
-                height: 70,
-                color: Theme.of(context).colorScheme.error,
-                onPressed: () {
-                  addData(context);
-                },
-                child: Text(
-                  "Add",
-                  style: GoogleFonts.bricolageGrotesque(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 23,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                ),
-              ),
+            HomeHeader(onSearch: () => searchFn(context)),
+            const SizedBox(height: 32),
+            
+            // Bento Grid Layout
+            LayoutBuilder(
+              builder: (context, constraints) {
+                bool isDesktop = constraints.maxWidth > 900;
+                
+                if (isDesktop) {
+                   return Row(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       // Left Column
+                       Expanded(
+                         flex: 7,
+                         child: Column(
+                           children: [
+                             IdentityTile(
+                               websiteController: websiteController,
+                               usernameController: userNameController,
+                               onSearchWebsite: () => searchFn(context),
+                               onSearchUsername: () => searchFn(context),
+                             ),
+                             const SizedBox(height: 24),
+                             const NotesTile(),
+                           ],
+                         ),
+                       ),
+                       const SizedBox(width: 24),
+                       // Right Column
+                       Expanded(
+                         flex: 5,
+                         child: Column(
+                           children: [
+                             OtpIsland(controller: otpController),
+                             const SizedBox(height: 24),
+                             SecureCredentialsTile(
+                               emailController: emailController,
+                               passwordController: passwordController,
+                               onAcquireEmail: () => emailGenerator(context),
+                               onGeneratePassword: generatePassword,
+                             ),
+                           ],
+                         ),
+                       ),
+                     ],
+                   );
+                } else {
+                  // Mobile Layout
+                   return Column(
+                     children: [
+                       IdentityTile(
+                               websiteController: websiteController,
+                               usernameController: userNameController,
+                               onSearchWebsite: () => searchFn(context),
+                               onSearchUsername: () => searchFn(context),
+                       ),
+                       const SizedBox(height: 24),
+                       OtpIsland(controller: otpController),
+                       const SizedBox(height: 24),
+                       SecureCredentialsTile(
+                               emailController: emailController,
+                               passwordController: passwordController,
+                               onAcquireEmail: () => emailGenerator(context),
+                               onGeneratePassword: generatePassword,
+                       ),
+                       const SizedBox(height: 24),
+                       const NotesTile(),
+                       const SizedBox(height: 100), // Space for FAB
+                     ],
+                   );
+                }
+              }
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => addData(context),
+        backgroundColor: BentoColors.primary,
+        foregroundColor: BentoColors.onPrimary,
+        elevation: 8,
+        icon: const Icon(Icons.add),
+        label: const Text(
+          'Add Entry',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
     );
   }
