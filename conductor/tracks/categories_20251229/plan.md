@@ -7,7 +7,7 @@
     - **Sub-task:** Add `String? category` to the `Credential` class.
     - **Sub-task:** Update `toMap` and `fromMap` methods.
     - **Sub-task:** Update unit tests for the `Credential` model.
-- [ ] Task: Implement Database Migration.
+- [x] Task: Implement Database Migration. c862e17
     - **Sub-task:** Modify `dbinit.dart` to increment the database version.
     - **Sub-task:** Implement the `onUpgrade` callback to execute `ALTER TABLE credentials ADD COLUMN category TEXT`.
     - **Sub-task:** Verify the migration using the test case created earlier.
