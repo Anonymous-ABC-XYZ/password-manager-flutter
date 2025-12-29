@@ -7,11 +7,11 @@ This plan implements a 30-day persistent session for Google OAuth using refresh 
 - [x] Task: Implement `_saveInitialLoginTime`, `_loadInitialLoginTime`, and `isSessionExpired` logic in `AuthProvider`. 2556aee
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Session Metadata' (Protocol in workflow.md) f97fc3b
 
-## Phase 2: Offline Access & Refresh Token Acquisition
-- [ ] Task: TDD - Write unit tests for `GmailService` to verify OAuth parameters for offline access.
-- [ ] Task: Update `GmailService.authenticate` to include `access_type=offline` and `prompt=consent`.
-- [ ] Task: Update credential storage to ensure refresh tokens are captured and persisted via `flutter_secure_storage`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Refresh Token Acquisition' (Protocol in workflow.md)
+## Phase 2: Offline Access & Refresh Token Acquisition [checkpoint: f8eaa6c]
+- [x] Task: TDD - Write unit tests for `GmailService` to verify OAuth parameters for offline access. 1ba0226
+- [x] Task: Update `GmailService.authenticate` to include `access_type=offline` and `prompt=consent`. 1ba0226
+- [x] Task: Update credential storage to ensure refresh tokens are captured and persisted via `flutter_secure_storage`. 1ba0226
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Refresh Token Acquisition' (Protocol in workflow.md) f8eaa6c
 
 ## Phase 3: Silent Refresh & Startup Integration
 - [ ] Task: TDD - Write unit tests for `GmailService.signIn` silent refresh flow using mocked credentials.
