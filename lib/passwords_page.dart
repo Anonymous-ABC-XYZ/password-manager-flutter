@@ -4,6 +4,7 @@ import 'bento_constants.dart';
 import 'credential_card.dart';
 import 'credentials_header.dart';
 import 'category_selector.dart';
+import 'category_filter_bar.dart';
 
 class PasswordsPage extends StatefulWidget {
   const PasswordsPage({super.key});
@@ -17,6 +18,7 @@ class _PasswordsPageState extends State<PasswordsPage> {
   List<Map<String, Object?>> _allCredentials = [];
   List<Map<String, Object?>> _filteredCredentials = [];
   bool _isLoading = true;
+  String? _selectedFilterCategory;
 
   @override
   void initState() {
@@ -39,16 +41,19 @@ class _PasswordsPageState extends State<PasswordsPage> {
   void _filterCredentials() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      if (query.isEmpty) {
-        _filteredCredentials = List.from(_allCredentials);
-      } else {
-        _filteredCredentials = _allCredentials.where((cred) {
-          final website = cred['Website'].toString().toLowerCase();
-          final username = cred['Username'].toString().toLowerCase();
-          final email = cred['Email'].toString().toLowerCase();
-          return website.contains(query) || username.contains(query) || email.contains(query);
-        }).toList();
-      }
+      _filteredCredentials = _allCredentials.where((cred) {
+        // Text Search
+        final website = cred['Website'].toString().toLowerCase();
+        final username = cred['Username'].toString().toLowerCase();
+        final email = cred['Email'].toString().toLowerCase();
+        final matchesQuery = query.isEmpty || website.contains(query) || username.contains(query) || email.contains(query);
+        
+        // Category Filter
+        final category = cred['category']?.toString();
+        final matchesCategory = _selectedFilterCategory == null || category == _selectedFilterCategory;
+
+        return matchesQuery && matchesCategory;
+      }).toList();
     });
   }
 
@@ -185,7 +190,17 @@ class _PasswordsPageState extends State<PasswordsPage> {
                     searchController: _searchController,
                     onSearchChanged: _filterCredentials,
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
+                  CategoryFilterBar(
+                    selectedCategory: _selectedFilterCategory,
+                    onSelected: (category) {
+                      setState(() {
+                        _selectedFilterCategory = category;
+                        _filterCredentials();
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 24),
                   Expanded(
                     child: _filteredCredentials.isEmpty
                         ? Center(
