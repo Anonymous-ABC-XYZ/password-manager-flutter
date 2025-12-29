@@ -12,11 +12,7 @@
 - [x] Task: Update `CredentialCard` display. 9916072
 - [x] Task: Conductor - User Manual Verification 'Phase 2: UI Implementation - Add/Edit Credentials' (Protocol in workflow.md)
 
-## Phase 3: UI Implementation - Filtering & Browsing
+## Phase 3: UI Implementation - Filtering & Browsing [checkpoint: 5baad34]
 - [x] Task: Add Category Filter to `PasswordsPage`. d24b8ed
-    - **Sub-task:** Implement a `FilterBar` widget (horizontal list of `FilterChip`s) at the top of `passwords_page.dart`.
-    - **Sub-task:** Manage the selected category state (local state or via Provider).
-- [x] Task: Connect Filter to Data Source. d24b8ed
-    - **Sub-task:** Update the `FutureBuilder` or data fetching logic in `PasswordsPage` to request filtered data when a category is selected.
-    - **Sub-task:** Alternatively, filter the list in memory if the dataset is small (decide based on `tech-stack.md` preference for performance). *Decision: Filter in memory for now given typical password DB sizes.*
-- [~] Task: Conductor - User Manual Verification 'Phase 3: UI Implementation - Filtering & Browsing' (Protocol in workflow.md)
+- [x] Task: Connect Filter to Data Source. 4b5a915
+- [x] Task: Conductor - User Manual Verification 'Phase 3: UI Implementation - Filtering & Browsing' (Protocol in workflow.md)
