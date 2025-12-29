@@ -2,22 +2,32 @@ import 'package:googleapis/gmail/v1.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:meta/meta.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
 class GmailService {
-  // Singleton pattern
-  static final GmailService _instance = GmailService._internal();
+  final FlutterSecureStorage _storage;
 
-  factory GmailService() {
-    return _instance;
+  // Singleton pattern
+  static GmailService? _instance;
+
+  factory GmailService({FlutterSecureStorage? storage}) {
+    _instance ??= GmailService._internal(
+      storage: storage ?? const FlutterSecureStorage(),
+    );
+    return _instance!;
   }
 
-  GmailService._internal();
+  @visibleForTesting
+  static void reset() {
+    _instance = null;
+  }
+
+  GmailService._internal({required FlutterSecureStorage storage}) : _storage = storage;
 
   static const _scopes = ['https://www.googleapis.com/auth/gmail.readonly'];
-  static final _storage = const FlutterSecureStorage();
   static final _authorizationEndpoint = Uri.parse(
     'https://accounts.google.com/o/oauth2/v2/auth',
   );
@@ -68,7 +78,7 @@ class GmailService {
     }
   }
 
-  Future<bool> authenticate(String clientId, String clientSecret) async {
+  Future<bool> authenticate(String clientId, String clientSecret, {Function(Uri)? onUrlLaunched}) async {
     try {
       print('Starting authentication flow...');
 
@@ -79,12 +89,24 @@ class GmailService {
         secret: clientSecret,
       );
 
-      final authorizationUrl = grant.getAuthorizationUrl(
+      final baseAuthorizationUrl = grant.getAuthorizationUrl(
         Uri.parse('http://localhost:8080'),
         scopes: _scopes,
       );
 
+      final authorizationUrl = baseAuthorizationUrl.replace(
+        queryParameters: {
+          ...baseAuthorizationUrl.queryParameters,
+          'access_type': 'offline',
+          'prompt': 'consent',
+        },
+      );
+
       print('Authorization URL: $authorizationUrl');
+      
+      if (onUrlLaunched != null) {
+        onUrlLaunched(authorizationUrl);
+      }
 
       final responseCompleter = Completer<Uri>();
 
