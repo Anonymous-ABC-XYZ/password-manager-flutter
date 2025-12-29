@@ -7,6 +7,7 @@ class CredentialCard extends StatefulWidget {
   final String username;
   final String email;
   final String password;
+  final String? category;
   final VoidCallback onDelete;
   final VoidCallback onEdit;
 
@@ -16,6 +17,7 @@ class CredentialCard extends StatefulWidget {
     required this.username,
     required this.email,
     required this.password,
+    this.category,
     required this.onDelete,
     required this.onEdit,
   });
@@ -86,8 +88,12 @@ class _CredentialCardState extends State<CredentialCard> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           Text(
-                            'Credential', 
-                            style: BentoStyles.body.copyWith(color: BentoColors.textMuted, fontSize: 12),
+                            widget.category ?? 'Uncategorized', 
+                            style: BentoStyles.body.copyWith(
+                              color: widget.category != null ? BentoColors.primary : BentoColors.textMuted, 
+                              fontSize: 12,
+                              fontWeight: widget.category != null ? FontWeight.bold : FontWeight.normal,
+                            ),
                           ),
                         ],
                       ),

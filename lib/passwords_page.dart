@@ -3,6 +3,7 @@ import 'dbinit.dart';
 import 'bento_constants.dart';
 import 'credential_card.dart';
 import 'credentials_header.dart';
+import 'category_selector.dart';
 
 class PasswordsPage extends StatefulWidget {
   const PasswordsPage({super.key});
@@ -59,11 +60,11 @@ class _PasswordsPageState extends State<PasswordsPage> {
     _loadDB(); // Reload list
   }
 
-  void editSite(String website, String newUsername, String newEmail, String newPassword) async {
+  void editSite(String website, String newUsername, String newEmail, String newPassword, String? newCategory) async {
     var db = await InitDB().dB;
     await db.rawUpdate(
-      'UPDATE demo SET Username = ?, Email = ?, Password = ? WHERE Website = ?',
-      [newUsername, newEmail, newPassword, website],
+      'UPDATE demo SET Username = ?, Email = ?, Password = ?, category = ? WHERE Website = ?',
+      [newUsername, newEmail, newPassword, newCategory, website],
     );
     _loadDB();
   }
@@ -72,77 +73,98 @@ class _PasswordsPageState extends State<PasswordsPage> {
     final usernameController = TextEditingController(text: item['Username'].toString());
     final emailController = TextEditingController(text: item['Email'].toString());
     final passwordController = TextEditingController(text: item['Password'].toString());
+    String? currentCategory = item['category']?.toString();
 
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          backgroundColor: BentoColors.surfaceDark,
-          title: Text(
-            'Edit ${item['Website']}',
-            style: BentoStyles.header.copyWith(color: BentoColors.textWhite),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: usernameController,
-                  style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
-                  decoration: InputDecoration(
-                    labelText: 'Username',
-                    labelStyle: BentoStyles.body.copyWith(color: BentoColors.textMuted),
-                    enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.textMuted)),
-                    focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.primary)),
-                  ),
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              backgroundColor: BentoColors.surfaceDark,
+              title: Text(
+                'Edit ${item['Website']}',
+                style: BentoStyles.header.copyWith(color: BentoColors.textWhite),
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      controller: usernameController,
+                      style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
+                      decoration: InputDecoration(
+                        labelText: 'Username',
+                        labelStyle: BentoStyles.body.copyWith(color: BentoColors.textMuted),
+                        enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.textMuted)),
+                        focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.primary)),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: emailController,
+                      style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        labelStyle: BentoStyles.body.copyWith(color: BentoColors.textMuted),
+                        enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.textMuted)),
+                        focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.primary)),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: passwordController,
+                      style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        labelStyle: BentoStyles.body.copyWith(color: BentoColors.textMuted),
+                        enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.textMuted)),
+                        focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.primary)),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      'Category',
+                      style: BentoStyles.body.copyWith(color: BentoColors.textMuted, fontSize: 14),
+                    ),
+                    const SizedBox(height: 8),
+                    CategorySelector(
+                      initialValue: currentCategory,
+                      onSelected: (cat) {
+                        setDialogState(() {
+                          currentCategory = cat;
+                        });
+                      },
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: emailController,
-                  style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    labelStyle: BentoStyles.body.copyWith(color: BentoColors.textMuted),
-                    enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.textMuted)),
-                    focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.primary)),
-                  ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('Cancel', style: BentoStyles.body.copyWith(color: BentoColors.textMuted)),
                 ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: passwordController,
-                  style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    labelStyle: BentoStyles.body.copyWith(color: BentoColors.textMuted),
-                    enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.textMuted)),
-                    focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.primary)),
+                ElevatedButton(
+                  onPressed: () {
+                    editSite(
+                      item['Website'].toString(),
+                      usernameController.text,
+                      emailController.text,
+                      passwordController.text,
+                      currentCategory,
+                    );
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: BentoColors.primary,
+                    foregroundColor: BentoColors.onPrimary,
                   ),
+                  child: Text('Save', style: BentoStyles.body.copyWith(fontWeight: FontWeight.bold)),
                 ),
               ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('Cancel', style: BentoStyles.body.copyWith(color: BentoColors.textMuted)),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                editSite(
-                  item['Website'].toString(),
-                  usernameController.text,
-                  emailController.text,
-                  passwordController.text,
-                );
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: BentoColors.primary,
-                foregroundColor: BentoColors.onPrimary,
-              ),
-              child: Text('Save', style: BentoStyles.body.copyWith(fontWeight: FontWeight.bold)),
-            ),
-          ],
+            );
+          },
         );
       },
     );
@@ -202,6 +224,7 @@ class _PasswordsPageState extends State<PasswordsPage> {
                                     username: item['Username'].toString(),
                                     email: item['Email'].toString(),
                                     password: item['Password'].toString(),
+                                    category: item['category']?.toString(),
                                     onDelete: () => removeSite(item['Website'].toString()),
                                     onEdit: () => _showEditDialog(item),
                                   );
