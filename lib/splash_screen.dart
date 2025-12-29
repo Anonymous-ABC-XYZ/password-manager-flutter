@@ -277,7 +277,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       children: [
                         if (context.watch<AuthProvider>().errorMessage != null)
                           Container(
-                            margin: const EdgeInsets.bottom(24),
+                            margin: const EdgeInsets.only(bottom: 24),
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: Colors.red.withValues(alpha: 0.1),
