@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'bento_constants.dart';
+import 'category_selector.dart';
 
 class IdentityTile extends StatelessWidget {
   final TextEditingController websiteController;
   final TextEditingController usernameController;
   final VoidCallback onSearchWebsite;
   final VoidCallback onSearchUsername;
+  final Function(String) onCategorySelected;
+  final String? initialCategory;
 
   const IdentityTile({
     super.key,
@@ -14,6 +17,8 @@ class IdentityTile extends StatelessWidget {
     required this.usernameController,
     required this.onSearchWebsite,
     required this.onSearchUsername,
+    required this.onCategorySelected,
+    this.initialCategory,
   });
 
   @override
@@ -99,6 +104,24 @@ class IdentityTile extends StatelessWidget {
                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Copied Username')));
               }),
             ],
+          ),
+          const SizedBox(height: 24),
+
+          // Category Selector
+          Padding(
+            padding: const EdgeInsets.only(left: 4.0, bottom: 8.0),
+            child: Text(
+              'Category',
+              style: BentoStyles.body.copyWith(
+                color: BentoColors.textMuted,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          CategorySelector(
+            onSelected: onCategorySelected,
+            initialValue: initialCategory,
           ),
         ],
       ),

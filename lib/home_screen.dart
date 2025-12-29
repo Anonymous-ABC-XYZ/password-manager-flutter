@@ -29,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final otpController = TextEditingController();
   
   String? _authKey;
+  String? _selectedCategory;
 
   @override
   void initState() {
@@ -212,12 +213,14 @@ class _HomeScreenState extends State<HomeScreen> {
     var username = userNameController.text;
     var email = emailController.text;
     var password = passwordController.text;
+    var category = _selectedCategory;
 
     await db.insert('demo', {
       'Website': website,
       'Username': username,
       'Email': email,
       'Password': password,
+      'category': category,
     }, conflictAlgorithm: ConflictAlgorithm.replace);
 
     if (context.mounted) {
@@ -241,6 +244,9 @@ class _HomeScreenState extends State<HomeScreen> {
       userNameController.text = "";
       emailController.text = "";
       passwordController.text = "";
+      setState(() {
+        _selectedCategory = null;
+      });
     }
   }
 
@@ -274,6 +280,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                usernameController: userNameController,
                                onSearchWebsite: () => searchFn(context),
                                onSearchUsername: () => searchFn(context),
+                               onCategorySelected: (cat) => _selectedCategory = cat,
+                               initialCategory: _selectedCategory,
                              ),
                              const SizedBox(height: 24),
                              const NotesTile(),
@@ -308,6 +316,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                usernameController: userNameController,
                                onSearchWebsite: () => searchFn(context),
                                onSearchUsername: () => searchFn(context),
+                               onCategorySelected: (cat) => _selectedCategory = cat,
+                               initialCategory: _selectedCategory,
                        ),
                        const SizedBox(height: 24),
                        OtpIsland(controller: otpController),
