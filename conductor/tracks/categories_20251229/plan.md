@@ -7,15 +7,10 @@
 - [x] Task: Update Database Operations. c309a84
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Database & Model Updates' (Protocol in workflow.md)
 
-## Phase 2: UI Implementation - Add/Edit Credentials
+## Phase 2: UI Implementation - Add/Edit Credentials [checkpoint: 07713c2]
 - [x] Task: Add Category Selector to `HomeScreen`. 50bb494
-    - **Sub-task:** Create a `CategorySelector` widget (e.g., using `DropdownButtonFormField` or `ChoiceChip`).
-    - **Sub-task:** Integrate this widget into the form in `home_screen.dart`.
-    - **Sub-task:** Update the "Save" logic to capture the selected category.
 - [x] Task: Update `CredentialCard` display. 9916072
-    - **Sub-task:** Modify `credential_card.dart` (or `identity_tile.dart`/`secure_credentials_tile.dart` as appropriate) to visually display the assigned category (e.g., a small text label or icon).
-    - **Sub-task:** Ensure the design aligns with the `product-guidelines.md` (Material 3).
-- [~] Task: Conductor - User Manual Verification 'Phase 2: UI Implementation - Add/Edit Credentials' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: UI Implementation - Add/Edit Credentials' (Protocol in workflow.md)
 
 ## Phase 3: UI Implementation - Filtering & Browsing
 - [ ] Task: Add Category Filter to `PasswordsPage`.
