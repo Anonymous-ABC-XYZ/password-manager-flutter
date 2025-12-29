@@ -42,13 +42,14 @@ class InitDB {
   Future<Database> _openEncryptedDatabase(String path, String key) async {
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       // IMPORTANT: sqflite_common_ffi + sqlcipher doesn't use the 'password' parameter
       // We must use onConfigure to set the key via PRAGMA
       onConfigure: (db) async {
         await db.execute("PRAGMA key = '$key'");
       },
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
   }
 
@@ -58,9 +59,16 @@ class InitDB {
         Website TEXT PRIMARY KEY,
         Username TEXT,
         Email TEXT,
-        Password TEXT
+        Password TEXT,
+        category TEXT
       )
     ''');
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute("ALTER TABLE demo ADD COLUMN category TEXT");
+    }
   }
 
   Future<void> _migrateToEncrypted(String path, String key) async {
