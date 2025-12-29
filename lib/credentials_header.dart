@@ -84,45 +84,8 @@ class CredentialsHeader extends StatelessWidget {
             );
           }
         ),
-        const SizedBox(height: 24),
-        
-        // Filter Chips (Visual Placeholders)
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              _buildChip('All', true),
-              _buildChip('Social', false),
-              _buildChip('Finance', false),
-              _buildChip('Shopping', false),
-              _buildChip('Work', false),
-              _buildChip('Entertainment', false),
-            ],
-          ),
-        ),
+        // Filter Chips removed - functionality moved to CategoryFilterBar
       ],
-    );
-  }
-
-  Widget _buildChip(String label, bool isActive) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        decoration: BoxDecoration(
-          color: isActive ? BentoColors.primary : BentoColors.surfaceDark,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: isActive ? BentoColors.primary : BentoColors.surfaceHover),
-        ),
-        child: Text(
-          label,
-          style: BentoStyles.body.copyWith(
-            color: isActive ? BentoColors.onPrimary : BentoColors.textMuted,
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-          ),
-        ),
-      ),
     );
   }
 }
