@@ -13,7 +13,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: UI Implementation - Add/Edit Credentials' (Protocol in workflow.md)
 
 ## Phase 3: UI Implementation - Filtering & Browsing
-- [ ] Task: Add Category Filter to `PasswordsPage`.
+- [x] Task: Add Category Filter to `PasswordsPage`. d24b8ed
     - **Sub-task:** Implement a `FilterBar` widget (horizontal list of `FilterChip`s) at the top of `passwords_page.dart`.
     - **Sub-task:** Manage the selected category state (local state or via Provider).
 - [ ] Task: Connect Filter to Data Source.
