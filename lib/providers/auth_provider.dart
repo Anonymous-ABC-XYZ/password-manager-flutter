@@ -4,16 +4,19 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../gmail_service.dart';
 
 class AuthProvider extends ChangeNotifier {
-  final GmailService _gmailService = GmailService();
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  final GmailService _gmailService;
+  final FlutterSecureStorage _storage;
 
   bool _isAuthenticated = false;
   bool _isInitializing = true;
   String? _errorMessage;
   Timer? _refreshTimer;
   DateTime? _lastRefreshTime;
+  DateTime? _initialLoginTime;
 
-  // Refresh interval: 2 weeks
+  // Session duration: 30 days
+  static const Duration sessionDuration = Duration(days: 30);
+  // Token refresh interval (background): 14 days
   static const Duration refreshInterval = Duration(days: 14);
 
   bool get isAuthenticated => _isAuthenticated;
@@ -21,8 +24,13 @@ class AuthProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   GmailService get gmailService => _gmailService;
   DateTime? get lastRefreshTime => _lastRefreshTime;
+  DateTime? get initialLoginTime => _initialLoginTime;
 
-  AuthProvider() {
+  AuthProvider({
+    GmailService? gmailService,
+    FlutterSecureStorage? storage,
+  })  : _gmailService = gmailService ?? GmailService(),
+        _storage = storage ?? const FlutterSecureStorage() {
     _initialize();
   }
 
@@ -37,14 +45,20 @@ class AuthProvider extends ChangeNotifier {
       final isSignedIn = await _gmailService.isSignedIn;
 
       if (isSignedIn) {
-        final success = await _gmailService.signIn();
-        _isAuthenticated = success;
+        // Load session metadata
+        await _loadSessionMetadata();
 
-        if (success) {
-          // Load last refresh time from storage
-          await _loadRefreshMetadata();
-          // Schedule next refresh
-          _scheduleTokenRefresh();
+        if (isSessionExpired) {
+          debugPrint('AuthProvider: Session expired (30 days limit reached)');
+          await signOut(expired: true);
+        } else {
+          final success = await _gmailService.signIn();
+          _isAuthenticated = success;
+
+          if (success) {
+            // Schedule next refresh
+            _scheduleTokenRefresh();
+          }
         }
       } else {
         _isAuthenticated = false;
@@ -59,6 +73,13 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  /// Check if the session is expired (30 days limit)
+  bool get isSessionExpired {
+    if (_initialLoginTime == null) return false;
+    final now = DateTime.now();
+    return now.difference(_initialLoginTime!) >= sessionDuration;
+  }
+
   /// Authenticate with Google OAuth
   Future<bool> authenticate(String clientId, String clientSecret) async {
     try {
@@ -69,8 +90,8 @@ class AuthProvider extends ChangeNotifier {
       _isAuthenticated = success;
 
       if (success) {
-        // Save refresh metadata
-        await _saveRefreshMetadata();
+        // Save session metadata
+        await _saveSessionMetadata(isNewLogin: true);
         // Schedule automatic refresh
         _scheduleTokenRefresh();
       }
@@ -87,15 +108,16 @@ class AuthProvider extends ChangeNotifier {
   }
 
   /// Sign out and clear all authentication data
-  Future<void> signOut() async {
+  Future<void> signOut({bool expired = false}) async {
     try {
       await _gmailService.signOut();
       _cancelRefreshTimer();
-      await _clearRefreshMetadata();
+      await _clearSessionMetadata();
 
       _isAuthenticated = false;
-      _errorMessage = null;
+      _errorMessage = expired ? 'Access session has expired or been revoked' : null;
       _lastRefreshTime = null;
+      _initialLoginTime = null;
 
       notifyListeners();
     } catch (e) {
@@ -109,6 +131,13 @@ class AuthProvider extends ChangeNotifier {
   Future<bool> refreshToken() async {
     try {
       debugPrint('AuthProvider: Manually refreshing token...');
+
+      if (isSessionExpired) {
+        debugPrint('AuthProvider: Cannot refresh - session expired');
+        await signOut(expired: true);
+        return false;
+      }
+
       _errorMessage = null;
       notifyListeners();
 
@@ -116,7 +145,7 @@ class AuthProvider extends ChangeNotifier {
       final success = await _gmailService.signIn();
 
       if (success) {
-        await _saveRefreshMetadata();
+        await _saveSessionMetadata();
         _scheduleTokenRefresh();
         debugPrint('AuthProvider: Token refresh successful');
       } else {
@@ -141,6 +170,12 @@ class AuthProvider extends ChangeNotifier {
     if (!_isAuthenticated) {
       _errorMessage = 'Not authenticated. Please sign in first.';
       notifyListeners();
+      return null;
+    }
+
+    if (isSessionExpired) {
+      _errorMessage = 'Access session has expired or been revoked';
+      await signOut(expired: true);
       return null;
     }
 
@@ -187,10 +222,18 @@ class AuthProvider extends ChangeNotifier {
     _refreshTimer = null;
   }
 
-  /// Save refresh metadata to storage
-  Future<void> _saveRefreshMetadata() async {
+  /// Save session metadata to storage
+  Future<void> _saveSessionMetadata({bool isNewLogin = false}) async {
     final now = DateTime.now();
     _lastRefreshTime = now;
+
+    if (isNewLogin) {
+      _initialLoginTime = now;
+      await _storage.write(
+        key: 'google_initial_login_time',
+        value: now.toIso8601String(),
+      );
+    }
 
     // Store in secure storage
     await _storage.write(
@@ -199,25 +242,35 @@ class AuthProvider extends ChangeNotifier {
     );
   }
 
-  /// Load refresh metadata from storage
-  Future<void> _loadRefreshMetadata() async {
+  /// Load session metadata from storage
+  Future<void> _loadSessionMetadata() async {
     try {
-      final lastRefreshStr = await _storage.read(
-        key: 'token_last_refresh',
-      );
+      final lastRefreshStr = await _storage.read(key: 'token_last_refresh');
+      final initialLoginStr = await _storage.read(key: 'google_initial_login_time');
 
       if (lastRefreshStr != null) {
         _lastRefreshTime = DateTime.parse(lastRefreshStr);
         debugPrint('AuthProvider: Loaded last refresh time: $_lastRefreshTime');
+      }
+
+      if (initialLoginStr != null) {
+        _initialLoginTime = DateTime.parse(initialLoginStr);
+        debugPrint('AuthProvider: Loaded initial login time: $_initialLoginTime');
+      } else if (_lastRefreshTime != null) {
+        // Migration: if initial login time is missing but we have a refresh time,
+        // use refresh time as initial login time for now.
+        _initialLoginTime = _lastRefreshTime;
+        await _saveSessionMetadata(isNewLogin: true);
       }
     } catch (e) {
       debugPrint('AuthProvider: Failed to load refresh metadata: $e');
     }
   }
 
-  /// Clear refresh metadata from storage
-  Future<void> _clearRefreshMetadata() async {
+  /// Clear session metadata from storage
+  Future<void> _clearSessionMetadata() async {
     await _storage.delete(key: 'token_last_refresh');
+    await _storage.delete(key: 'google_initial_login_time');
   }
 
   @override
