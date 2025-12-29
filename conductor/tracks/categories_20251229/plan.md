@@ -8,7 +8,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Database & Model Updates' (Protocol in workflow.md)
 
 ## Phase 2: UI Implementation - Add/Edit Credentials
-- [ ] Task: Add Category Selector to `HomeScreen`.
+- [x] Task: Add Category Selector to `HomeScreen`. 50bb494
     - **Sub-task:** Create a `CategorySelector` widget (e.g., using `DropdownButtonFormField` or `ChoiceChip`).
     - **Sub-task:** Integrate this widget into the form in `home_screen.dart`.
     - **Sub-task:** Update the "Save" logic to capture the selected category.
