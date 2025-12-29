@@ -8,6 +8,7 @@ class CredentialCard extends StatefulWidget {
   final String email;
   final String password;
   final VoidCallback onDelete;
+  final VoidCallback onEdit;
 
   const CredentialCard({
     super.key,
@@ -16,6 +17,7 @@ class CredentialCard extends StatefulWidget {
     required this.email,
     required this.password,
     required this.onDelete,
+    required this.onEdit,
   });
 
   @override
@@ -99,9 +101,21 @@ class _CredentialCardState extends State<CredentialCard> {
                 onSelected: (value) {
                   if (value == 'delete') {
                     widget.onDelete();
+                  } else if (value == 'edit') {
+                    widget.onEdit();
                   }
                 },
                 itemBuilder: (context) => [
+                   PopupMenuItem(
+                    value: 'edit',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.edit, color: BentoColors.primary, size: 20),
+                        const SizedBox(width: 8),
+                        Text('Edit', style: BentoStyles.body.copyWith(color: BentoColors.textWhite)),
+                      ],
+                    ),
+                  ),
                    PopupMenuItem(
                     value: 'delete',
                     child: Row(
