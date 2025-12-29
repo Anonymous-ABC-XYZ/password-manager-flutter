@@ -1,7 +1,7 @@
 # Plan: Add Credential Categories
 
 ## Phase 1: Database & Model Updates
-- [ ] Task: Create a reproduction test case for database migration.
+- [x] Task: Create a reproduction test case for database migration. e61ac20
     - **Sub-task:** Write a test that initializes an old version of the DB, inserts data, runs the migration, and verifies the new column exists.
 - [ ] Task: Update the `Credential` data model.
     - **Sub-task:** Add `String? category` to the `Credential` class.
