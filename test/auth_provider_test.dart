@@ -70,6 +70,32 @@ void main() {
     });
   });
 
+  group('Sign Out', () {
+    test('signOut sets expiration message if expired is true', () async {
+      authProvider = AuthProvider(
+        gmailService: mockGmailService,
+        storage: mockStorage,
+      );
+      
+      await authProvider.signOut(expired: true);
+      
+      expect(authProvider.isAuthenticated, isFalse);
+      expect(authProvider.errorMessage, equals('Access session has expired or been revoked'));
+    });
+
+    test('signOut clears error message if expired is false', () async {
+      authProvider = AuthProvider(
+        gmailService: mockGmailService,
+        storage: mockStorage,
+      );
+      
+      await authProvider.signOut(expired: false);
+      
+      expect(authProvider.isAuthenticated, isFalse);
+      expect(authProvider.errorMessage, isNull);
+    });
+  });
+
   group('Manual Refresh', () {
     test('refreshToken returns false and signs out if session is expired', () async {
       // Setup a valid session first

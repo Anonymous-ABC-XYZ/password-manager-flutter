@@ -275,6 +275,28 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                     child: Column(
                       children: [
+                        if (context.watch<AuthProvider>().errorMessage != null)
+                          Container(
+                            margin: const EdgeInsets.bottom(24),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.red.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.error_outline, color: Colors.redAccent, size: 20),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    context.watch<AuthProvider>().errorMessage!,
+                                    style: BentoStyles.body.copyWith(color: Colors.redAccent, fontSize: 14),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         Text(
                           "Let's get you secured",
                           textAlign: TextAlign.center,

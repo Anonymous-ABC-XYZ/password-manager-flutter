@@ -53,10 +53,12 @@ class GmailService {
       );
       if (storedCredentials != null) {
         try {
-          final credentials = oauth2.Credentials.fromJson(storedCredentials);
+          final credMap = json.decode(storedCredentials);
+          final credentials = oauth2.Credentials.fromJson(credMap);
 
           final clientCreds = await _getClientCreds();
           if (clientCreds == null) {
+            print('GmailService.signIn: Client credentials not found in storage.');
             return false;
           }
 
@@ -75,20 +77,38 @@ class GmailService {
           }
 
           if (_authenticatedClient!.credentials.isExpired) {
-            _authenticatedClient = await _authenticatedClient!
-                .refreshCredentials();
-            await _saveCredentials(_authenticatedClient!.credentials);
+            print('GmailService.signIn: Credentials expired, refreshing...');
+            try {
+              _authenticatedClient = await _authenticatedClient!.refreshCredentials();
+              await _saveCredentials(_authenticatedClient!.credentials);
+              print('GmailService.signIn: Refresh successful.');
+            } catch (e) {
+              print('GmailService.signIn: Failed to refresh credentials: $e');
+              // Only delete if it's an authorization error, implying the refresh token is invalid/revoked
+              if (e is oauth2.AuthorizationException) {
+                 print('GmailService.signIn: Deleting invalid credentials.');
+                 await _storage.delete(key: 'google_credentials_v2');
+              }
+              // For other errors (network, etc.), we keep the credentials to try again later.
+              // But we return false to indicate we couldn't get a valid client NOW.
+              return false;
+            }
           }
 
           _gmailApi = GmailApi(_authenticatedClient!);
           return true;
         } catch (e) {
-          await _storage.delete(key: 'google_credentials_v2');
+          print('GmailService.signIn: Error loading credentials: $e');
+          // If we can't even decode/load them, they are likely corrupted.
+          if (e is FormatException || e is TypeError) {
+             await _storage.delete(key: 'google_credentials_v2');
+          }
         }
       }
 
       return false;
     } catch (e) {
+      print('GmailService.signIn: Unexpected error: $e');
       return false;
     }
   }

@@ -69,7 +69,7 @@ void main() {
       };
 
       when(() => mockStorage.read(key: 'google_credentials_v2'))
-          .thenAnswer((_) async => json.encode(expiredCreds));
+          .thenAnswer((_) async => json.encode(json.encode(expiredCreds)));
       when(() => mockStorage.read(key: 'google_client_id'))
           .thenAnswer((_) async => 'client-id');
       when(() => mockStorage.read(key: 'google_client_secret'))
@@ -78,6 +78,7 @@ void main() {
       final mockNewClient = MockOAuth2Client();
       final mockNewCredentials = MockOAuth2Credentials();
       when(() => mockNewCredentials.toJson()).thenReturn(json.encode({'accessToken': 'new-token'}));
+      when(() => mockCredentials.toJson()).thenReturn(json.encode({'accessToken': 'old-token'}));
       when(() => mockNewClient.credentials).thenReturn(mockNewCredentials);
       
       when(() => mockCredentials.isExpired).thenReturn(true);
