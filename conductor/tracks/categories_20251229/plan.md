@@ -1,22 +1,11 @@
 # Plan: Add Credential Categories
 
-## Phase 1: Database & Model Updates
+## Phase 1: Database & Model Updates [checkpoint: 40fc435]
 - [x] Task: Create a reproduction test case for database migration. e61ac20
-    - **Sub-task:** Write a test that initializes an old version of the DB, inserts data, runs the migration, and verifies the new column exists.
-- [x] Task: Update the Credential data model. 78df814
-    - **Sub-task:** Add `String? category` to the `Credential` class.
-    - **Sub-task:** Update `toMap` and `fromMap` methods.
-    - **Sub-task:** Update unit tests for the `Credential` model.
+- [x] Task: Update the `Credential` data model. 78df814
 - [x] Task: Implement Database Migration. c862e17
-    - **Sub-task:** Modify `dbinit.dart` to increment the database version.
-    - **Sub-task:** Implement the `onUpgrade` callback to execute `ALTER TABLE credentials ADD COLUMN category TEXT`.
-    - **Sub-task:** Verify the migration using the test case created earlier.
 - [x] Task: Update Database Operations. c309a84
-    - **Sub-task:** Update `insertCredential` to save the category.
-    - **Sub-task:** Update `updateCredential` to modify the category.
-    - **Sub-task:** Create a new method `getCredentialsByCategory(String category)` or update the existing fetch to support optional filtering.
-    - **Sub-task:** Write integration tests for these DB operations.
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Database & Model Updates' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Database & Model Updates' (Protocol in workflow.md)
 
 ## Phase 2: UI Implementation - Add/Edit Credentials
 - [ ] Task: Add Category Selector to `HomeScreen`.
