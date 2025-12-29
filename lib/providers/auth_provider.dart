@@ -132,6 +132,11 @@ class AuthProvider extends ChangeNotifier {
     try {
       debugPrint('AuthProvider: Manually refreshing token...');
 
+      if (!_isAuthenticated) {
+        debugPrint('AuthProvider: Cannot refresh - not authenticated');
+        return false;
+      }
+
       if (isSessionExpired) {
         debugPrint('AuthProvider: Cannot refresh - session expired');
         await signOut(expired: true);

@@ -38,26 +38,41 @@ class GmailService {
   oauth2.Client? _authenticatedClient;
   GmailApi? _gmailApi;
 
-  Future<bool> signIn() async {
+  @visibleForTesting
+  set authenticatedClient(oauth2.Client? client) {
+    _authenticatedClient = client;
+    if (client != null) {
+      _gmailApi = GmailApi(client);
+    }
+  }
+
+  Future<bool> signIn({oauth2.Client? Function(oauth2.Credentials, String, String)? clientFactory}) async {
     try {
       final storedCredentials = await _storage.read(
         key: 'google_credentials_v2',
       );
       if (storedCredentials != null) {
         try {
-          final credMap = json.decode(storedCredentials);
-          final credentials = oauth2.Credentials.fromJson(credMap);
+          final credentials = oauth2.Credentials.fromJson(storedCredentials);
 
           final clientCreds = await _getClientCreds();
           if (clientCreds == null) {
             return false;
           }
 
-          _authenticatedClient = oauth2.Client(
-            credentials,
-            identifier: clientCreds['id'],
-            secret: clientCreds['secret'],
-          );
+          if (clientFactory != null) {
+            _authenticatedClient = clientFactory(
+              credentials,
+              clientCreds['id']!,
+              clientCreds['secret']!,
+            );
+          } else {
+            _authenticatedClient = oauth2.Client(
+              credentials,
+              identifier: clientCreds['id'],
+              secret: clientCreds['secret'],
+            );
+          }
 
           if (_authenticatedClient!.credentials.isExpired) {
             _authenticatedClient = await _authenticatedClient!
