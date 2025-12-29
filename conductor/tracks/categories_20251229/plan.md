@@ -3,7 +3,7 @@
 ## Phase 1: Database & Model Updates
 - [x] Task: Create a reproduction test case for database migration. e61ac20
     - **Sub-task:** Write a test that initializes an old version of the DB, inserts data, runs the migration, and verifies the new column exists.
-- [ ] Task: Update the `Credential` data model.
+- [x] Task: Update the Credential data model. 78df814
     - **Sub-task:** Add `String? category` to the `Credential` class.
     - **Sub-task:** Update `toMap` and `fromMap` methods.
     - **Sub-task:** Update unit tests for the `Credential` model.
