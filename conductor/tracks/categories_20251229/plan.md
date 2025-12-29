@@ -16,7 +16,7 @@
     - **Sub-task:** Update `updateCredential` to modify the category.
     - **Sub-task:** Create a new method `getCredentialsByCategory(String category)` or update the existing fetch to support optional filtering.
     - **Sub-task:** Write integration tests for these DB operations.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Database & Model Updates' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Database & Model Updates' (Protocol in workflow.md)
 
 ## Phase 2: UI Implementation - Add/Edit Credentials
 - [ ] Task: Add Category Selector to `HomeScreen`.

@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [ ] Track: Add Credential Categories
+## [~] Track: Add Credential Categories
 *Link: [./conductor/tracks/categories_20251229/](./conductor/tracks/categories_20251229/)*
