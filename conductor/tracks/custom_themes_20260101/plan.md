@@ -24,7 +24,7 @@ Build the user interface for selecting and uploading themes in the Settings scre
 - [x] Task: Implement "Appearance" section in `SettingsScreen` 8c31473
     - Display a list of available themes (Default + Uploaded).
     - Add a visual indicator for the currently active theme.
-- [ ] Task: Implement JSON Theme Upload logic
+- [x] Task: Implement JSON Theme Upload logic 814d6fb
     - Integrate `file_picker` to allow users to select JSON files.
     - Implement validation logic to check for required `BentoColors` fields.
     - Display specific error messages (as per spec) for invalid uploads.
