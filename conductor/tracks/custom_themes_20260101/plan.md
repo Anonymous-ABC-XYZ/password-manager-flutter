@@ -52,4 +52,4 @@ Add in-app instructions for creating custom themes and bundle the Rose Pine them
 - [x] Task: Implement Theme Creation Instructions UI 5132a98
     - Add a "Help" or "Info" button near the "Upload Theme" button.
     - Display a dialog or modal showing the required JSON structure and available color keys.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Documentation and Additional Themes' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 4: Documentation and Additional Themes' (Protocol in workflow.md)
