@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:password_manager/category_selector.dart';
-import 'package:password_manager/bento_constants.dart';
 import 'package:password_manager/theme_model.dart';
 
 void main() {

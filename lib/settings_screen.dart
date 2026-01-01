@@ -166,21 +166,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   const SizedBox(height: 24),
                   ...themeProvider.availableThemes.map((theme) {
-                    return Theme(
-                      data: Theme.of(context).copyWith(
-                        unselectedWidgetColor: BentoColors.of(context).textMuted,
-                      ),
-                      child: RadioListTile<String>(
-                        title: Text(theme.name, style: TextStyle(color: BentoColors.of(context).textWhite)),
-                        value: theme.name,
-                        groupValue: themeProvider.currentTheme.name,
-                        onChanged: (value) {
-                          if (value != null) {
-                            themeProvider.setTheme(theme);
-                          }
-                        },
-                        activeColor: BentoColors.of(context).primary,
-                        contentPadding: EdgeInsets.zero,
+                    return RadioListTile<String>(
+                      title: Text(theme.name, style: TextStyle(color: BentoColors.of(context).textWhite)),
+                      value: theme.name,
+                      groupValue: themeProvider.currentTheme.name,
+                      onChanged: (value) {
+                        if (value != null) {
+                          themeProvider.setTheme(theme);
+                        }
+                      },
+                      activeColor: BentoColors.of(context).primary,
+                      toggleable: false, // Ensures a selection is always made.
+                      contentPadding: EdgeInsets.zero,
+                      controlAffinity: ListTileControlAffinity.trailing, // Puts radio button on the right
+                      secondary: Container( // Visual indicator for selected theme
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          color: theme.primary,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: BentoColors.of(context).primary, width: 2),
+                        ),
                       ),
                     );
                   }).toList(),
