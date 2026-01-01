@@ -11,7 +11,7 @@ Establish the data models, persistence logic, and the global theme state managem
 - [x] Task: Create `ThemeService` for persistence f762b74
     - Implement logic to read/write to `themes.json` in the local documents directory.
     - Handle fallback to "Bento Default" if the file is missing or invalid.
-- [ ] Task: Implement `ThemeProvider` for state management
+- [x] Task: Implement `ThemeProvider` for state management ed07527
     - Use `ChangeNotifier` to manage the current `ThemeModel`.
     - Provide a method to switch themes and notify listeners.
 - [ ] Task: Refactor `BentoColors` to be dynamic
