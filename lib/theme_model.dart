@@ -97,4 +97,46 @@ class ThemeModel {
   static String _colorToHex(Color color) {
     return '#${color.value.toRadixString(16).padLeft(8, '0').substring(2).toUpperCase()}';
   }
+
+  static final bentoDefault = ThemeModel(
+    name: 'Bento Default',
+    primary: const Color(0xFF00DFC3),
+    onPrimary: const Color(0xFF001E26),
+    primaryDark: const Color(0xFF019391),
+    backgroundLight: const Color(0xFFF0F9FF),
+    backgroundDark: const Color(0xFF01082D),
+    sidebarBg: const Color(0xFF041D56),
+    surfaceDark: const Color(0xFF041D56),
+    surfaceHover: const Color(0xFF0F2573),
+    inputBg: const Color(0xFF0B1A40),
+    inputBorder: const Color(0xFF266CA9),
+    textWhite: const Color(0xFFFFFFFF),
+    textMuted: const Color(0xFF89D6E8),
+    secondary: const Color(0xFFADE1FB),
+    tertiary: const Color(0xFF45C2DB),
+    error: const Color(0xFFEF4444),
+    success: const Color(0xFF00DFC3),
+    otpIsland: const Color(0xFF019391),
+  );
+
+  static final catppuccinMocha = ThemeModel(
+    name: 'Catppuccin Mocha',
+    primary: const Color(0xFF89B4FA), // Blue
+    onPrimary: const Color(0xFF11111B), // Crust
+    primaryDark: const Color(0xFF74C7EC), // Sapphire
+    backgroundLight: const Color(0xFF1E1E2E), // Base
+    backgroundDark: const Color(0xFF11111B), // Crust
+    sidebarBg: const Color(0xFF181825), // Mantle
+    surfaceDark: const Color(0xFF181825), // Mantle
+    surfaceHover: const Color(0xFF313244), // Surface0
+    inputBg: const Color(0xFF1E1E2E), // Base
+    inputBorder: const Color(0xFF585B70), // Surface2
+    textWhite: const Color(0xFFCDD6F4), // Text
+    textMuted: const Color(0xFFBAC2DE), // Subtext1
+    secondary: const Color(0xFFF5C2E7), // Pink
+    tertiary: const Color(0xFF94E2D5), // Teal
+    error: const Color(0xFFF38BA8), // Red
+    success: const Color(0xFFA6E3A1), // Green
+    otpIsland: const Color(0xFFFAB387), // Peach
+  );
 }
