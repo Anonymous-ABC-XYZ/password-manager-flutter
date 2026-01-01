@@ -21,7 +21,7 @@ Establish the data models, persistence logic, and the global theme state managem
 ## Phase 2: Theme Management UI
 Build the user interface for selecting and uploading themes in the Settings screen.
 
-- [ ] Task: Implement "Appearance" section in `SettingsScreen`
+- [x] Task: Implement "Appearance" section in `SettingsScreen` 8c31473
     - Display a list of available themes (Default + Uploaded).
     - Add a visual indicator for the currently active theme.
 - [ ] Task: Implement JSON Theme Upload logic
