@@ -42,3 +42,14 @@ Add default themes and ensure a seamless user experience.
 - [x] Task: Final UI Polish 653c1b0
 - [x] Task: Improve Theme Selection UI 1257384
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Polish and Pre-bundled Themes' (Protocol in workflow.md) 924afdb
+
+## Phase 4: Documentation and Additional Themes
+Add in-app instructions for creating custom themes and bundle the Rose Pine theme.
+
+- [x] Task: Bundle "Rose Pine" theme fedb653
+    - Add Rose Pine colors to `ThemeModel`.
+    - Register it in `ThemeModel` static fields.
+- [ ] Task: Implement Theme Creation Instructions UI
+    - Add a "Help" or "Info" button near the "Upload Theme" button.
+    - Display a dialog or modal showing the required JSON structure and available color keys.
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Documentation and Additional Themes' (Protocol in workflow.md)
