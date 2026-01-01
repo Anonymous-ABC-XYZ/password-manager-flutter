@@ -165,31 +165,79 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ],
                   ),
                   const SizedBox(height: 24),
-                  ...themeProvider.availableThemes.map((theme) {
-                    return RadioListTile<String>(
-                      title: Text(theme.name, style: TextStyle(color: BentoColors.of(context).textWhite)),
-                      value: theme.name,
-                      groupValue: themeProvider.currentTheme.name,
-                      onChanged: (value) {
-                        if (value != null) {
-                          themeProvider.setTheme(theme);
-                        }
+                  SizedBox(
+                    height: 140,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: themeProvider.availableThemes.length,
+                      itemBuilder: (context, index) {
+                        final theme = themeProvider.availableThemes[index];
+                        final isSelected = theme.name == themeProvider.currentTheme.name;
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 12.0),
+                          child: InkWell(
+                            onTap: () => themeProvider.setTheme(theme),
+                            borderRadius: BorderRadius.circular(16),
+                            child: Container(
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: BentoColors.of(context).inputBg,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: isSelected ? BentoColors.of(context).primary : BentoColors.of(context).inputBorder,
+                                  width: isSelected ? 2 : 1,
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 48,
+                                    height: 48,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: theme.backgroundDark,
+                                      border: Border.all(color: BentoColors.of(context).inputBorder),
+                                    ),
+                                    child: Center(
+                                      child: Container(
+                                        width: 24,
+                                        height: 24,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: theme.primary,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                    child: Text(
+                                      theme.name,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: BentoStyles.body.copyWith(
+                                        color: isSelected ? BentoColors.of(context).textWhite : BentoColors.of(context).textMuted,
+                                        fontSize: 12,
+                                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                  if (isSelected)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8.0),
+                                      child: Icon(Icons.check_circle, size: 16, color: BentoColors.of(context).primary),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
                       },
-                      activeColor: BentoColors.of(context).primary,
-                      toggleable: false, // Ensures a selection is always made.
-                      contentPadding: EdgeInsets.zero,
-                      controlAffinity: ListTileControlAffinity.trailing, // Puts radio button on the right
-                      secondary: Container( // Visual indicator for selected theme
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          color: theme.primary,
-                          shape: BoxShape.circle,
-                          border: Border.all(color: BentoColors.of(context).primary, width: 2),
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                    ),
+                  ),
                   const SizedBox(height: 16),
                   ElevatedButton.icon(
                     onPressed: _uploadTheme,
