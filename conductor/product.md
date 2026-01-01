@@ -15,3 +15,4 @@ A secure, feature-rich password manager built with Flutter for Linux desktop. It
 - **Smart Credential Management:** Comprehensive tools for managing identities, including a robust password generator, secure SQLite-backed storage, and categorical organization (e.g., Work, Personal, Finance).
 - **Intelligent Integrations:** Direct integration with Gmail for automatic 2FA code retrieval (with persistent 30-day sessions) and DuckDuckGo for on-the-fly email alias generation.
 - **Desktop-Optimized Workflow:** High-speed fuzzy search for finding credentials instantly and a modern navigation rail for efficient multitasking.
+- **Dynamic Theming:** Personalized UI with support for pre-bundled and custom uploaded color schemes.

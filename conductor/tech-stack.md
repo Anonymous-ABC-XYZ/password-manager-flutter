@@ -19,3 +19,4 @@
 - **UI Framework:** Material Design 3 with custom vibrant themes.
 - **Typography:** `google_fonts`.
 - **Utilities:** `fuzzywuzzy` for intelligent credential searching.
+- **File Management:** `path_provider` for accessing platform-agnostic file system paths.
