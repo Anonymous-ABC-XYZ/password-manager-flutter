@@ -10,21 +10,21 @@ class NotesTile extends StatelessWidget {
       padding: const EdgeInsets.all(24.0),
       constraints: const BoxConstraints(minHeight: 160),
       decoration: BoxDecoration(
-        color: BentoColors.surfaceDark,
+        color: BentoColors.of(context).surfaceDark,
         borderRadius: BentoStyles.borderRadius,
-        border: Border.all(color: BentoColors.inputBorder.withValues(alpha: 0.5)),
+        border: Border.all(color: BentoColors.of(context).inputBorder.withValues(alpha: 0.5)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.description, color: BentoColors.textMuted),
+              Icon(Icons.description, color: BentoColors.of(context).textMuted),
               const SizedBox(width: 12),
               Text(
                 'Notes',
                 style: BentoStyles.header.copyWith(
-                  color: BentoColors.textWhite,
+                  color: BentoColors.of(context).textWhite,
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
@@ -36,11 +36,11 @@ class NotesTile extends StatelessWidget {
             maxLines: 4,
             decoration: InputDecoration(
               hintText: 'Add secure notes about this account...',
-              hintStyle: BentoStyles.body.copyWith(color: BentoColors.textMuted, fontSize: 14),
+              hintStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted, fontSize: 14),
               border: InputBorder.none,
               contentPadding: EdgeInsets.zero,
             ),
-            style: BentoStyles.body.copyWith(color: BentoColors.textWhite, fontSize: 14, height: 1.5),
+            style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite, fontSize: 14, height: 1.5),
             onChanged: (value) {
               // TODO: Implement notes saving
             },

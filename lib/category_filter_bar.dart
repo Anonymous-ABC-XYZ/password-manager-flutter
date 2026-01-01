@@ -32,16 +32,16 @@ class CategoryFilterBar extends StatelessWidget {
                   onSelected(selected ? category : null);
                 }
               },
-              selectedColor: BentoColors.primary,
-              backgroundColor: BentoColors.inputBg,
+              selectedColor: BentoColors.of(context).primary,
+              backgroundColor: BentoColors.of(context).inputBg,
               labelStyle: BentoStyles.body.copyWith(
-                color: isSelected ? BentoColors.onPrimary : BentoColors.textMuted,
+                color: isSelected ? BentoColors.of(context).onPrimary : BentoColors.of(context).textMuted,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20), // Slightly more rounded for filter style
                 side: BorderSide(
-                  color: isSelected ? BentoColors.primary : BentoColors.inputBorder,
+                  color: isSelected ? BentoColors.of(context).primary : BentoColors.of(context).inputBorder,
                   width: 1,
                 ),
               ),

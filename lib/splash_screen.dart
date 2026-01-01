@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
-import 'splash_constants.dart';
 import 'bento_constants.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -85,7 +84,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Successfully signed in to Google!'), backgroundColor: SplashColors.primary),
+        SnackBar(content: const Text('Successfully signed in to Google!'), backgroundColor: BentoColors.of(context).primary),
       );
       _checkCompletion();
     } else if (mounted) {
@@ -106,7 +105,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('DuckDuckGo auth key saved'), backgroundColor: SplashColors.primary),
+        SnackBar(content: const Text('DuckDuckGo auth key saved'), backgroundColor: BentoColors.of(context).primary),
       );
       Navigator.of(context).pop(); // Close dialog
       _checkCompletion();
@@ -125,31 +124,31 @@ class _SplashScreenState extends State<SplashScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: SplashColors.surfaceDark,
-        title: Text('Configure Google OAuth', style: BentoStyles.header.copyWith(color: SplashColors.textWhite)),
+        backgroundColor: BentoColors.of(context).surfaceDark,
+        title: Text('Configure Google OAuth', style: BentoStyles.header.copyWith(color: BentoColors.of(context).textWhite)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: _clientIdController,
-              style: BentoStyles.body.copyWith(color: SplashColors.textWhite),
+              style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
               decoration: InputDecoration(
                 labelText: 'Client ID',
-                labelStyle: BentoStyles.body.copyWith(color: SplashColors.textMuted),
-                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: SplashColors.textMuted)),
-                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: SplashColors.primary)),
+                labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).textMuted)),
+                focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).primary)),
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _clientSecretController,
               obscureText: true,
-              style: BentoStyles.body.copyWith(color: SplashColors.textWhite),
+              style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
               decoration: InputDecoration(
                 labelText: 'Client Secret',
-                labelStyle: BentoStyles.body.copyWith(color: SplashColors.textMuted),
-                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: SplashColors.textMuted)),
-                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: SplashColors.primary)),
+                labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).textMuted)),
+                focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).primary)),
               ),
             ),
           ],
@@ -157,7 +156,7 @@ class _SplashScreenState extends State<SplashScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: BentoStyles.body.copyWith(color: SplashColors.textMuted)),
+            child: Text('Cancel', style: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted)),
           ),
           ElevatedButton(
             onPressed: () {
@@ -165,8 +164,8 @@ class _SplashScreenState extends State<SplashScreen> {
               _handleGoogleSignIn();
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: SplashColors.primary,
-              foregroundColor: SplashColors.onPrimary,
+              backgroundColor: BentoColors.of(context).primary,
+              foregroundColor: BentoColors.of(context).onPrimary,
             ),
             child: Text('Sign In', style: BentoStyles.body.copyWith(fontWeight: FontWeight.bold)),
           ),
@@ -179,20 +178,20 @@ class _SplashScreenState extends State<SplashScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: SplashColors.surfaceDark,
-        title: Text('Configure DuckDuckGo', style: BentoStyles.header.copyWith(color: SplashColors.textWhite)),
+        backgroundColor: BentoColors.of(context).surfaceDark,
+        title: Text('Configure DuckDuckGo', style: BentoStyles.header.copyWith(color: BentoColors.of(context).textWhite)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: _duckAuthController,
               obscureText: true,
-              style: BentoStyles.body.copyWith(color: SplashColors.textWhite),
+              style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
               decoration: InputDecoration(
                 labelText: 'Authorization Key',
-                labelStyle: BentoStyles.body.copyWith(color: SplashColors.textMuted),
-                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: SplashColors.textMuted)),
-                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: SplashColors.primary)),
+                labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).textMuted)),
+                focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).primary)),
               ),
             ),
           ],
@@ -200,13 +199,13 @@ class _SplashScreenState extends State<SplashScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: BentoStyles.body.copyWith(color: SplashColors.textMuted)),
+            child: Text('Cancel', style: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted)),
           ),
           ElevatedButton(
             onPressed: _handleDuckAuthSave,
             style: ElevatedButton.styleFrom(
-              backgroundColor: SplashColors.primary,
-              foregroundColor: SplashColors.onPrimary,
+              backgroundColor: BentoColors.of(context).primary,
+              foregroundColor: BentoColors.of(context).onPrimary,
             ),
             child: Text('Save', style: BentoStyles.body.copyWith(fontWeight: FontWeight.bold)),
           ),
@@ -218,7 +217,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SplashColors.backgroundDark,
+      backgroundColor: BentoColors.of(context).backgroundDark,
       body: Stack(
         children: [
           // Background Blobs
@@ -229,9 +228,9 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 500,
               height: 500,
               decoration: BoxDecoration(
-                color: SplashColors.primary.withValues(alpha: 0.1),
+                color: BentoColors.of(context).primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
-                boxShadow: const [BoxShadow(blurRadius: 120, color: SplashColors.primary)],
+                boxShadow: [BoxShadow(blurRadius: 120, color: BentoColors.of(context).primary)],
               ),
             ),
           ),
@@ -242,9 +241,9 @@ class _SplashScreenState extends State<SplashScreen> {
               width: 500,
               height: 500,
               decoration: BoxDecoration(
-                color: SplashColors.primary.withValues(alpha: 0.05),
+                color: BentoColors.of(context).primary.withValues(alpha: 0.05),
                 shape: BoxShape.circle,
-                boxShadow: const [BoxShadow(blurRadius: 100, color: SplashColors.primary)],
+                boxShadow: [BoxShadow(blurRadius: 100, color: BentoColors.of(context).primary)],
               ),
             ),
           ),
@@ -262,7 +261,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     constraints: const BoxConstraints(maxWidth: 500),
                     padding: const EdgeInsets.all(40),
                     decoration: BoxDecoration(
-                      color: SplashColors.surfaceDark,
+                      color: BentoColors.of(context).surfaceDark,
                       borderRadius: SplashStyles.borderRadius,
                       border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                       boxShadow: [
@@ -312,7 +311,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           "Your digital safe house is ready. Choose your preferred secure method to create your encrypted vault.",
                           textAlign: TextAlign.center,
                           style: BentoStyles.body.copyWith(
-                            color: SplashColors.textMuted,
+                            color: BentoColors.of(context).textMuted,
                             fontSize: 16,
                             height: 1.5,
                           ),
@@ -361,10 +360,10 @@ class _SplashScreenState extends State<SplashScreen> {
                                );
                              }
                            },
-                           icon: const Icon(Icons.password, color: SplashColors.textMuted),
+                           icon: Icon(Icons.password, color: BentoColors.of(context).textMuted),
                            label: Text(
                              'Enter App',
-                             style: BentoStyles.body.copyWith(color: SplashColors.textWhite),
+                             style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
                            ),
                          ),
                       ],
@@ -383,7 +382,7 @@ class _SplashScreenState extends State<SplashScreen> {
           if (_isLoading)
             Container(
               color: Colors.black54,
-              child: const Center(child: CircularProgressIndicator(color: SplashColors.primary)),
+              child: Center(child: CircularProgressIndicator(color: BentoColors.of(context).primary)),
             ),
         ],
       ),
@@ -399,12 +398,12 @@ class _SplashScreenState extends State<SplashScreen> {
     VoidCallback? onTap,
   }) {
     return Material(
-      color: SplashColors.surfaceHover,
+      color: BentoColors.of(context).surfaceHover,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
-        hoverColor: SplashColors.surfaceHover.withValues(alpha: 0.8),
+        hoverColor: BentoColors.of(context).surfaceHover.withValues(alpha: 0.8),
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
@@ -430,7 +429,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     Text(
                       title,
                       style: BentoStyles.body.copyWith(
-                        color: SplashColors.textWhite,
+                        color: BentoColors.of(context).textWhite,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -438,7 +437,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     Text(
                       subtitle,
                       style: BentoStyles.body.copyWith(
-                        color: SplashColors.textMuted,
+                        color: BentoColors.of(context).textMuted,
                         fontSize: 14,
                       ),
                     ),

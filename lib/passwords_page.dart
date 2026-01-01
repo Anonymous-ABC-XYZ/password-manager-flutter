@@ -86,10 +86,10 @@ class _PasswordsPageState extends State<PasswordsPage> {
         return StatefulBuilder(
           builder: (context, setDialogState) {
             return AlertDialog(
-              backgroundColor: BentoColors.surfaceDark,
+              backgroundColor: BentoColors.of(context).surfaceDark,
               title: Text(
                 'Edit ${item['Website']}',
-                style: BentoStyles.header.copyWith(color: BentoColors.textWhite),
+                style: BentoStyles.header.copyWith(color: BentoColors.of(context).textWhite),
               ),
               content: SingleChildScrollView(
                 child: Column(
@@ -98,40 +98,40 @@ class _PasswordsPageState extends State<PasswordsPage> {
                   children: [
                     TextField(
                       controller: usernameController,
-                      style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
+                      style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
                       decoration: InputDecoration(
                         labelText: 'Username',
-                        labelStyle: BentoStyles.body.copyWith(color: BentoColors.textMuted),
-                        enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.textMuted)),
-                        focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.primary)),
+                        labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).textMuted)),
+                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).primary)),
                       ),
                     ),
                     const SizedBox(height: 16),
                     TextField(
                       controller: emailController,
-                      style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
+                      style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
                       decoration: InputDecoration(
                         labelText: 'Email',
-                        labelStyle: BentoStyles.body.copyWith(color: BentoColors.textMuted),
-                        enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.textMuted)),
-                        focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.primary)),
+                        labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).textMuted)),
+                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).primary)),
                       ),
                     ),
                     const SizedBox(height: 16),
                     TextField(
                       controller: passwordController,
-                      style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
+                      style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        labelStyle: BentoStyles.body.copyWith(color: BentoColors.textMuted),
-                        enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.textMuted)),
-                        focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.primary)),
+                        labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).textMuted)),
+                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).primary)),
                       ),
                     ),
                     const SizedBox(height: 24),
                     Text(
                       'Category',
-                      style: BentoStyles.body.copyWith(color: BentoColors.textMuted, fontSize: 14),
+                      style: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted, fontSize: 14),
                     ),
                     const SizedBox(height: 8),
                     CategorySelector(
@@ -162,8 +162,8 @@ class _PasswordsPageState extends State<PasswordsPage> {
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: BentoColors.primary,
-                    foregroundColor: BentoColors.onPrimary,
+                    backgroundColor: BentoColors.of(context).primary,
+                    foregroundColor: BentoColors.of(context).onPrimary,
                   ),
                   child: Text('Save', style: BentoStyles.body.copyWith(fontWeight: FontWeight.bold)),
                 ),
@@ -178,9 +178,9 @@ class _PasswordsPageState extends State<PasswordsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BentoColors.backgroundDark,
+      backgroundColor: BentoColors.of(context).backgroundDark,
       body: _isLoading 
-          ? const Center(child: CircularProgressIndicator(color: BentoColors.primary))
+          ? Center(child: CircularProgressIndicator(color: BentoColors.of(context).primary))
           : Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
@@ -207,11 +207,11 @@ class _PasswordsPageState extends State<PasswordsPage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.search_off, size: 64, color: BentoColors.surfaceHover),
+                                Icon(Icons.search_off, size: 64, color: BentoColors.of(context).surfaceHover),
                                 const SizedBox(height: 16),
-                                const Text(
+                                Text(
                                   'No credentials found',
-                                  style: TextStyle(color: BentoColors.textMuted, fontSize: 18),
+                                  style: TextStyle(color: BentoColors.of(context).textMuted, fontSize: 18),
                                 ),
                               ],
                             ),

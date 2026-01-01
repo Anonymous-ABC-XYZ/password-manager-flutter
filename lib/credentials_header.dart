@@ -35,14 +35,14 @@ class CredentialsHeader extends StatelessWidget {
                       style: BentoStyles.header.copyWith(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: BentoColors.textWhite,
+                        color: BentoColors.of(context).textWhite,
                         letterSpacing: -1.0,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       '$count passwords stored',
-                      style: BentoStyles.body.copyWith(color: BentoColors.textMuted, fontSize: 14),
+                      style: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted, fontSize: 14),
                     ),
                   ],
                 ),
@@ -52,17 +52,17 @@ class CredentialsHeader extends StatelessWidget {
                     Container(
                       width: isDesktop ? 320 : 250,
                       decoration: BoxDecoration(
-                        color: BentoColors.surfaceDark,
+                        color: BentoColors.of(context).surfaceDark,
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: TextField(
                         controller: searchController,
                         onChanged: (_) => onSearchChanged(),
-                        style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
+                        style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
                         decoration: InputDecoration(
                           hintText: 'Search logins...',
-                          hintStyle: BentoStyles.body.copyWith(color: BentoColors.textMuted),
-                          prefixIcon: const Icon(Icons.search, color: BentoColors.textMuted),
+                          hintStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+                          prefixIcon: Icon(Icons.search, color: BentoColors.of(context).textMuted),
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                         ),
@@ -73,10 +73,10 @@ class CredentialsHeader extends StatelessWidget {
                       width: 48, 
                       height: 48,
                       decoration: BoxDecoration(
-                        color: BentoColors.surfaceDark,
+                        color: BentoColors.of(context).surfaceDark,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.sort, color: BentoColors.textWhite),
+                      child: Icon(Icons.sort, color: BentoColors.of(context).textWhite),
                     ),
                   ],
                 ),

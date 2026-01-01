@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'bento_constants.dart';
@@ -26,9 +27,9 @@ class IdentityTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24.0),
       decoration: BoxDecoration(
-        color: BentoColors.surfaceDark,
+        color: BentoColors.of(context).surfaceDark,
         borderRadius: BentoStyles.borderRadius,
-        border: Border.all(color: BentoColors.inputBorder.withValues(alpha: 0.5)),
+        border: Border.all(color: BentoColors.of(context).inputBorder.withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.2),
@@ -59,13 +60,13 @@ class IdentityTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: const Icon(Icons.language, color: BentoColors.backgroundDark),
+                    child: Icon(Icons.language, color: BentoColors.of(context).backgroundDark),
                   ),
                   const SizedBox(width: 16),
                   Text(
                     'Identity',
                     style: BentoStyles.header.copyWith(
-                      color: BentoColors.textWhite,
+                      color: BentoColors.of(context).textWhite,
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
@@ -74,7 +75,7 @@ class IdentityTile extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {},
-                icon: const Icon(Icons.more_horiz, color: BentoColors.textMuted),
+                icon: Icon(Icons.more_horiz, color: BentoColors.of(context).textMuted),
               ),
             ],
           ),
@@ -82,26 +83,38 @@ class IdentityTile extends StatelessWidget {
           
           // Website Field
           _buildField(
+            context: context,
             label: 'Website URL',
             controller: websiteController,
             iconActions: [
-              _buildIconButton(Icons.open_in_new, 'Launch', () {
+              _buildIconButton(context, Icons.open_in_new, 'Launch', () {
                 // Launch URL logic placeholder
               }),
-               _buildIconButton(Icons.search, 'Search', onSearchWebsite),
+               _buildIconButton(context, Icons.search, 'Search', onSearchWebsite),
             ],
           ),
           const SizedBox(height: 16),
 
           // Username Field
           _buildField(
+            context: context,
             label: 'Username',
             controller: usernameController,
             iconActions: [
-              _buildIconButton(Icons.search, 'Search similar', onSearchUsername),
-              _buildIconButton(Icons.content_copy, 'Copy', () {
-                 Clipboard.setData(ClipboardData(text: usernameController.text));
-                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Copied Username')));
+              _buildIconButton(context, Icons.search, 'Search similar', onSearchUsername),
+              _buildIconButton(context, Icons.autorenew, 'Generate', () {
+                 final adjectives = ['Happy', 'Swift', 'Bright', 'Cool', 'Lazy', 'Dark', 'Red', 'Blue', 'Green', 'Wise', 'Fast', 'Slow', 'Brave', 'Calm', 'Silent', 'Mighty'];
+                 final nouns = ['Tiger', 'Eagle', 'Panda', 'Fox', 'Wolf', 'Bear', 'Shark', 'Lion', 'Hawk', 'Falcon', 'Owl', 'Cat', 'Dog', 'Moon', 'Star', 'River'];
+                 final random = Random();
+                 final adj = adjectives[random.nextInt(adjectives.length)];
+                 final noun = nouns[random.nextInt(nouns.length)];
+                 final number = random.nextInt(9000) + 1000;
+                 
+                 final username = '$adj$noun$number';
+                 usernameController.text = username;
+
+                 Clipboard.setData(ClipboardData(text: username));
+                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Generated and copied Username')));
               }),
             ],
           ),
@@ -113,7 +126,7 @@ class IdentityTile extends StatelessWidget {
             child: Text(
               'Category',
               style: BentoStyles.body.copyWith(
-                color: BentoColors.textMuted,
+                color: BentoColors.of(context).textMuted,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
@@ -129,6 +142,7 @@ class IdentityTile extends StatelessWidget {
   }
 
   Widget _buildField({
+    required BuildContext context,
     required String label,
     required TextEditingController controller,
     required List<Widget> iconActions,
@@ -141,7 +155,7 @@ class IdentityTile extends StatelessWidget {
           child: Text(
             label,
             style: BentoStyles.body.copyWith(
-              color: BentoColors.textMuted,
+              color: BentoColors.of(context).textMuted,
               fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
@@ -152,21 +166,21 @@ class IdentityTile extends StatelessWidget {
           children: [
             TextField(
               controller: controller,
-              style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
+              style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: BentoColors.inputBg,
+                fillColor: BentoColors.of(context).inputBg,
                 border: OutlineInputBorder(
                   borderRadius: BentoStyles.inputBorderRadius,
-                  borderSide: const BorderSide(color: BentoColors.inputBorder),
+                  borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BentoStyles.inputBorderRadius,
-                  borderSide: const BorderSide(color: BentoColors.inputBorder),
+                  borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BentoStyles.inputBorderRadius,
-                  borderSide: const BorderSide(color: BentoColors.secondary),
+                  borderSide: BorderSide(color: BentoColors.of(context).secondary),
                 ),
                 contentPadding: const EdgeInsets.fromLTRB(16, 16, 80, 16),
               ),
@@ -184,17 +198,17 @@ class IdentityTile extends StatelessWidget {
     );
   }
 
-  Widget _buildIconButton(IconData icon, String tooltip, VoidCallback onPressed) {
+  Widget _buildIconButton(BuildContext context, IconData icon, String tooltip, VoidCallback onPressed) {
     return Material(
       color: Colors.transparent,
       child: IconButton(
-        icon: Icon(icon, color: BentoColors.textMuted, size: 20),
+        icon: Icon(icon, color: BentoColors.of(context).textMuted, size: 20),
         tooltip: tooltip,
         onPressed: onPressed,
         constraints: const BoxConstraints(),
         padding: const EdgeInsets.all(8),
         splashRadius: 20,
-        hoverColor: BentoColors.surfaceHover,
+        hoverColor: BentoColors.of(context).surfaceHover,
       ),
     );
   }

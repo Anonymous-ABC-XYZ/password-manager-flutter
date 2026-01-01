@@ -6,6 +6,7 @@ A secure, feature-rich password manager built with Flutter for Linux desktop. Co
 
 - **Secure Local Storage**: SQLite database with encrypted storage via Flutter Secure Storage.
 - **Smart Password Generator**: Creates strong passwords (12-27 chars) with mixed characters.
+- **Random Username Generator**: Generates unique usernames (Adjective + Noun + Number) and auto-copies to clipboard.
 - **Email Alias Generation**: Integrates with DuckDuckGo Email Protection for disposable aliases.
 - **Automatic OTP Fetching**: Fetches verification codes directly from Gmail using OAuth 2.0.
 - **Fuzzy Search**: Intelligent website search using fuzzy matching.

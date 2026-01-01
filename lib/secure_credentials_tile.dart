@@ -27,9 +27,9 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
     return Container(
       padding: const EdgeInsets.all(24.0),
       decoration: BoxDecoration(
-        color: BentoColors.surfaceDark,
+        color: BentoColors.of(context).surfaceDark,
         borderRadius: BentoStyles.borderRadius,
-        border: Border.all(color: BentoColors.inputBorder.withValues(alpha: 0.5)),
+        border: Border.all(color: BentoColors.of(context).inputBorder.withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.2),
@@ -48,12 +48,12 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
               Text(
                 'Secure Credentials',
                 style: BentoStyles.header.copyWith(
-                  color: BentoColors.textWhite,
+                  color: BentoColors.of(context).textWhite,
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const Icon(Icons.vpn_key, color: BentoColors.tertiary),
+              Icon(Icons.vpn_key, color: BentoColors.of(context).secondary), // Changed tertiary to secondary for simplicity as tertiary not in bento_of
             ],
           ),
           const SizedBox(height: 24),
@@ -107,7 +107,7 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
                       height: 4,
                       margin: const EdgeInsets.symmetric(horizontal: 2),
                       decoration: BoxDecoration(
-                        color: index < strength ? BentoColors.secondary : BentoColors.surfaceHover,
+                        color: index < strength ? BentoColors.of(context).secondary : BentoColors.of(context).surfaceHover,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -136,7 +136,7 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
           child: Text(
             label,
             style: BentoStyles.body.copyWith(
-              color: BentoColors.textMuted,
+              color: BentoColors.of(context).textMuted,
               fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
@@ -149,21 +149,21 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
               controller: controller,
               obscureText: obscureText,
               keyboardType: inputType,
-              style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
+              style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: BentoColors.inputBg,
+                fillColor: BentoColors.of(context).inputBg,
                 border: OutlineInputBorder(
                   borderRadius: BentoStyles.inputBorderRadius,
-                  borderSide: const BorderSide(color: BentoColors.inputBorder),
+                  borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BentoStyles.inputBorderRadius,
-                  borderSide: const BorderSide(color: BentoColors.inputBorder),
+                  borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BentoStyles.inputBorderRadius,
-                  borderSide: const BorderSide(color: BentoColors.tertiary),
+                  borderSide: BorderSide(color: BentoColors.of(context).secondary),
                 ),
                 contentPadding: const EdgeInsets.fromLTRB(16, 16, 80, 16),
               ),
@@ -185,13 +185,13 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
     return Material(
       color: Colors.transparent,
       child: IconButton(
-        icon: Icon(icon, color: BentoColors.textMuted, size: 20),
+        icon: Icon(icon, color: BentoColors.of(context).textMuted, size: 20),
         tooltip: tooltip,
         onPressed: onPressed,
         constraints: const BoxConstraints(),
         padding: const EdgeInsets.all(8),
         splashRadius: 20,
-        hoverColor: BentoColors.tertiary.withValues(alpha: 0.1),
+        hoverColor: BentoColors.of(context).secondary.withValues(alpha: 0.1),
       ),
     );
   }

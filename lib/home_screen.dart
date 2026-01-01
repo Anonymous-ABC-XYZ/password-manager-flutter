@@ -74,32 +74,32 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (BuildContext context) {
           return SizedBox(
             child: AlertDialog(
-              backgroundColor: BentoColors.surfaceDark,
-              title: Text("${result[0]['Website']}", style: const TextStyle(color: BentoColors.textWhite)),
+              backgroundColor: BentoColors.of(context).surfaceDark,
+              title: Text("${result[0]['Website']}", style: TextStyle(color: BentoColors.of(context).textWhite)),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                    ListTile(
-                     title: const Text('Username', style: TextStyle(color: BentoColors.textMuted)),
-                     subtitle: Text(result[0]['Username'].toString(), style: const TextStyle(color: BentoColors.textWhite)),
+                     title: Text('Username', style: TextStyle(color: BentoColors.of(context).textMuted)),
+                     subtitle: Text(result[0]['Username'].toString(), style: TextStyle(color: BentoColors.of(context).textWhite)),
                      trailing: IconButton(
-                       icon: const Icon(Icons.copy, color: BentoColors.primary),
+                       icon: Icon(Icons.copy, color: BentoColors.of(context).primary),
                        onPressed: () => Clipboard.setData(ClipboardData(text: result[0]['Username'].toString())),
                      ),
                    ),
                    ListTile(
-                     title: const Text('Email', style: TextStyle(color: BentoColors.textMuted)),
-                     subtitle: Text(result[0]['Email'].toString(), style: const TextStyle(color: BentoColors.textWhite)),
+                     title: Text('Email', style: TextStyle(color: BentoColors.of(context).textMuted)),
+                     subtitle: Text(result[0]['Email'].toString(), style: TextStyle(color: BentoColors.of(context).textWhite)),
                       trailing: IconButton(
-                       icon: const Icon(Icons.copy, color: BentoColors.primary),
+                       icon: Icon(Icons.copy, color: BentoColors.of(context).primary),
                        onPressed: () => Clipboard.setData(ClipboardData(text: result[0]['Email'].toString())),
                      ),
                    ),
                    ListTile(
-                     title: const Text('Password', style: TextStyle(color: BentoColors.textMuted)),
-                     subtitle: Text(result[0]['Password'].toString(), style: const TextStyle(color: BentoColors.textWhite)),
+                     title: Text('Password', style: TextStyle(color: BentoColors.of(context).textMuted)),
+                     subtitle: Text(result[0]['Password'].toString(), style: TextStyle(color: BentoColors.of(context).textWhite)),
                       trailing: IconButton(
-                       icon: const Icon(Icons.copy, color: BentoColors.primary),
+                       icon: Icon(Icons.copy, color: BentoColors.of(context).primary),
                        onPressed: () => Clipboard.setData(ClipboardData(text: result[0]['Password'].toString())),
                      ),
                    ),
@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
               actions: [
                  TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text("Close", style: TextStyle(color: BentoColors.primary)),
+                  child: Text("Close", style: TextStyle(color: BentoColors.of(context).primary)),
                 ),
               ],
             ),
@@ -186,16 +186,16 @@ class _HomeScreenState extends State<HomeScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              backgroundColor: BentoColors.surfaceDark,
-              title: const Text("Error", style: TextStyle(color: BentoColors.textWhite)),
-              content: const Text(
+              backgroundColor: BentoColors.of(context).surfaceDark,
+              title: Text("Error", style: TextStyle(color: BentoColors.of(context).textWhite)),
+              content: Text(
                 "Could not fetch the email. \nCheck if you have a working Internet connection.",
-                style: TextStyle(color: BentoColors.textMuted),
+                style: TextStyle(color: BentoColors.of(context).textMuted),
               ),
               actions: [
                  TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text("OK", style: TextStyle(color: BentoColors.primary)),
+                  child: Text("OK", style: TextStyle(color: BentoColors.of(context).primary)),
                 ),
               ],
             );
@@ -228,13 +228,13 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-             backgroundColor: BentoColors.surfaceDark,
-            title: const Text("Success", style: TextStyle(color: BentoColors.textWhite)),
-            content: const Text("The details have been saved.", style: TextStyle(color: BentoColors.textMuted)),
+             backgroundColor: BentoColors.of(context).surfaceDark,
+            title: Text("Success", style: TextStyle(color: BentoColors.of(context).textWhite)),
+            content: Text("The details have been saved.", style: TextStyle(color: BentoColors.of(context).textMuted)),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text("OK", style: TextStyle(color: BentoColors.primary)),
+                child: Text("OK", style: TextStyle(color: BentoColors.of(context).primary)),
               ),
             ],
           );
@@ -253,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BentoColors.backgroundDark,
+      backgroundColor: BentoColors.of(context).backgroundDark,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -341,8 +341,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => addData(context),
-        backgroundColor: BentoColors.primary,
-        foregroundColor: BentoColors.onPrimary,
+        backgroundColor: BentoColors.of(context).primary,
+        foregroundColor: BentoColors.of(context).onPrimary,
         elevation: 8,
         icon: const Icon(Icons.add),
         label: const Text(

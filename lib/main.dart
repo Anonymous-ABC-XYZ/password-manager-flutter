@@ -5,7 +5,8 @@ import 'package:password_manager/passwords_page.dart';
 import 'package:password_manager/settings_screen.dart';
 import 'package:password_manager/auth_wrapper.dart';
 import 'package:password_manager/providers/auth_provider.dart';
-import 'color-schemes.dart';
+import 'package:password_manager/providers/theme_provider.dart';
+import 'package:password_manager/theme_service.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqlite3/open.dart';
 import 'dart:io';
@@ -38,9 +39,16 @@ Future main() async {
     );
   }
 
+  final themeService = ThemeService();
+  final themeProvider = ThemeProvider(themeService: themeService);
+  await themeProvider.init();
+
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => AuthProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider.value(value: themeProvider),
+      ],
       child: const MyApp(),
     ),
   );
@@ -68,6 +76,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+    final bentoTheme = themeProvider.currentTheme.toBentoTheme();
+
     return MaterialApp(
       title: 'Password Manager',
       debugShowCheckedModeBanner: false,
@@ -76,13 +87,22 @@ class _MyAppState extends State<MyApp> {
         isDark: _themeMode == ThemeMode.dark,
       ),
       theme: ThemeData(
-        colorScheme: lightColorScheme,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: bentoTheme.primary,
+          brightness: Brightness.light,
+        ),
         useMaterial3: true,
+        extensions: [bentoTheme],
       ),
       darkTheme: ThemeData(
-        colorScheme: darkColorScheme,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: bentoTheme.primary,
+          brightness: Brightness.dark,
+          surface: bentoTheme.backgroundDark,
+        ),
         useMaterial3: true,
-        scaffoldBackgroundColor: BentoColors.backgroundDark, // Enforce background
+        scaffoldBackgroundColor: bentoTheme.backgroundDark,
+        extensions: [bentoTheme],
       ),
       themeMode: _themeMode,
     );
@@ -141,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Expanded(
                   child: Container(
-                    color: BentoColors.backgroundDark,
+                    color: BentoColors.of(context).backgroundDark,
                     child: page,
                   ),
                 ),
@@ -150,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         } else {
           return Scaffold(
-            backgroundColor: BentoColors.backgroundDark,
+            backgroundColor: BentoColors.of(context).backgroundDark,
             body: page,
             bottomNavigationBar: NavigationBar(
               onDestinationSelected: (int index) {

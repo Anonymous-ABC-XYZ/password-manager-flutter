@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'bento_constants.dart';
 
 class ThemeModel {
   final String name;
@@ -96,6 +97,28 @@ class ThemeModel {
 
   static String _colorToHex(Color color) {
     return '#${color.value.toRadixString(16).padLeft(8, '0').substring(2).toUpperCase()}';
+  }
+
+  BentoTheme toBentoTheme() {
+    return BentoTheme(
+      primary: primary,
+      onPrimary: onPrimary,
+      primaryDark: primaryDark,
+      backgroundLight: backgroundLight,
+      backgroundDark: backgroundDark,
+      sidebarBg: sidebarBg,
+      surfaceDark: surfaceDark,
+      surfaceHover: surfaceHover,
+      inputBg: inputBg,
+      inputBorder: inputBorder,
+      textWhite: textWhite,
+      textMuted: textMuted,
+      secondary: secondary,
+      tertiary: tertiary,
+      error: error,
+      success: success,
+      otpIsland: otpIsland,
+    );
   }
 
   static final bentoDefault = ThemeModel(

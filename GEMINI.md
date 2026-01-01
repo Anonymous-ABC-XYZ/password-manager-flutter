@@ -7,6 +7,7 @@
 ### Key Features
 *   **Secure Storage**: Credentials are stored locally in an SQLite database, with sensitive keys secured using `flutter_secure_storage` (leveraging the system keychain).
 *   **Smart Password Generator**: Generates strong, customizable passwords.
+*   **Username Generator**: Generates random usernames (Adjective + Noun + Number).
 *   **Email Privacy**: Generates disposable `@duck.com` email aliases.
 *   **OTP Integration**: Fetches 2FA codes directly from Gmail using OAuth 2.0.
 *   **Fuzzy Search**: Quickly find credentials using approximate string matching.

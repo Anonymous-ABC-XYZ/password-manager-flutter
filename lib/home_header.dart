@@ -27,18 +27,18 @@ class HomeHeader extends StatelessWidget {
                       style: BentoStyles.header.copyWith(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: BentoColors.textWhite,
+                        color: BentoColors.of(context).textWhite,
                         letterSpacing: -0.5,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Icon(Icons.folder_open, size: 16, color: BentoColors.textMuted),
+                        Icon(Icons.folder_open, size: 16, color: BentoColors.of(context).textMuted),
                         const SizedBox(width: 8),
                         Text(
                           'Personal > Social Media',
-                          style: BentoStyles.body.copyWith(color: BentoColors.textMuted, fontSize: 14),
+                          style: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted, fontSize: 14),
                         ),
                       ],
                     ),
@@ -48,28 +48,28 @@ class HomeHeader extends StatelessWidget {
                 Container(
                   width: isDesktop ? 400 : double.infinity,
                   decoration: BoxDecoration(
-                    color: BentoColors.surfaceDark,
+                    color: BentoColors.of(context).surfaceDark,
                     borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: BentoColors.inputBorder),
+                    border: Border.all(color: BentoColors.of(context).inputBorder),
                   ),
                   child: TextField(
-                    style: BentoStyles.body.copyWith(color: BentoColors.textWhite),
+                    style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
                     decoration: InputDecoration(
                       hintText: 'Search 245 passwords...',
-                      hintStyle: BentoStyles.body.copyWith(color: BentoColors.textMuted),
-                      prefixIcon: const Icon(Icons.search, color: BentoColors.textMuted),
+                      hintStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+                      prefixIcon: Icon(Icons.search, color: BentoColors.of(context).textMuted),
                       suffixIcon: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: BentoColors.surfaceHover,
+                            color: BentoColors.of(context).surfaceHover,
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: BentoColors.inputBorder),
+                            border: Border.all(color: BentoColors.of(context).inputBorder),
                           ),
                           child: Text(
                             'CMD K',
-                            style: BentoStyles.body.copyWith(fontSize: 10, color: BentoColors.textMuted, fontWeight: FontWeight.bold),
+                            style: BentoStyles.body.copyWith(fontSize: 10, color: BentoColors.of(context).textMuted, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -77,7 +77,7 @@ class HomeHeader extends StatelessWidget {
                       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
-                        borderSide: const BorderSide(color: BentoColors.secondary),
+                        borderSide: BorderSide(color: BentoColors.of(context).secondary),
                       ),
                     ),
                     onTap: onSearch,

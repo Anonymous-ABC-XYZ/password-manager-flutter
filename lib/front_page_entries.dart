@@ -18,9 +18,6 @@ class FrontPageEntries extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme
-        .of(context)
-        .colorScheme;
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
       child: Center(

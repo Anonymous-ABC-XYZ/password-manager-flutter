@@ -33,7 +33,7 @@ class _CredentialCardState extends State<CredentialCard> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: BentoColors.surfaceDark,
+        color: BentoColors.of(context).surfaceDark,
         borderRadius: BentoStyles.borderRadius,
         border: Border.all(color: Colors.transparent),
         boxShadow: [
@@ -65,8 +65,8 @@ class _CredentialCardState extends State<CredentialCard> {
                       child: Center(
                          child: Text(
                            widget.website.isNotEmpty ? widget.website[0].toUpperCase() : '?',
-                           style: const TextStyle(
-                             color: BentoColors.backgroundDark,
+                           style: TextStyle(
+                             color: BentoColors.of(context).backgroundDark,
                              fontSize: 24,
                              fontWeight: FontWeight.bold,
                            ),
@@ -81,7 +81,7 @@ class _CredentialCardState extends State<CredentialCard> {
                           Text(
                             widget.website,
                             style: BentoStyles.header.copyWith(
-                              color: BentoColors.textWhite,
+                              color: BentoColors.of(context).textWhite,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -90,7 +90,7 @@ class _CredentialCardState extends State<CredentialCard> {
                           Text(
                             widget.category ?? 'Uncategorized', 
                             style: BentoStyles.body.copyWith(
-                              color: widget.category != null ? BentoColors.primary : BentoColors.textMuted, 
+                              color: widget.category != null ? BentoColors.of(context).primary : BentoColors.of(context).textMuted, 
                               fontSize: 12,
                               fontWeight: widget.category != null ? FontWeight.bold : FontWeight.normal,
                             ),
@@ -102,8 +102,8 @@ class _CredentialCardState extends State<CredentialCard> {
                 ),
               ),
               PopupMenuButton<String>(
-                icon: const Icon(Icons.more_vert, color: BentoColors.textMuted),
-                color: BentoColors.surfaceHover,
+                icon: Icon(Icons.more_vert, color: BentoColors.of(context).textMuted),
+                color: BentoColors.of(context).surfaceHover,
                 onSelected: (value) {
                   if (value == 'delete') {
                     widget.onDelete();
@@ -116,9 +116,9 @@ class _CredentialCardState extends State<CredentialCard> {
                     value: 'edit',
                     child: Row(
                       children: [
-                        const Icon(Icons.edit, color: BentoColors.primary, size: 20),
+                        Icon(Icons.edit, color: BentoColors.of(context).primary, size: 20),
                         const SizedBox(width: 8),
-                        Text('Edit', style: BentoStyles.body.copyWith(color: BentoColors.textWhite)),
+                        Text('Edit', style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite)),
                       ],
                     ),
                   ),
@@ -126,9 +126,9 @@ class _CredentialCardState extends State<CredentialCard> {
                     value: 'delete',
                     child: Row(
                       children: [
-                        const Icon(Icons.delete, color: BentoColors.error, size: 20),
+                        Icon(Icons.delete, color: BentoColors.of(context).error, size: 20),
                         const SizedBox(width: 8),
-                        Text('Delete', style: BentoStyles.body.copyWith(color: BentoColors.textWhite)),
+                        Text('Delete', style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite)),
                       ],
                     ),
                   ),
@@ -153,7 +153,7 @@ class _CredentialCardState extends State<CredentialCard> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: BentoColors.surfaceHover.withValues(alpha: 0.5),
+        color: BentoColors.of(context).surfaceHover.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -162,7 +162,7 @@ class _CredentialCardState extends State<CredentialCard> {
           Text(
             label.toUpperCase(),
             style: BentoStyles.body.copyWith(
-              color: BentoColors.textMuted,
+              color: BentoColors.of(context).textMuted,
               fontSize: 10,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.0,
@@ -176,14 +176,14 @@ class _CredentialCardState extends State<CredentialCard> {
                 child: Text(
                   value,
                   style: BentoStyles.body.copyWith(
-                    color: BentoColors.textWhite,
+                    color: BentoColors.of(context).textWhite,
                     fontWeight: FontWeight.w500,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.content_copy, size: 18, color: BentoColors.textMuted),
+                icon: Icon(Icons.content_copy, size: 18, color: BentoColors.of(context).textMuted),
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: value));
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -205,7 +205,7 @@ class _CredentialCardState extends State<CredentialCard> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: BentoColors.surfaceHover.withValues(alpha: 0.5),
+        color: BentoColors.of(context).surfaceHover.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -214,7 +214,7 @@ class _CredentialCardState extends State<CredentialCard> {
           Text(
             'PASSWORD',
             style: BentoStyles.body.copyWith(
-              color: BentoColors.textMuted,
+              color: BentoColors.of(context).textMuted,
               fontSize: 10,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.0,
@@ -228,7 +228,7 @@ class _CredentialCardState extends State<CredentialCard> {
                 child: Text(
                   _obscurePassword ? '•' * 12 : value,
                   style: BentoStyles.mono.copyWith(
-                    color: BentoColors.textWhite,
+                    color: BentoColors.of(context).textWhite,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1.0,
                   ),
@@ -241,7 +241,7 @@ class _CredentialCardState extends State<CredentialCard> {
                     icon: Icon(
                       _obscurePassword ? Icons.visibility : Icons.visibility_off, 
                       size: 18, 
-                      color: BentoColors.textMuted
+                      color: BentoColors.of(context).textMuted
                     ),
                     onPressed: () {
                       setState(() {
@@ -253,11 +253,11 @@ class _CredentialCardState extends State<CredentialCard> {
                     splashRadius: 20,
                   ),
                   IconButton(
-                    icon: const Icon(Icons.content_copy, size: 18, color: BentoColors.textMuted),
+                    icon: Icon(Icons.content_copy, size: 18, color: BentoColors.of(context).textMuted),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: value));
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Copied Password')),
+                        SnackBar(content: const Text('Copied Password')),
                       );
                     },
                     constraints: const BoxConstraints(),

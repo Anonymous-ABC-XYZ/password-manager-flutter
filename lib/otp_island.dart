@@ -56,17 +56,17 @@ class _OtpIslandState extends State<OtpIsland> {
           widget.controller.text = otp;
           Clipboard.setData(ClipboardData(text: otp));
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('OTP found and copied!'),
-              backgroundColor: BentoColors.otpIsland,
+            SnackBar(
+              content: const Text('OTP found and copied!'),
+              backgroundColor: BentoColors.of(context).otpIsland,
             ),
           );
           _startTimer();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No OTP found in recent emails'),
-              backgroundColor: BentoColors.error,
+            SnackBar(
+              content: const Text('No OTP found in recent emails'),
+              backgroundColor: BentoColors.of(context).error,
             ),
           );
         }
@@ -82,7 +82,7 @@ class _OtpIslandState extends State<OtpIsland> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorMessage),
-            backgroundColor: BentoColors.error,
+            backgroundColor: BentoColors.of(context).error,
           ),
         );
       }
@@ -100,11 +100,11 @@ class _OtpIslandState extends State<OtpIsland> {
     return Container(
       padding: const EdgeInsets.all(24.0),
       decoration: BoxDecoration(
-        color: BentoColors.otpIsland,
+        color: BentoColors.of(context).otpIsland,
         gradient: LinearGradient(
           colors: [
-            BentoColors.otpIsland.withValues(alpha: 0.8),
-            BentoColors.otpIsland.withValues(alpha: 0.6)
+            BentoColors.of(context).otpIsland.withValues(alpha: 0.8),
+            BentoColors.of(context).otpIsland.withValues(alpha: 0.6)
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -113,7 +113,7 @@ class _OtpIslandState extends State<OtpIsland> {
         border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
         boxShadow: [
           BoxShadow(
-            color: BentoColors.otpIsland.withValues(alpha: 0.2),
+            color: BentoColors.of(context).otpIsland.withValues(alpha: 0.2),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -130,16 +130,16 @@ class _OtpIslandState extends State<OtpIsland> {
               Text(
                 'ONE-TIME PASSWORD',
                 style: BentoStyles.body.copyWith(
-                  color: BentoColors.onPrimary,
+                  color: BentoColors.of(context).onPrimary,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
                 ),
               ),
               if (_isLoading)
-                 const SizedBox(
+                 SizedBox(
                     width: 12, height: 12, 
-                    child: CircularProgressIndicator(strokeWidth: 2, color: BentoColors.onPrimary)
+                    child: CircularProgressIndicator(strokeWidth: 2, color: BentoColors.of(context).onPrimary)
                  )
               else 
                 Stack(
@@ -174,7 +174,7 @@ class _OtpIslandState extends State<OtpIsland> {
               return Text(
                 widget.controller.text.isEmpty ? '--- ---' : widget.controller.text,
                 style: BentoStyles.mono.copyWith(
-                  color: BentoColors.onPrimary,
+                  color: BentoColors.of(context).onPrimary,
                   fontSize: 36, // Adjusted for space
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
@@ -204,14 +204,14 @@ class _OtpIslandState extends State<OtpIsland> {
                       child: CircularProgressIndicator(
                         value: _timeLeft / 30,
                         backgroundColor: Colors.white.withValues(alpha: 0.3),
-                        color: BentoColors.onPrimary,
+                        color: BentoColors.of(context).onPrimary,
                         strokeWidth: 3,
                       ),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       '${_timeLeft}s left',
-                      style: BentoStyles.body.copyWith(color: BentoColors.onPrimary, fontSize: 12),
+                      style: BentoStyles.body.copyWith(color: BentoColors.of(context).onPrimary, fontSize: 12),
                     ),
                   ],
                 ),
@@ -227,7 +227,7 @@ class _OtpIslandState extends State<OtpIsland> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
-                  foregroundColor: BentoColors.otpIsland,
+                  foregroundColor: BentoColors.of(context).otpIsland,
                   shape: const StadiumBorder(),
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   elevation: 8,

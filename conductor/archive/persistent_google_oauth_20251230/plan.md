@@ -13,14 +13,14 @@ This plan implements a 30-day persistent session for Google OAuth using refresh 
 - [x] Task: Update credential storage to ensure refresh tokens are captured and persisted via `flutter_secure_storage`. 1ba0226
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Refresh Token Acquisition' (Protocol in workflow.md) f8eaa6c
 
-## Phase 3: Silent Refresh & Startup Integration
-- [ ] Task: TDD - Write unit tests for `GmailService.signIn` silent refresh flow using mocked credentials.
-- [ ] Task: Implement silent token refresh in `GmailService.signIn` using the `oauth2` client's refresh capabilities.
-- [ ] Task: Refactor `AuthProvider._initialize` to verify session age before attempting silent refresh.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Silent Refresh' (Protocol in workflow.md)
+## Phase 3: Silent Refresh & Startup Integration [checkpoint: f1a5882]
+- [x] Task: TDD - Write unit tests for `GmailService.signIn` silent refresh flow using mocked credentials. 3fb4f51
+- [x] Task: Implement silent token refresh in `GmailService.signIn` using the `oauth2` client's refresh capabilities. 3fb4f51
+- [x] Task: Refactor `AuthProvider._initialize` to verify session age before attempting silent refresh. 3fb4f51
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Silent Refresh' (Protocol in workflow.md) f1a5882
 
 ## Phase 4: Expiration Enforcement & UI Feedback
-- [ ] Task: TDD - Write unit tests for `AuthProvider` handling of expired or revoked tokens (state clearing and error messaging).
-- [ ] Task: Update `SplashScren` or `AuthWrapper` to display the specific "Session Expired/Revoked" message when re-authentication is required.
-- [ ] Task: Implement strict 30-day enforcement that clears all stored Google credentials upon expiration.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Expiration Enforcement' (Protocol in workflow.md)
+- [x] Task: TDD - Write unit tests for `AuthProvider` handling of expired or revoked tokens (state clearing and error messaging). 7c0a094
+- [x] Task: Update `SplashScren` or `AuthWrapper` to display the specific "Session Expired/Revoked" message when re-authentication is required. 7c0a094
+- [x] Task: Implement strict 30-day enforcement that clears all stored Google credentials upon expiration. 7c0a094
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Expiration Enforcement' (Protocol in workflow.md) 11b3d7e
