@@ -8,7 +8,7 @@ Establish the data models, persistence logic, and the global theme state managem
 - [x] Task: Create `ThemeModel` to represent a color scheme 1f6d040
     - Define a class that holds all fields currently in `BentoColors`.
     - Add `fromJson` and `toJson` methods.
-- [ ] Task: Create `ThemeService` for persistence
+- [x] Task: Create `ThemeService` for persistence f762b74
     - Implement logic to read/write to `themes.json` in the local documents directory.
     - Handle fallback to "Bento Default" if the file is missing or invalid.
 - [ ] Task: Implement `ThemeProvider` for state management
