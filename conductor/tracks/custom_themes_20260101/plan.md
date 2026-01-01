@@ -31,7 +31,7 @@ Build the user interface for selecting and uploading themes in the Settings scre
 - [x] Task: Implement Theme Selection and UI Refresh c030f48
     - Update `ThemeProvider` when a user selects a theme from the list.
     - Ensure the UI refreshes immediately.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Theme Management UI' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Theme Management UI' (Protocol in workflow.md)
 
 ## Phase 3: Polish and Pre-bundled Themes
 Add default themes and ensure a seamless user experience.
