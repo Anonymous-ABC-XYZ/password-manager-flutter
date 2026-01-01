@@ -16,7 +16,7 @@ Establish the data models, persistence logic, and the global theme state managem
     - Provide a method to switch themes and notify listeners.
 - [x] Task: Refactor `BentoColors` to be dynamic d882501
     - Update the application to consume colors from `ThemeProvider` instead of static constants.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Core Theming Infrastructure' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Core Theming Infrastructure' (Protocol in workflow.md)
 
 ## Phase 2: Theme Management UI
 Build the user interface for selecting and uploading themes in the Settings screen.

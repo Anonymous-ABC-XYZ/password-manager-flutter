@@ -76,35 +76,38 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = context.watch<ThemeProvider>();
-    final bentoTheme = themeProvider.currentTheme.toBentoTheme();
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        final bentoTheme = themeProvider.currentTheme.toBentoTheme();
 
-    return MaterialApp(
-      title: 'Password Manager',
-      debugShowCheckedModeBanner: false,
-      home: AuthWrapper(
-        toggleTheme: toggleTheme,
-        isDark: _themeMode == ThemeMode.dark,
-      ),
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: bentoTheme.primary,
-          brightness: Brightness.light,
-        ),
-        useMaterial3: true,
-        extensions: [bentoTheme],
-      ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: bentoTheme.primary,
-          brightness: Brightness.dark,
-          surface: bentoTheme.backgroundDark,
-        ),
-        useMaterial3: true,
-        scaffoldBackgroundColor: bentoTheme.backgroundDark,
-        extensions: [bentoTheme],
-      ),
-      themeMode: _themeMode,
+        return MaterialApp(
+          title: 'Password Manager',
+          debugShowCheckedModeBanner: false,
+          home: AuthWrapper(
+            toggleTheme: toggleTheme,
+            isDark: _themeMode == ThemeMode.dark,
+          ),
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: bentoTheme.primary,
+              brightness: Brightness.light,
+            ),
+            useMaterial3: true,
+            extensions: [bentoTheme],
+          ),
+          darkTheme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: bentoTheme.primary,
+              brightness: Brightness.dark,
+              surface: bentoTheme.backgroundDark,
+            ),
+            useMaterial3: true,
+            scaffoldBackgroundColor: bentoTheme.backgroundDark,
+            extensions: [bentoTheme],
+          ),
+          themeMode: _themeMode,
+        );
+      },
     );
   }
 }

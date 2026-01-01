@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:password_manager/category_selector.dart';
+import 'package:password_manager/bento_constants.dart';
+import 'package:password_manager/theme_model.dart';
 
 void main() {
   testWidgets('CategorySelector displays chips and selects one', (WidgetTester tester) async {
@@ -8,6 +10,9 @@ void main() {
     
     await tester.pumpWidget(
       MaterialApp(
+        theme: ThemeData(
+          extensions: [ThemeModel.bentoDefault.toBentoTheme()],
+        ),
         home: Scaffold(
           body: CategorySelector(
             onSelected: (category) {
