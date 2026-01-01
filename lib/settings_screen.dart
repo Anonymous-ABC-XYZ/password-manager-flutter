@@ -88,6 +88,73 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  void _showThemeInstructions() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: BentoColors.of(context).surfaceDark,
+          title: Text(
+            'Theme JSON Structure',
+            style: BentoStyles.header.copyWith(color: BentoColors.of(context).textWhite),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Your JSON file must contain the following keys with hex color values (e.g. "#FF0000"):',
+                  style: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: BentoColors.of(context).inputBg,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: BentoColors.of(context).inputBorder),
+                  ),
+                  child: Text(
+                    '''
+{
+  "name": "My Custom Theme",
+  "primary": "#...",
+  "onPrimary": "#...",
+  "primaryDark": "#...",
+  "backgroundLight": "#...",
+  "backgroundDark": "#...",
+  "sidebarBg": "#...",
+  "surfaceDark": "#...",
+  "surfaceHover": "#...",
+  "inputBg": "#...",
+  "inputBorder": "#...",
+  "textWhite": "#...",
+  "textMuted": "#...",
+  "secondary": "#...",
+  "tertiary": "#...",
+  "error": "#...",
+  "success": "#...",
+  "otpIsland": "#..."
+}
+                    ''',
+                    style: BentoStyles.mono.copyWith(color: BentoColors.of(context).textWhite, fontSize: 12),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Close', style: BentoStyles.body.copyWith(color: BentoColors.of(context).primary)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -239,17 +306,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton.icon(
-                    onPressed: _uploadTheme,
-                    icon: const Icon(Icons.upload_file),
-                    label: const Text('Upload Theme'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: BentoColors.of(context).secondary,
-                      foregroundColor: BentoColors.of(context).onPrimary,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      textStyle: BentoStyles.body.copyWith(fontWeight: FontWeight.bold),
-                    ),
+                  Row(
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: _uploadTheme,
+                        icon: const Icon(Icons.upload_file),
+                        label: const Text('Upload Theme'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: BentoColors.of(context).secondary,
+                          foregroundColor: BentoColors.of(context).onPrimary,
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          textStyle: BentoStyles.body.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        onPressed: _showThemeInstructions,
+                        icon: Icon(Icons.help_outline, color: BentoColors.of(context).textMuted),
+                        tooltip: 'Theme Instructions',
+                      ),
+                    ],
                   ),
                 ],
               ),
