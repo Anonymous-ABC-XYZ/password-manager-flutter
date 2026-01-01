@@ -28,7 +28,7 @@ Build the user interface for selecting and uploading themes in the Settings scre
     - Integrate `file_picker` to allow users to select JSON files.
     - Implement validation logic to check for required `BentoColors` fields.
     - Display specific error messages (as per spec) for invalid uploads.
-- [~] Task: Implement Theme Selection and UI Refresh
+- [x] Task: Implement Theme Selection and UI Refresh c030f48
     - Update `ThemeProvider` when a user selects a theme from the list.
     - Ensure the UI refreshes immediately.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Theme Management UI' (Protocol in workflow.md)
