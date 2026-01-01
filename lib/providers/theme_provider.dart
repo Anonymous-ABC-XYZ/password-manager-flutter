@@ -8,6 +8,7 @@ class ThemeProvider with ChangeNotifier {
   List<ThemeModel> _availableThemes = [
     ThemeModel.bentoDefault,
     ThemeModel.catppuccinMocha,
+    ThemeModel.rosePine,
   ];
 
   ThemeProvider({required ThemeService themeService}) : _themeService = themeService;
@@ -22,6 +23,7 @@ class ThemeProvider with ChangeNotifier {
     _availableThemes = [
       ThemeModel.bentoDefault,
       ThemeModel.catppuccinMocha,
+      ThemeModel.rosePine,
       ...customThemes,
     ];
 

@@ -162,4 +162,25 @@ class ThemeModel {
     success: const Color(0xFFA6E3A1), // Green
     otpIsland: const Color(0xFFFAB387), // Peach
   );
+
+  static final rosePine = ThemeModel(
+    name: 'Rose Pine',
+    primary: const Color(0xFFebbcba), // Rose
+    onPrimary: const Color(0xFF191724), // Base
+    primaryDark: const Color(0xFF31748f), // Pine
+    backgroundLight: const Color(0xFFfaf4ed), // Surface
+    backgroundDark: const Color(0xFF191724), // Base
+    sidebarBg: const Color(0xFF1f1d2e), // Surface
+    surfaceDark: const Color(0xFF1f1d2e), // Surface
+    surfaceHover: const Color(0xFF26233a), // Overlay
+    inputBg: const Color(0xFF26233a), // Overlay
+    inputBorder: const Color(0xFF6e6a86), // Muted
+    textWhite: const Color(0xFFe0def4), // Text
+    textMuted: const Color(0xFF908caa), // Subtle
+    secondary: const Color(0xFFc4a7e7), // Iris
+    tertiary: const Color(0xFF9ccfd8), // Foam
+    error: const Color(0xFFeb6f92), // Love
+    success: const Color(0xFF31748f), // Pine
+    otpIsland: const Color(0xFFf6c177), // Gold
+  );
 }
