@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 import 'bento_constants.dart';
+import 'providers/theme_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -50,6 +52,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       return Center(child: CircularProgressIndicator(color: BentoColors.of(context).primary));
     }
 
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       backgroundColor: BentoColors.of(context).backgroundDark,
       body: SingleChildScrollView(
@@ -64,14 +68,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(width: 8),
                 Icon(Icons.chevron_right, size: 16, color: BentoColors.of(context).textMuted),
                 const SizedBox(width: 8),
-                Text('Encryption & Auth', style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite, fontSize: 14, fontWeight: FontWeight.w500)),
+                Text('Appearance & Auth', style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite, fontSize: 14, fontWeight: FontWeight.w500)),
               ],
             ),
             const SizedBox(height: 32),
 
             // Title
             Text(
-              'Encryption & Auth',
+              'Appearance & Auth',
               style: BentoStyles.header.copyWith(
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
@@ -81,10 +85,82 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              "Manage your Master Auth Key and advanced security preferences. Keep this key safe; it's the lifeline to your data.",
+              "Manage your themes, Master Auth Key and advanced security preferences. Keep this key safe; it's the lifeline to your data.",
               style: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted, fontSize: 16, height: 1.5),
             ),
             const SizedBox(height: 40),
+
+            // Appearance Card
+            Container(
+              decoration: BoxDecoration(
+                color: BentoColors.of(context).surfaceDark,
+                borderRadius: BentoStyles.borderRadius,
+                border: Border.all(color: BentoColors.of(context).inputBorder.withValues(alpha: 0.5)),
+              ),
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: BentoColors.of(context).primary.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(Icons.color_lens, color: BentoColors.of(context).primary, size: 20),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'Appearance',
+                        style: BentoStyles.header.copyWith(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: BentoColors.of(context).textWhite,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  ...themeProvider.availableThemes.map((theme) {
+                    return Theme(
+                      data: Theme.of(context).copyWith(
+                        unselectedWidgetColor: BentoColors.of(context).textMuted,
+                      ),
+                      child: RadioListTile<String>(
+                        title: Text(theme.name, style: TextStyle(color: BentoColors.of(context).textWhite)),
+                        value: theme.name,
+                        groupValue: themeProvider.currentTheme.name,
+                        onChanged: (value) {
+                          if (value != null) {
+                            themeProvider.setTheme(theme);
+                          }
+                        },
+                        activeColor: BentoColors.of(context).primary,
+                        contentPadding: EdgeInsets.zero,
+                      ),
+                    );
+                  }).toList(),
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      // TODO: Implement JSON theme upload
+                    },
+                    icon: const Icon(Icons.upload_file),
+                    label: const Text('Upload Theme'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: BentoColors.of(context).secondary,
+                      foregroundColor: BentoColors.of(context).onPrimary,
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      textStyle: BentoStyles.body.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
 
             // Master Auth Key Card
             Container(
