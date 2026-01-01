@@ -36,7 +36,7 @@ Build the user interface for selecting and uploading themes in the Settings scre
 ## Phase 3: Polish and Pre-bundled Themes
 Add default themes and ensure a seamless user experience.
 
-- [~] Task: Bundle "Catppuccin Mocha" theme
+- [x] Task: Bundle "Catppuccin Mocha" theme a5c9e00
     - Create the JSON/Model for Catppuccin Mocha.
     - Include it in the initial state of the `ThemeService`.
 - [ ] Task: Final UI Polish
