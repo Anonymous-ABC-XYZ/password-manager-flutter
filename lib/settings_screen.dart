@@ -89,6 +89,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showThemeInstructions() {
+    const jsonString = '''
+{
+  "name": "My Custom Theme",
+  "primary": "#...",
+  "onPrimary": "#...",
+  "primaryDark": "#...",
+  "backgroundLight": "#...",
+  "backgroundDark": "#...",
+  "sidebarBg": "#...",
+  "surfaceDark": "#...",
+  "surfaceHover": "#...",
+  "inputBg": "#...",
+  "inputBorder": "#...",
+  "textWhite": "#...",
+  "textMuted": "#...",
+  "secondary": "#...",
+  "tertiary": "#...",
+  "error": "#...",
+  "success": "#...",
+  "otpIsland": "#..."
+}
+''';
+
     showDialog(
       context: context,
       builder: (context) {
@@ -115,30 +138,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: BentoColors.of(context).inputBorder),
                   ),
-                  child: Text(
-                    '''
-{
-  "name": "My Custom Theme",
-  "primary": "#...",
-  "onPrimary": "#...",
-  "primaryDark": "#...",
-  "backgroundLight": "#...",
-  "backgroundDark": "#...",
-  "sidebarBg": "#...",
-  "surfaceDark": "#...",
-  "surfaceHover": "#...",
-  "inputBg": "#...",
-  "inputBorder": "#...",
-  "textWhite": "#...",
-  "textMuted": "#...",
-  "secondary": "#...",
-  "tertiary": "#...",
-  "error": "#...",
-  "success": "#...",
-  "otpIsland": "#..."
-}
-                    ''',
-                    style: BentoStyles.mono.copyWith(color: BentoColors.of(context).textWhite, fontSize: 12),
+                  child: Stack(
+                    children: [
+                      SelectableText(
+                        jsonString,
+                        style: BentoStyles.mono.copyWith(color: BentoColors.of(context).textWhite, fontSize: 12),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: IconButton(
+                          icon: Icon(Icons.copy, size: 16, color: BentoColors.of(context).textMuted),
+                          onPressed: () {
+                            Clipboard.setData(const ClipboardData(text: jsonString));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('JSON structure copied to clipboard')),
+                            );
+                          },
+                          tooltip: 'Copy JSON',
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
