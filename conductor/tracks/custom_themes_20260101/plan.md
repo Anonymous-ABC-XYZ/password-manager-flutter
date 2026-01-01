@@ -2,7 +2,7 @@
 
 This plan outlines the implementation of a dynamic theming system, allowing for pre-bundled themes and custom JSON theme uploads.
 
-## Phase 1: Core Theming Infrastructure
+## Phase 1: Core Theming Infrastructure [checkpoint: d882501]
 Establish the data models, persistence logic, and the global theme state management.
 
 - [x] Task: Create `ThemeModel` to represent a color scheme 1f6d040
