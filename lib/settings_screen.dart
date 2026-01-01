@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:convert';
 import 'bento_constants.dart';
 import 'providers/theme_provider.dart';
+import 'theme_model.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -42,6 +45,45 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Auth Key saved successfully')),
         );
+      }
+    }
+  }
+
+  Future<void> _uploadTheme() async {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
+
+    if (result != null) {
+      try {
+        final file = result.files.single;
+        final content = utf8.decode(file.bytes!);
+        final json = jsonDecode(content) as Map<String, dynamic>;
+
+        // Basic validation
+        final requiredKeys = ['name', 'primary', 'onPrimary', 'backgroundDark', 'surfaceDark', 'textWhite', 'textMuted'];
+        final missingKeys = requiredKeys.where((key) => !json.containsKey(key)).toList();
+
+        if (missingKeys.isNotEmpty) {
+          throw Exception('Invalid theme file. Missing required keys: ${missingKeys.join(', ')}');
+        }
+        
+        final newTheme = ThemeModel.fromJson(json);
+        await themeProvider.addTheme(newTheme);
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Theme "${newTheme.name}" uploaded successfully!')),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error uploading theme: $e')),
+          );
+        }
       }
     }
   }
@@ -144,9 +186,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   }).toList(),
                   const SizedBox(height: 16),
                   ElevatedButton.icon(
-                    onPressed: () {
-                      // TODO: Implement JSON theme upload
-                    },
+                    onPressed: _uploadTheme,
                     icon: const Icon(Icons.upload_file),
                     label: const Text('Upload Theme'),
                     style: ElevatedButton.styleFrom(
