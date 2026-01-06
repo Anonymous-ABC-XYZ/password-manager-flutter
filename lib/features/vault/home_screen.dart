@@ -6,12 +6,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'core/dbinit.dart';
+import 'package:password_manager/core/dbinit.dart';
 import 'package:password_manager/core/utils/bento_constants.dart';
-import 'identity_tile.dart';
-import 'otp_island.dart';
-import 'secure_credentials_tile.dart';
-import 'home_header.dart';
+import 'package:password_manager/identity_tile.dart';
+import 'package:password_manager/otp_island.dart';
+import 'package:password_manager/secure_credentials_tile.dart';
+import 'package:password_manager/home_header.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

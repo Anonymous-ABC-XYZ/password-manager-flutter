@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'package:password_manager/credential_repository.dart';
-import 'package:password_manager/credential_model.dart';
+import 'package:password_manager/features/vault/credential_repository.dart';
+import 'package:password_manager/features/vault/credential_model.dart';
 
 void main() {
   late Database db;

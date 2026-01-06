@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:password_manager/credential_model.dart';
+import 'package:password_manager/features/vault/credential_model.dart';
 
 void main() {
   test('Credential model supports category', () {

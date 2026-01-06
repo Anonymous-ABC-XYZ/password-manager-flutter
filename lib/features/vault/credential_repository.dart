@@ -1,5 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import 'credential_model.dart';
+import 'package:password_manager/features/vault/credential_model.dart';
 
 class CredentialRepository {
   final Database _db;
