@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
 import 'bento_constants.dart';
+import 'stitch_bottom_sheet.dart';
 
 class SplashScreen extends StatefulWidget {
   final Function(BuildContext)? onAuthComplete;
@@ -65,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final clientSecret = _clientSecretController.text.trim();
 
     if (clientId.isEmpty || clientSecret.isEmpty) {
-      _showGoogleConfigDialog();
+      _showGoogleConfigSheet();
       return;
     }
 
@@ -107,7 +108,7 @@ class _SplashScreenState extends State<SplashScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: const Text('DuckDuckGo auth key saved'), backgroundColor: BentoColors.of(context).primary),
       );
-      Navigator.of(context).pop(); // Close dialog
+      Navigator.of(context).pop(); // Close sheet
       _checkCompletion();
     }
   }
@@ -120,97 +121,107 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  void _showGoogleConfigDialog() {
-    showDialog(
+  void _showGoogleConfigSheet() {
+    StitchBottomSheet.show(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: BentoColors.of(context).surfaceDark,
-        title: Text('Configure Google OAuth', style: BentoStyles.header.copyWith(color: BentoColors.of(context).textWhite)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _clientIdController,
-              style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
-              decoration: InputDecoration(
-                labelText: 'Client ID',
-                labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
-                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).textMuted)),
-                focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).primary)),
+      title: 'Configure Google OAuth',
+      child: Column(
+        children: [
+          TextField(
+            controller: _clientIdController,
+            style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
+            decoration: InputDecoration(
+              labelText: 'Client ID',
+              labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+              filled: true,
+              fillColor: BentoColors.of(context).inputBg,
+              border: OutlineInputBorder(
+                borderRadius: BentoStyles.inputBorderRadius,
+                borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BentoStyles.inputBorderRadius,
+                borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
               ),
             ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _clientSecretController,
-              obscureText: true,
-              style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
-              decoration: InputDecoration(
-                labelText: 'Client Secret',
-                labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
-                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).textMuted)),
-                focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).primary)),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted)),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _handleGoogleSignIn();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: BentoColors.of(context).primary,
-              foregroundColor: BentoColors.of(context).onPrimary,
+          const SizedBox(height: 16),
+          TextField(
+            controller: _clientSecretController,
+            obscureText: true,
+            style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
+            decoration: InputDecoration(
+              labelText: 'Client Secret',
+              labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+              filled: true,
+              fillColor: BentoColors.of(context).inputBg,
+              border: OutlineInputBorder(
+                borderRadius: BentoStyles.inputBorderRadius,
+                borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BentoStyles.inputBorderRadius,
+                borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+              ),
             ),
-            child: Text('Sign In', style: BentoStyles.body.copyWith(fontWeight: FontWeight.bold)),
           ),
         ],
       ),
+      actions: [
+        FilledButton(
+          onPressed: () {
+            Navigator.pop(context);
+            _handleGoogleSignIn();
+          },
+          style: FilledButton.styleFrom(
+            backgroundColor: BentoColors.of(context).primary,
+            foregroundColor: BentoColors.of(context).onPrimary,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+          child: const Text('Sign In'),
+        ),
+      ],
     );
   }
 
-  void _showDuckConfigDialog() {
-    showDialog(
+  void _showDuckConfigSheet() {
+    StitchBottomSheet.show(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: BentoColors.of(context).surfaceDark,
-        title: Text('Configure DuckDuckGo', style: BentoStyles.header.copyWith(color: BentoColors.of(context).textWhite)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _duckAuthController,
-              obscureText: true,
-              style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
-              decoration: InputDecoration(
-                labelText: 'Authorization Key',
-                labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
-                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).textMuted)),
-                focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).primary)),
+      title: 'Configure DuckDuckGo',
+      child: Column(
+        children: [
+          TextField(
+            controller: _duckAuthController,
+            obscureText: true,
+            style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
+            decoration: InputDecoration(
+              labelText: 'Authorization Key',
+              labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+              filled: true,
+              fillColor: BentoColors.of(context).inputBg,
+              border: OutlineInputBorder(
+                borderRadius: BentoStyles.inputBorderRadius,
+                borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BentoStyles.inputBorderRadius,
+                borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
               ),
             ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel', style: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted)),
-          ),
-          ElevatedButton(
-            onPressed: _handleDuckAuthSave,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: BentoColors.of(context).primary,
-              foregroundColor: BentoColors.of(context).onPrimary,
-            ),
-            child: Text('Save', style: BentoStyles.body.copyWith(fontWeight: FontWeight.bold)),
           ),
         ],
       ),
+      actions: [
+        FilledButton(
+          onPressed: _handleDuckAuthSave,
+          style: FilledButton.styleFrom(
+            backgroundColor: BentoColors.of(context).primary,
+            foregroundColor: BentoColors.of(context).onPrimary,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+          child: const Text('Save'),
+        ),
+      ],
     );
   }
 
@@ -220,165 +231,145 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: BentoColors.of(context).backgroundDark,
       body: Stack(
         children: [
-          // Background Blobs
+          // Background Blobs (Stitch Aesthetic)
           Positioned(
-            top: -100,
+            top: -150,
             left: -100,
             child: Container(
               width: 500,
               height: 500,
               decoration: BoxDecoration(
-                color: BentoColors.of(context).primary.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-                boxShadow: [BoxShadow(blurRadius: 120, color: BentoColors.of(context).primary)],
+                gradient: RadialGradient(
+                  colors: [
+                    BentoColors.of(context).primary.withValues(alpha: 0.2),
+                    Colors.transparent,
+                  ],
+                ),
               ),
             ),
           ),
           Positioned(
-            bottom: -100,
+            bottom: -150,
             right: -100,
             child: Container(
               width: 500,
               height: 500,
               decoration: BoxDecoration(
-                color: BentoColors.of(context).primary.withValues(alpha: 0.05),
-                shape: BoxShape.circle,
-                boxShadow: [BoxShadow(blurRadius: 100, color: BentoColors.of(context).primary)],
+                gradient: RadialGradient(
+                  colors: [
+                    BentoColors.of(context).secondary.withValues(alpha: 0.15),
+                    Colors.transparent,
+                  ],
+                ),
               ),
             ),
           ),
           
-          Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 48),
-
-                  // Main Card
-                  Container(
-                    constraints: const BoxConstraints(maxWidth: 500),
-                    padding: const EdgeInsets.all(40),
-                    decoration: BoxDecoration(
-                      color: BentoColors.of(context).surfaceDark,
-                      borderRadius: SplashStyles.borderRadius,
-                      border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.3),
-                          blurRadius: 30,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
+                  if (context.watch<AuthProvider>().errorMessage != null)
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 24),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.red.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.error_outline, color: Colors.redAccent, size: 20),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              context.watch<AuthProvider>().errorMessage!,
+                              style: BentoStyles.body.copyWith(color: Colors.redAccent, fontSize: 14),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        if (context.watch<AuthProvider>().errorMessage != null)
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 24),
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: Colors.red.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.error_outline, color: Colors.redAccent, size: 20),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Text(
-                                    context.watch<AuthProvider>().errorMessage!,
-                                    style: BentoStyles.body.copyWith(color: Colors.redAccent, fontSize: 14),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        Text(
-                          "Let's get you secured",
-                          textAlign: TextAlign.center,
-                          style: BentoStyles.header.copyWith(
-                            fontSize: 32,
-                            fontWeight: FontWeight.w900,
-                            color: Colors.white,
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          "Your digital safe house is ready. Choose your preferred secure method to create your encrypted vault.",
-                          textAlign: TextAlign.center,
-                          style: BentoStyles.body.copyWith(
-                            color: BentoColors.of(context).textMuted,
-                            fontSize: 16,
-                            height: 1.5,
-                          ),
-                        ),
-                        const SizedBox(height: 32),
-
-                        // Auth Options
-                        _buildAuthCard(
-                          icon: Icons.g_mobiledata, // Placeholder for Google Logo
-                          title: 'Continue with Google',
-                          subtitle: 'Fast and secure access',
-                          color: const Color(0xFF4285F4),
-                          isChecked: _isGoogleSignedIn,
-                          onTap: _isGoogleSignedIn ? null : (_clientIdController.text.isEmpty ? _showGoogleConfigDialog : _handleGoogleSignIn),
-                        ),
-                        const SizedBox(height: 16),
-                        _buildAuthCard(
-                          icon: Icons.shield,
-                          title: 'Continue with DuckDuckGo',
-                          subtitle: 'Privacy-focused protection',
-                          color: const Color(0xFFDE5833),
-                          isChecked: _isDuckAuthSaved,
-                          onTap: _showDuckConfigDialog,
-                        ),
-                        
-                        const SizedBox(height: 24),
-                        const Row(
-                          children: [
-                            Expanded(child: Divider(color: Colors.white10)),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              child: Text('OR', style: TextStyle(color: Colors.white30, fontSize: 12, fontWeight: FontWeight.bold)),
-                            ),
-                            Expanded(child: Divider(color: Colors.white10)),
-                          ],
-                        ),
-                         const SizedBox(height: 24),
-                         
-                         TextButton.icon(
-                           onPressed: () {
-                             if (_isGoogleSignedIn && _isDuckAuthSaved) {
-                               _checkCompletion();
-                             } else {
-                               ScaffoldMessenger.of(context).showSnackBar(
-                                 const SnackBar(content: Text('Please complete setup first.')),
-                               );
-                             }
-                           },
-                           icon: Icon(Icons.password, color: BentoColors.of(context).textMuted),
-                           label: Text(
-                             'Enter App',
-                             style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
-                           ),
-                         ),
-                      ],
+                    
+                  const Spacer(),
+                  
+                  // Branding
+                  Icon(
+                    Icons.lock_person_rounded,
+                    size: 64,
+                    color: BentoColors.of(context).primary,
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    "Let's get you secured",
+                    textAlign: TextAlign.center,
+                    style: BentoStyles.header.copyWith(
+                      fontSize: 36,
+                      height: 1.1,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Your digital safe house is ready. Choose your secure method to enter.",
+                    textAlign: TextAlign.center,
+                    style: BentoStyles.body.copyWith(
+                      color: BentoColors.of(context).textMuted,
+                      fontSize: 16,
+                      height: 1.5,
                     ),
                   ),
                   
-                  const SizedBox(height: 32),
-                  const Text(
-                    'Terms of Service • Privacy Policy',
-                    style: TextStyle(color: Colors.white30, fontSize: 12),
+                  const Spacer(),
+
+                  // Auth Options (Full Bleed / Stretched)
+                  _buildAuthButton(
+                    context,
+                    icon: Icons.g_mobiledata, 
+                    title: 'Continue with Google',
+                    color: const Color(0xFF4285F4),
+                    isChecked: _isGoogleSignedIn,
+                    onTap: _isGoogleSignedIn ? null : (_clientIdController.text.isEmpty ? _showGoogleConfigSheet : _handleGoogleSignIn),
                   ),
+                  const SizedBox(height: 16),
+                  _buildAuthButton(
+                    context,
+                    icon: Icons.shield,
+                    title: 'Continue with DuckDuckGo',
+                    color: const Color(0xFFDE5833),
+                    isChecked: _isDuckAuthSaved,
+                    onTap: _showDuckConfigSheet,
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  
+                   TextButton.icon(
+                     onPressed: () {
+                       if (_isGoogleSignedIn && _isDuckAuthSaved) {
+                         _checkCompletion();
+                       } else {
+                         ScaffoldMessenger.of(context).showSnackBar(
+                           const SnackBar(content: Text('Please complete setup first.')),
+                         );
+                       }
+                     },
+                     icon: Icon(Icons.login, color: BentoColors.of(context).textMuted),
+                     label: Text(
+                       'Enter App',
+                       style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
+                     ),
+                   ),
+                   
+                   const SizedBox(height: 16),
                 ],
               ),
             ),
           ),
+          
           if (_isLoading)
             Container(
               color: Colors.black54,
@@ -389,62 +380,44 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Widget _buildAuthCard({
+  Widget _buildAuthButton(
+    BuildContext context, {
     required IconData icon,
     required String title,
-    required String subtitle,
     required Color color,
     required bool isChecked,
     VoidCallback? onTap,
   }) {
+    final bento = BentoColors.of(context);
+    
     return Material(
-      color: BentoColors.of(context).surfaceHover,
+      color: bento.surfaceHover,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
-        hoverColor: BentoColors.of(context).surfaceHover.withValues(alpha: 0.8),
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-            borderRadius: BorderRadius.circular(16),
+             border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+             borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
             children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(isChecked ? Icons.check : icon, color: Colors.white, size: 24),
-              ),
+              Icon(isChecked ? Icons.check_circle : icon, color: isChecked ? bento.success : color, size: 28),
               const SizedBox(width: 16),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: BentoStyles.body.copyWith(
-                        color: BentoColors.of(context).textWhite,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      subtitle,
-                      style: BentoStyles.body.copyWith(
-                        color: BentoColors.of(context).textMuted,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  title,
+                  style: BentoStyles.body.copyWith(
+                    color: bento.textWhite,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
-              const Icon(Icons.arrow_forward_ios, color: Colors.white24, size: 16),
+              if (!isChecked)
+                Icon(Icons.arrow_forward, color: bento.textMuted, size: 20),
             ],
           ),
         ),
