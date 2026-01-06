@@ -8,7 +8,7 @@ import 'package:password_manager/features/settings/theme_model.dart';
 import 'package:provider/provider.dart';
 import 'package:mocktail/mocktail.dart';
 
-import 'package:password_manager/stitch_bottom_sheet.dart';
+import 'package:password_manager/core/widgets/stitch_bottom_sheet.dart';
 
 // Create a mock for AuthProvider
 class MockAuthProvider extends Mock implements AuthProvider {}

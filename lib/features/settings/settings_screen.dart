@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:password_manager/core/utils/bento_constants.dart';
 import 'package:password_manager/features/settings/theme_provider.dart';
 import 'package:password_manager/features/settings/theme_model.dart';
-import 'package:password_manager/stitch_bottom_sheet.dart';
+import 'package:password_manager/core/widgets/stitch_bottom_sheet.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
