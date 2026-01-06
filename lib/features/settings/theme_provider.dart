@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../theme_model.dart';
-import '../theme_service.dart';
+import 'package:password_manager/features/settings/theme_model.dart';
+import 'package:password_manager/features/settings/theme_service.dart';
 
 class ThemeProvider with ChangeNotifier {
   final ThemeService _themeService;

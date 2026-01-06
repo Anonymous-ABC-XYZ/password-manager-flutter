@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:password_manager/providers/theme_provider.dart';
-import 'package:password_manager/theme_service.dart';
-import 'package:password_manager/theme_model.dart';
+import 'package:password_manager/features/settings/theme_provider.dart';
+import 'package:password_manager/features/settings/theme_service.dart';
+import 'package:password_manager/features/settings/theme_model.dart';
 
 class MockThemeService extends Mock implements ThemeService {}
 

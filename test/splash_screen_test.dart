@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:password_manager/features/auth/splash_screen.dart';
 import 'package:password_manager/features/auth/auth_provider.dart';
-import 'package:password_manager/providers/theme_provider.dart';
-import 'package:password_manager/theme_service.dart';
-import 'package:password_manager/theme_model.dart';
+import 'package:password_manager/features/settings/theme_provider.dart';
+import 'package:password_manager/features/settings/theme_service.dart';
+import 'package:password_manager/features/settings/theme_model.dart';
 import 'package:provider/provider.dart';
 import 'package:mocktail/mocktail.dart';
 

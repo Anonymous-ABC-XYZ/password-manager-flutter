@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:convert';
 import 'package:password_manager/core/utils/bento_constants.dart';
-import 'providers/theme_provider.dart';
-import 'theme_model.dart';
-import 'stitch_bottom_sheet.dart';
+import 'package:password_manager/features/settings/theme_provider.dart';
+import 'package:password_manager/features/settings/theme_model.dart';
+import 'package:password_manager/stitch_bottom_sheet.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

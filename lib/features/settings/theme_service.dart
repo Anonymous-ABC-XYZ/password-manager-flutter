@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'theme_model.dart';
+import 'package:password_manager/features/settings/theme_model.dart';
 
 class ThemeService {
   final File? _customFile;
