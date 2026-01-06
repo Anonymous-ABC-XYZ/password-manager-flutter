@@ -22,7 +22,7 @@ Address user feedback to allow entry without Google/DuckDuckGo authentication (O
 
 - [x] Task: Update `SplashScreen` to include a "Skip" or "Guest Mode" button. c315188
 - [x] Task: Ensure app functionality persists without auth tokens (graceful degradation). c315188
-- [ ] Task: Conductor - User Manual Verification 'Phase 2.5: Auth Refinement' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2.5: Auth Refinement' (Protocol in workflow.md) [checkpoint: 54bf40e]
 
 ## Phase 3: Main Navigation & App Scaffold
 Update the core navigation structure to prioritize a refined mobile Bottom Navigation Bar.
@@ -30,13 +30,12 @@ Update the core navigation structure to prioritize a refined mobile Bottom Navig
 - [x] Task: Refactor `MyHomePage` in `lib/main.dart` to use a modern `NavigationBar` with optimized icons and labels. 6c8cf9c
 - [x] Task: Implement smooth page transitions between Vault, Credentials, and Settings. 2d7a622
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Main Navigation' (Protocol in workflow.md) [checkpoint: bbc5832]
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Main Navigation' (Protocol in workflow.md)
 
 ## Phase 4: Vault Dashboard & Entry Form
 Redesign the "Home" screen as a dashboard for adding and managing credentials with the new aesthetic.
 
-- [ ] Task: Write tests for the mobile-optimized credential entry form.
-- [ ] Task: Redesign `lib/home_screen.dart` using "Stitch" input fields and dashboard components.
+- [x] Task: Write tests for the mobile-optimized credential entry form. 0a3b232
+- [x] Task: Redesign `lib/home_screen.dart` using "Stitch" input fields and dashboard components. af0dfa9
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Vault Dashboard' (Protocol in workflow.md)
 
 ## Phase 5: Credentials List & Detail View
