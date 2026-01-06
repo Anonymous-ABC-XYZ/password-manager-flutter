@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'bento_constants.dart';
+import 'package:password_manager/core/utils/bento_constants.dart';
 import 'category_selector.dart';
 
 class IdentityTile extends StatelessWidget {

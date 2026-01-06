@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'credential_model.dart';
-import 'bento_constants.dart';
+import 'package:password_manager/core/utils/bento_constants.dart';
 
 class CredentialDetailScreen extends StatefulWidget {
   final Credential credential;

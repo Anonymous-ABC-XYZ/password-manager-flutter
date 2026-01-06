@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'bento_constants.dart';
+import 'package:password_manager/core/utils/bento_constants.dart';
 
 class CredentialsHeader extends StatelessWidget {
   final int count;

@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:convert';
-import 'bento_constants.dart';
+import 'package:password_manager/core/utils/bento_constants.dart';
 import 'providers/theme_provider.dart';
 import 'theme_model.dart';
 import 'stitch_bottom_sheet.dart';

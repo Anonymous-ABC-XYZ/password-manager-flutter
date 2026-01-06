@@ -5,7 +5,7 @@ import 'package:password_manager/providers/auth_provider.dart';
 import 'package:password_manager/providers/theme_provider.dart';
 import 'package:password_manager/theme_service.dart';
 import 'package:password_manager/theme_model.dart';
-import 'package:password_manager/bento_constants.dart';
+import 'package:password_manager/core/utils/bento_constants.dart';
 import 'package:provider/provider.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -71,6 +71,6 @@ void main() {
 
     // We check for the NEW expected style.
     expect(decoration.filled, isTrue);
-    expect(decoration.fillColor, const Color(0xFF0F172A)); // BentoColors.inputBg
+    expect(decoration.fillColor, ThemeModel.bentoDefault.inputBg);
   });
 }

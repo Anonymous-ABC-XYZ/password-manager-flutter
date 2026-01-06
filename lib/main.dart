@@ -12,7 +12,7 @@ import 'package:password_manager/providers/theme_provider.dart';
 import 'package:password_manager/theme_service.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqlite3/open.dart';
-import 'bento_constants.dart';
+import 'package:password_manager/core/utils/bento_constants.dart';
 import 'sidebar_navigation.dart';
 
 Future main() async {

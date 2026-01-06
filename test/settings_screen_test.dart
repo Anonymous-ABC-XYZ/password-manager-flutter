@@ -6,7 +6,7 @@ import 'package:password_manager/providers/auth_provider.dart';
 import 'package:password_manager/providers/theme_provider.dart';
 import 'package:password_manager/theme_service.dart';
 import 'package:password_manager/theme_model.dart';
-import 'package:password_manager/bento_constants.dart';
+import 'package:password_manager/core/utils/bento_constants.dart';
 import 'package:provider/provider.dart';
 import 'package:mocktail/mocktail.dart';
 

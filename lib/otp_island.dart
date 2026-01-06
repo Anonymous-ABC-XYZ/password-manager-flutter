@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import 'providers/auth_provider.dart';
-import 'bento_constants.dart';
+import 'package:password_manager/core/utils/bento_constants.dart';
 
 class OtpIsland extends StatefulWidget {
   final TextEditingController controller;

@@ -7,7 +7,7 @@ import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'core/dbinit.dart';
-import 'bento_constants.dart';
+import 'package:password_manager/core/utils/bento_constants.dart';
 import 'identity_tile.dart';
 import 'otp_island.dart';
 import 'secure_credentials_tile.dart';

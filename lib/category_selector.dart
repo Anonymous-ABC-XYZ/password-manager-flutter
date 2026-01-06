@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'bento_constants.dart';
+import 'package:password_manager/core/utils/bento_constants.dart';
 
 class CategorySelector extends StatefulWidget {
   final Function(String) onSelected;
