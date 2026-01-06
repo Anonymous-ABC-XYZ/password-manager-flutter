@@ -113,38 +113,38 @@ class BentoColors {
   }
 
   // Fallback static values for non-context access if needed (optional)
-  static const backgroundDark = Color(0xFF01082D);
-  static const primary = Color(0xFF00DFC3);
-  static const onPrimary = Color(0xFF001E26);
-  static const textWhite = Color(0xFFFFFFFF);
-  static const textMuted = Color(0xFF89D6E8);
-  static const surfaceDark = Color(0xFF041D56);
-  static const surfaceHover = Color(0xFF0F2573);
-  static const inputBg = Color(0xFF0B1A40);
-  static const inputBorder = Color(0xFF266CA9);
-  static const secondary = Color(0xFFADE1FB);
-  static const error = Color(0xFFEF4444);
+  static const backgroundDark = Color(0xFF0F172A); // Slate 900
+  static const primary = Color(0xFF6366F1); // Indigo 500
+  static const onPrimary = Color(0xFFFFFFFF);
+  static const textWhite = Color(0xFFF8FAFC); // Slate 50
+  static const textMuted = Color(0xFF94A3B8); // Slate 400
+  static const surfaceDark = Color(0xFF1E293B); // Slate 800
+  static const surfaceHover = Color(0xFF334155); // Slate 700
+  static const inputBg = Color(0xFF0F172A); // Slate 900
+  static const inputBorder = Color(0xFF334155); // Slate 700
+  static const secondary = Color(0xFF818CF8); // Indigo 400
+  static const error = Color(0xFFEF4444); // Red 500
 }
 
 class SplashStyles {
-  static final borderRadius = BorderRadius.circular(32.0); // 2rem
-  static final cardBorderRadius = BorderRadius.circular(16.0); // 1rem
+  static final borderRadius = BorderRadius.circular(24.0);
+  static final cardBorderRadius = BorderRadius.circular(16.0);
   static final boxShadow = [
     BoxShadow(
-      color: const Color.fromRGBO(0, 223, 195, 0.25), // Teal glow
-      blurRadius: 20,
-      offset: const Offset(0, 0),
+      color: Colors.black.withValues(alpha: 0.3),
+      blurRadius: 30,
+      offset: const Offset(0, 10),
     ),
   ];
 }
 
 class BentoStyles {
-  static final borderRadius = BorderRadius.circular(32.0); // 2rem
-  static final inputBorderRadius = BorderRadius.circular(16.0); // 1rem
+  static final borderRadius = BorderRadius.circular(24.0);
+  static final inputBorderRadius = BorderRadius.circular(12.0);
   static final cardBorderRadius = BorderRadius.circular(16.0);
 
-  // Hybrid Font Strategy
-  static TextStyle get header => GoogleFonts.bricolageGrotesque(textStyle: const TextStyle(inherit: true));
-  static TextStyle get body => GoogleFonts.plusJakartaSans(textStyle: const TextStyle(inherit: true));
+  // Hybrid Font Strategy - Optimized for Stitch (Mobile-First)
+  static TextStyle get header => GoogleFonts.outfit(textStyle: const TextStyle(inherit: true, fontWeight: FontWeight.bold));
+  static TextStyle get body => GoogleFonts.inter(textStyle: const TextStyle(inherit: true));
   static TextStyle get mono => GoogleFonts.jetBrainsMono(textStyle: const TextStyle(inherit: true));
 }

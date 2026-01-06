@@ -10,7 +10,7 @@ class ThemeService {
   ThemeService({File? customFile}) : _customFile = customFile;
 
   Future<File> get _file async {
-    if (_customFile != null) return _customFile!;
+    if (_customFile != null) return _customFile;
     final directory = await getApplicationDocumentsDirectory();
     return File(join(directory.path, 'themes.json'));
   }

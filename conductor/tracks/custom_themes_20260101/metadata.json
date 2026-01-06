@@ -1,8 +1,0 @@
-{
-  "track_id": "custom_themes_20260101",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-01-01T00:00:00Z",
-  "updated_at": "2026-01-01T00:00:00Z",
-  "description": "I want to creeate a feature where the user can choose their own colorscheme or upload a json file to create a new colorscheme. This should be sometrhing like the ide implementation of plugins with catppuccin colorschemes"
-}
