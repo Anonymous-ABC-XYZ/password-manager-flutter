@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:password_manager/credential_detail_screen.dart';
+import 'package:password_manager/features/vault/credential_detail_screen.dart';
 import 'package:password_manager/features/vault/credential_model.dart';
 import 'package:password_manager/providers/theme_provider.dart';
 import 'package:password_manager/theme_service.dart';

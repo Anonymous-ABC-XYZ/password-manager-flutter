@@ -2,10 +2,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:password_manager/core/dbinit.dart';
 import 'package:password_manager/core/utils/bento_constants.dart';
-import 'package:password_manager/credentials_header.dart';
-import 'package:password_manager/category_filter_bar.dart';
+import 'package:password_manager/features/vault/widgets/credentials_header.dart';
+import 'package:password_manager/features/vault/widgets/category_filter_bar.dart';
 import 'package:password_manager/features/vault/credential_model.dart';
-import 'package:password_manager/credential_focus_card.dart';
+import 'package:password_manager/features/vault/widgets/credential_focus_card.dart';
 
 class PasswordsPage extends StatefulWidget {
   const PasswordsPage({super.key});
