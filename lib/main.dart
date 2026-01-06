@@ -128,6 +128,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: selectedIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onDestinationSelected: (value) {
                     setState(() {
                       selectedIndex = value;
+                      _pageController.jumpToPage(value);
                     });
                   },
                   onThemeToggle: widget.toggleTheme,
@@ -160,8 +174,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: Container(
                     color: bento.backgroundDark,
-                    child: IndexedStack(
-                      index: selectedIndex,
+                    child: PageView(
+                      controller: _pageController,
+                      physics: const NeverScrollableScrollPhysics(),
                       children: pages,
                     ),
                   ),
@@ -172,8 +187,9 @@ class _MyHomePageState extends State<MyHomePage> {
         } else {
           return Scaffold(
             backgroundColor: bento.backgroundDark,
-            body: IndexedStack(
-              index: selectedIndex,
+            body: PageView(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
               children: pages,
             ),
             bottomNavigationBar: Container(
@@ -187,6 +203,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 onDestinationSelected: (int index) {
                   setState(() {
                     selectedIndex = index;
+                    _pageController.animateToPage(
+                      index,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOutCubic,
+                    );
                   });
                 },
                 selectedIndex: selectedIndex,
