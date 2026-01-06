@@ -54,6 +54,9 @@ void main() {
     // Verify Buttons
     expect(find.text('Continue with Google'), findsOneWidget);
     expect(find.text('Continue with DuckDuckGo'), findsOneWidget);
+    
+    // Verify Guest Option
+    expect(find.text('Enter as Guest'), findsOneWidget);
   });
 
   testWidgets('Tapping Google button opens StitchBottomSheet', (WidgetTester tester) async {

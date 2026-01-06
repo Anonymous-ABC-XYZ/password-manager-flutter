@@ -345,9 +345,31 @@ class _SplashScreenState extends State<SplashScreen> {
                     onTap: _showDuckConfigSheet,
                   ),
                   
+                  const SizedBox(height: 24),
+
+                  // Guest / Skip Option
+                  TextButton(
+                    onPressed: () {
+                      if (widget.onAuthComplete != null) {
+                        widget.onAuthComplete!(context);
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: BentoColors.of(context).textMuted,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('Enter as Guest'),
+                        const SizedBox(width: 8),
+                        Icon(Icons.arrow_forward, size: 16, color: BentoColors.of(context).textMuted),
+                      ],
+                    ),
+                  ),
+
                   const SizedBox(height: 32),
                   
-                   TextButton.icon(
+                   /* TextButton.icon(
                      onPressed: () {
                        if (_isGoogleSignedIn && _isDuckAuthSaved) {
                          _checkCompletion();
@@ -362,7 +384,7 @@ class _SplashScreenState extends State<SplashScreen> {
                        'Enter App',
                        style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
                      ),
-                   ),
+                   ), */
                    
                    const SizedBox(height: 16),
                 ],
