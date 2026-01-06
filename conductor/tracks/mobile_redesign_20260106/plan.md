@@ -12,9 +12,9 @@ Refine the global theme and constants to support the new "Stitch" aesthetic acro
 ## Phase 2: Mobile-First Splash Screen
 Redesign the onboarding and authentication flow with a full-bleed layout and bottom-sheet configuration.
 
-- [ ] Task: Write tests for `SplashScreen` mobile layout and Bottom Sheet triggers.
-- [ ] Task: Implement new full-bleed UI in `lib/splash_screen.dart` with background blobs and branding.
-- [ ] Task: Transition Google OAuth and DuckDuckGo configuration dialogs to Bottom Sheets.
+- [x] Task: Write tests for `SplashScreen` mobile layout and Bottom Sheet triggers. df20948
+- [x] Task: Implement new full-bleed UI in `lib/splash_screen.dart` with background blobs and branding. df20948
+- [x] Task: Transition Google OAuth and DuckDuckGo configuration dialogs to Bottom Sheets. df20948
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Splash Screen' (Protocol in workflow.md)
 
 ## Phase 3: Main Navigation & App Scaffold
