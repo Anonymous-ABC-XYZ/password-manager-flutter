@@ -5,6 +5,8 @@ import 'credential_card.dart';
 import 'credentials_header.dart';
 import 'category_selector.dart';
 import 'category_filter_bar.dart';
+import 'credential_detail_screen.dart';
+import 'credential_model.dart';
 
 class PasswordsPage extends StatefulWidget {
   const PasswordsPage({super.key});
@@ -175,6 +177,17 @@ class _PasswordsPageState extends State<PasswordsPage> {
     );
   }
 
+  void _navigateToDetail(Map<String, Object?> item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CredentialDetailScreen(
+          credential: Credential.fromMap(item),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,33 +231,106 @@ class _PasswordsPageState extends State<PasswordsPage> {
                           )
                         : LayoutBuilder(
                             builder: (context, constraints) {
-                              int crossAxisCount = 1;
-                              if (constraints.maxWidth > 700) crossAxisCount = 2;
-                              if (constraints.maxWidth > 1100) crossAxisCount = 3;
-                              if (constraints.maxWidth > 1500) crossAxisCount = 4;
+                              // If width is sufficient for grid, use grid. Else, list.
+                              if (constraints.maxWidth > 700) {
+                                int crossAxisCount = 2;
+                                if (constraints.maxWidth > 1100) crossAxisCount = 3;
+                                if (constraints.maxWidth > 1500) crossAxisCount = 4;
 
-                              return GridView.builder(
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: crossAxisCount,
-                                  crossAxisSpacing: 24,
-                                  mainAxisSpacing: 24,
-                                  childAspectRatio: 0.85, // Adjust as needed
-                                  mainAxisExtent: 360, // Fixed height for consistency
-                                ),
-                                itemCount: _filteredCredentials.length,
-                                itemBuilder: (context, index) {
-                                  final item = _filteredCredentials[index];
-                                  return CredentialCard(
-                                    website: item['Website'].toString(),
-                                    username: item['Username'].toString(),
-                                    email: item['Email'].toString(),
-                                    password: item['Password'].toString(),
-                                    category: item['category']?.toString(),
-                                    onDelete: () => removeSite(item['Website'].toString()),
-                                    onEdit: () => _showEditDialog(item),
-                                  );
-                                },
-                              );
+                                return GridView.builder(
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: crossAxisCount,
+                                    crossAxisSpacing: 24,
+                                    mainAxisSpacing: 24,
+                                    childAspectRatio: 0.85, 
+                                    mainAxisExtent: 360, 
+                                  ),
+                                  itemCount: _filteredCredentials.length,
+                                  itemBuilder: (context, index) {
+                                    final item = _filteredCredentials[index];
+                                    return CredentialCard(
+                                      website: item['Website'].toString(),
+                                      username: item['Username'].toString(),
+                                      email: item['Email'].toString(),
+                                      password: item['Password'].toString(),
+                                      category: item['category']?.toString(),
+                                      onDelete: () => removeSite(item['Website'].toString()),
+                                      onEdit: () => _showEditDialog(item),
+                                    );
+                                  },
+                                );
+                              } else {
+                                // Mobile List View
+                                return ListView.separated(
+                                  itemCount: _filteredCredentials.length,
+                                  separatorBuilder: (context, index) => const SizedBox(height: 12),
+                                  itemBuilder: (context, index) {
+                                    final item = _filteredCredentials[index];
+                                    final website = item['Website'].toString();
+                                    final username = item['Username'].toString();
+                                    
+                                    return Material(
+                                      color: BentoColors.of(context).surfaceDark,
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: InkWell(
+                                        onTap: () => _navigateToDetail(item),
+                                        borderRadius: BorderRadius.circular(16),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 48,
+                                                height: 48,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.circular(12),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    website.isNotEmpty ? website[0].toUpperCase() : '?',
+                                                    style: TextStyle(
+                                                      color: BentoColors.of(context).backgroundDark,
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 16),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      website,
+                                                      style: BentoStyles.body.copyWith(
+                                                        color: BentoColors.of(context).textWhite,
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w600,
+                                                      ),
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                    Text(
+                                                      username,
+                                                      style: BentoStyles.body.copyWith(
+                                                        color: BentoColors.of(context).textMuted,
+                                                        fontSize: 14,
+                                                      ),
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Icon(Icons.arrow_forward_ios, size: 16, color: BentoColors.of(context).textMuted.withValues(alpha: 0.5)),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
                             },
                           ),
                   ),
