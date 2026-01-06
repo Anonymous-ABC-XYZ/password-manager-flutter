@@ -131,18 +131,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = HomeScreen(); // "Vault" -> Add Entry / Home
-      case 1:
-        page = PasswordsPage(); // "Credentials" -> List
-      case 2:
-        page = SettingsScreen();
-      default:
-        // Handle placeholders or unimplemented pages
-        page = const Center(child: Text("Coming Soon", style: TextStyle(color: Colors.white)));
-    }
+    final bento = BentoColors.of(context);
+    
+    final List<Widget> pages = [
+      HomeScreen(),
+      PasswordsPage(),
+      SettingsScreen(),
+    ];
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -164,8 +159,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Expanded(
                   child: Container(
-                    color: BentoColors.of(context).backgroundDark,
-                    child: page,
+                    color: bento.backgroundDark,
+                    child: IndexedStack(
+                      index: selectedIndex,
+                      children: pages,
+                    ),
                   ),
                 ),
               ],
@@ -173,37 +171,44 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         } else {
           return Scaffold(
-            backgroundColor: BentoColors.of(context).backgroundDark,
-            body: page,
-            bottomNavigationBar: NavigationBar(
-              onDestinationSelected: (int index) {
-                setState(() {
-                  selectedIndex = index;
-                });
-              },
-              selectedIndex: selectedIndex > 2 ? 0 : selectedIndex, // Handling placeholders safely
-              destinations: const <Widget>[
-                NavigationDestination(
-                  selectedIcon: Icon(Icons.lock),
-                  icon: Icon(Icons.lock_outline),
-                  label: 'Vault',
-                ),
-                NavigationDestination(
-                  selectedIcon: Icon(Icons.list_alt),
-                  icon: Icon(Icons.list),
-                  label: 'Credentials',
-                ),
-                NavigationDestination(
-                  selectedIcon: Icon(Icons.settings),
-                  icon: Icon(Icons.settings_outlined),
-                  label: 'Settings',
-                ),
-              ],
+            backgroundColor: bento.backgroundDark,
+            body: IndexedStack(
+              index: selectedIndex,
+              children: pages,
             ),
-             floatingActionButton: FloatingActionButton(
-               onPressed: widget.toggleTheme,
-               child: Icon(widget.isDark ? Icons.light_mode : Icons.dark_mode),
-             ),
+            bottomNavigationBar: Container(
+              decoration: BoxDecoration(
+                border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+              ),
+              child: NavigationBar(
+                backgroundColor: bento.surfaceDark,
+                indicatorColor: bento.primary.withValues(alpha: 0.1),
+                elevation: 0,
+                onDestinationSelected: (int index) {
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                },
+                selectedIndex: selectedIndex,
+                destinations: <Widget>[
+                  NavigationDestination(
+                    selectedIcon: Icon(Icons.shield, color: bento.primary),
+                    icon: Icon(Icons.shield_outlined, color: bento.textMuted),
+                    label: 'Vault',
+                  ),
+                  NavigationDestination(
+                    selectedIcon: Icon(Icons.key, color: bento.primary),
+                    icon: Icon(Icons.key_outlined, color: bento.textMuted),
+                    label: 'Credentials',
+                  ),
+                  NavigationDestination(
+                    selectedIcon: Icon(Icons.settings, color: bento.primary),
+                    icon: Icon(Icons.settings_outlined, color: bento.textMuted),
+                    label: 'Settings',
+                  ),
+                ],
+              ),
+            ),
           );
         }
       },
