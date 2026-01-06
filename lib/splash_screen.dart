@@ -350,6 +350,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   // Guest / Skip Option
                   TextButton(
                     onPressed: () {
+                      Provider.of<AuthProvider>(context, listen: false).enableGuestMode();
+                      // Also trigger callback if needed to refresh wrapper state immediately
                       if (widget.onAuthComplete != null) {
                         widget.onAuthComplete!(context);
                       }

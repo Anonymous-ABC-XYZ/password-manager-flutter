@@ -68,7 +68,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
             final hasDuckAuth = snapshot.data != null;
             final isFullyAuthenticated =
-                hasDuckAuth && authProvider.isAuthenticated;
+                (hasDuckAuth && authProvider.isAuthenticated) || authProvider.isGuestMode;
 
             if (isFullyAuthenticated) {
               return MyHomePage(
@@ -79,6 +79,9 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
             return SplashScreen(
               onAuthComplete: (context) {
+                // If checking completion, verify if we need to enable guest mode from here?
+                // Actually, SplashScreen calls Provider's enableGuestMode directly now.
+                // Or we can keep this callback for the 'Enter App' button which checks auth.
                 _refreshAuthKey();
               },
             );

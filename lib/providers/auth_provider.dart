@@ -8,6 +8,7 @@ class AuthProvider extends ChangeNotifier {
   final FlutterSecureStorage _storage;
 
   bool _isAuthenticated = false;
+  bool _isGuestMode = false;
   bool _isInitializing = true;
   String? _errorMessage;
   Timer? _refreshTimer;
@@ -20,6 +21,7 @@ class AuthProvider extends ChangeNotifier {
   static const Duration refreshInterval = Duration(days: 14);
 
   bool get isAuthenticated => _isAuthenticated;
+  bool get isGuestMode => _isGuestMode;
   bool get isInitializing => _isInitializing;
   String? get errorMessage => _errorMessage;
   GmailService get gmailService => _gmailService;
@@ -32,6 +34,12 @@ class AuthProvider extends ChangeNotifier {
   })  : _gmailService = gmailService ?? GmailService(),
         _storage = storage ?? const FlutterSecureStorage() {
     _initialize();
+  }
+
+  /// Enable Guest Mode
+  void enableGuestMode() {
+    _isGuestMode = true;
+    notifyListeners();
   }
 
   /// Initialize authentication state on app startup
