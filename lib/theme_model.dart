@@ -123,23 +123,23 @@ class ThemeModel {
 
   static final bentoDefault = ThemeModel(
     name: 'Bento Default',
-    primary: const Color(0xFF6366F1), // Indigo 500
-    onPrimary: const Color(0xFFFFFFFF),
-    primaryDark: const Color(0xFF4F46E5), // Indigo 600
-    backgroundLight: const Color(0xFFF8FAFC), // Slate 50
-    backgroundDark: const Color(0xFF0F172A), // Slate 900
-    sidebarBg: const Color(0xFF1E293B), // Slate 800
-    surfaceDark: const Color(0xFF1E293B), // Slate 800
-    surfaceHover: const Color(0xFF334155), // Slate 700
-    inputBg: const Color(0xFF0F172A), // Slate 900
-    inputBorder: const Color(0xFF334155), // Slate 700
-    textWhite: const Color(0xFFF8FAFC), // Slate 50
-    textMuted: const Color(0xFF94A3B8), // Slate 400
-    secondary: const Color(0xFF818CF8), // Indigo 400
-    tertiary: const Color(0xFFC7D2FE), // Indigo 200
-    error: const Color(0xFFEF4444), // Red 500
-    success: const Color(0xFF10B981), // Emerald 500
-    otpIsland: const Color(0xFF4F46E5), // Indigo 600
+    primary: const Color(0xFF74C7EC),
+    onPrimary: const Color(0xFF1E1E2E),
+    primaryDark: const Color(0xFF89B4FA),
+    backgroundLight: const Color(0xFFCDD6F4),
+    backgroundDark: const Color(0xFF1E1E2E),
+    sidebarBg: const Color(0xFF181825),
+    surfaceDark: const Color(0xFF181825),
+    surfaceHover: const Color(0xFF313244),
+    inputBg: const Color(0xFF11111B),
+    inputBorder: const Color(0xFF45475A),
+    textWhite: const Color(0xFFCDD6F4),
+    textMuted: const Color(0xFFA6ADC8),
+    secondary: const Color(0xFFCBA6F7),
+    tertiary: const Color(0xFFF5C2E7),
+    error: const Color(0xFFF38BA8),
+    success: const Color(0xFFA6E3A1),
+    otpIsland: const Color(0xFFFAB387),
   );
 
   static final catppuccinMocha = ThemeModel(

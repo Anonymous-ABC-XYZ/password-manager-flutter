@@ -1,12 +1,12 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'dbinit.dart';
 import 'bento_constants.dart';
-import 'credential_card.dart';
 import 'credentials_header.dart';
 import 'category_selector.dart';
 import 'category_filter_bar.dart';
-import 'credential_detail_screen.dart';
 import 'credential_model.dart';
+import 'credential_focus_card.dart';
 
 class PasswordsPage extends StatefulWidget {
   const PasswordsPage({super.key});
@@ -44,13 +44,11 @@ class _PasswordsPageState extends State<PasswordsPage> {
     final query = _searchController.text.toLowerCase();
     setState(() {
       _filteredCredentials = _allCredentials.where((cred) {
-        // Text Search
         final website = cred['Website'].toString().toLowerCase();
         final username = cred['Username'].toString().toLowerCase();
         final email = cred['Email'].toString().toLowerCase();
         final matchesQuery = query.isEmpty || website.contains(query) || username.contains(query) || email.contains(query);
         
-        // Category Filter
         final category = cred['category']?.toString();
         final matchesCategory = _selectedFilterCategory == null || category == _selectedFilterCategory;
 
@@ -59,132 +57,30 @@ class _PasswordsPageState extends State<PasswordsPage> {
     });
   }
 
-  void removeSite(String websiteToDelete) async {
-    var db = await InitDB().dB;
-    await db.rawDelete('DELETE FROM demo WHERE Website=?', [
-      websiteToDelete,
-    ]);
-    _loadDB(); // Reload list
-  }
-
-  void editSite(String website, String newUsername, String newEmail, String newPassword, String? newCategory) async {
-    var db = await InitDB().dB;
-    await db.rawUpdate(
-      'UPDATE demo SET Username = ?, Email = ?, Password = ?, category = ? WHERE Website = ?',
-      [newUsername, newEmail, newPassword, newCategory, website],
-    );
-    _loadDB();
-  }
-
-  void _showEditDialog(Map<String, Object?> item) {
-    final usernameController = TextEditingController(text: item['Username'].toString());
-    final emailController = TextEditingController(text: item['Email'].toString());
-    final passwordController = TextEditingController(text: item['Password'].toString());
-    String? currentCategory = item['category']?.toString();
-
-    showDialog(
+  void _showFocusView(Map<String, Object?> item) {
+    showGeneralDialog(
       context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            return AlertDialog(
-              backgroundColor: BentoColors.of(context).surfaceDark,
-              title: Text(
-                'Edit ${item['Website']}',
-                style: BentoStyles.header.copyWith(color: BentoColors.of(context).textWhite),
-              ),
-              content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextField(
-                      controller: usernameController,
-                      style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
-                      decoration: InputDecoration(
-                        labelText: 'Username',
-                        labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
-                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).textMuted)),
-                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).primary)),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: emailController,
-                      style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
-                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).textMuted)),
-                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).primary)),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: passwordController,
-                      style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
-                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).textMuted)),
-                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: BentoColors.of(context).primary)),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'Category',
-                      style: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted, fontSize: 14),
-                    ),
-                    const SizedBox(height: 8),
-                    CategorySelector(
-                      initialValue: currentCategory,
-                      onSelected: (cat) {
-                        setDialogState(() {
-                          currentCategory = cat;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Cancel', style: BentoStyles.body.copyWith(color: BentoColors.textMuted)),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    editSite(
-                      item['Website'].toString(),
-                      usernameController.text,
-                      emailController.text,
-                      passwordController.text,
-                      currentCategory,
-                    );
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: BentoColors.of(context).primary,
-                    foregroundColor: BentoColors.of(context).onPrimary,
-                  ),
-                  child: Text('Save', style: BentoStyles.body.copyWith(fontWeight: FontWeight.bold)),
-                ),
-              ],
-            );
-          },
+      barrierDismissible: true,
+      barrierLabel: 'Close',
+      barrierColor: Colors.black.withValues(alpha: 0.6),
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Stack(
+          children: [
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              child: Container(color: Colors.transparent),
+            ),
+            CredentialFocusCard(credential: Credential.fromMap(item)),
+          ],
         );
       },
-    );
-  }
-
-  void _navigateToDetail(Map<String, Object?> item) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CredentialDetailScreen(
-          credential: Credential.fromMap(item),
-        ),
-      ),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return ScaleTransition(
+          scale: CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+          child: FadeTransition(opacity: animation, child: child),
+        );
+      },
     );
   }
 
@@ -195,7 +91,7 @@ class _PasswordsPageState extends State<PasswordsPage> {
       body: _isLoading 
           ? Center(child: CircularProgressIndicator(color: BentoColors.of(context).primary))
           : Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
               child: Column(
                 children: [
                   CredentialsHeader(
@@ -229,108 +125,79 @@ class _PasswordsPageState extends State<PasswordsPage> {
                               ],
                             ),
                           )
-                        : LayoutBuilder(
-                            builder: (context, constraints) {
-                              // If width is sufficient for grid, use grid. Else, list.
-                              if (constraints.maxWidth > 700) {
-                                int crossAxisCount = 2;
-                                if (constraints.maxWidth > 1100) crossAxisCount = 3;
-                                if (constraints.maxWidth > 1500) crossAxisCount = 4;
-
-                                return GridView.builder(
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: crossAxisCount,
-                                    crossAxisSpacing: 24,
-                                    mainAxisSpacing: 24,
-                                    childAspectRatio: 0.85, 
-                                    mainAxisExtent: 360, 
-                                  ),
-                                  itemCount: _filteredCredentials.length,
-                                  itemBuilder: (context, index) {
-                                    final item = _filteredCredentials[index];
-                                    return CredentialCard(
-                                      website: item['Website'].toString(),
-                                      username: item['Username'].toString(),
-                                      email: item['Email'].toString(),
-                                      password: item['Password'].toString(),
-                                      category: item['category']?.toString(),
-                                      onDelete: () => removeSite(item['Website'].toString()),
-                                      onEdit: () => _showEditDialog(item),
-                                    );
-                                  },
-                                );
-                              } else {
-                                // Mobile List View
-                                return ListView.separated(
-                                  itemCount: _filteredCredentials.length,
-                                  separatorBuilder: (context, index) => const SizedBox(height: 12),
-                                  itemBuilder: (context, index) {
-                                    final item = _filteredCredentials[index];
-                                    final website = item['Website'].toString();
-                                    final username = item['Username'].toString();
-                                    
-                                    return Material(
-                                      color: BentoColors.of(context).surfaceDark,
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: InkWell(
-                                        onTap: () => _navigateToDetail(item),
-                                        borderRadius: BorderRadius.circular(16),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Row(
+                        : ListView.separated(
+                            padding: const EdgeInsets.only(bottom: 100),
+                            itemCount: _filteredCredentials.length,
+                            separatorBuilder: (context, index) => const SizedBox(height: 12),
+                            itemBuilder: (context, index) {
+                              final item = _filteredCredentials[index];
+                              final website = item['Website'].toString();
+                              final username = item['Username'].toString();
+                              
+                              return Material(
+                                color: BentoColors.of(context).surfaceDark,
+                                borderRadius: BorderRadius.circular(20),
+                                child: InkWell(
+                                  onTap: () => _showFocusView(item),
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 48,
+                                          height: 48,
+                                          decoration: BoxDecoration(
+                                            color: BentoColors.of(context).primary.withValues(alpha: 0.1),
+                                            borderRadius: BorderRadius.circular(16),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              website.isNotEmpty ? website[0].toUpperCase() : '?',
+                                              style: TextStyle(
+                                                color: BentoColors.of(context).primary,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Container(
-                                                width: 48,
-                                                height: 48,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(12),
+                                              Text(
+                                                website,
+                                                style: TextStyle(
+                                                  color: BentoColors.of(context).textWhite,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
-                                                child: Center(
-                                                  child: Text(
-                                                    website.isNotEmpty ? website[0].toUpperCase() : '?',
-                                                    style: TextStyle(
-                                                      color: BentoColors.of(context).backgroundDark,
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
+                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                              const SizedBox(width: 16),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      website,
-                                                      style: BentoStyles.body.copyWith(
-                                                        color: BentoColors.of(context).textWhite,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.w600,
-                                                      ),
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
-                                                    Text(
-                                                      username,
-                                                      style: BentoStyles.body.copyWith(
-                                                        color: BentoColors.of(context).textMuted,
-                                                        fontSize: 14,
-                                                      ),
-                                                      overflow: TextOverflow.ellipsis,
-                                                    ),
-                                                  ],
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                username,
+                                                style: TextStyle(
+                                                  color: BentoColors.of(context).textMuted,
+                                                  fontSize: 14,
                                                 ),
+                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                              Icon(Icons.arrow_forward_ios, size: 16, color: BentoColors.of(context).textMuted.withValues(alpha: 0.5)),
                                             ],
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              }
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: 16,
+                                          color: BentoColors.of(context).textMuted.withValues(alpha: 0.5),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
                             },
                           ),
                   ),

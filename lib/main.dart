@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:ui';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:password_manager/home_screen.dart';
@@ -9,8 +12,6 @@ import 'package:password_manager/providers/theme_provider.dart';
 import 'package:password_manager/theme_service.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqlite3/open.dart';
-import 'dart:io';
-import 'dart:ffi'; // Required for DynamicLibrary
 import 'bento_constants.dart';
 import 'sidebar_navigation.dart';
 
@@ -187,47 +188,101 @@ class _MyHomePageState extends State<MyHomePage> {
         } else {
           return Scaffold(
             backgroundColor: bento.backgroundDark,
+            extendBody: true,
             body: PageView(
               controller: _pageController,
               physics: const NeverScrollableScrollPhysics(),
               children: pages,
             ),
-            bottomNavigationBar: Container(
+            floatingActionButton: Container(
+              height: 64,
+              width: 64,
+              margin: const EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
-                border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
-              ),
-              child: NavigationBar(
-                backgroundColor: bento.surfaceDark,
-                indicatorColor: bento.primary.withValues(alpha: 0.1),
-                elevation: 0,
-                onDestinationSelected: (int index) {
-                  setState(() {
-                    selectedIndex = index;
-                    _pageController.animateToPage(
-                      index,
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOutCubic,
-                    );
-                  });
-                },
-                selectedIndex: selectedIndex,
-                destinations: <Widget>[
-                  NavigationDestination(
-                    selectedIcon: Icon(Icons.shield, color: bento.primary),
-                    icon: Icon(Icons.shield_outlined, color: bento.textMuted),
-                    label: 'Vault',
-                  ),
-                  NavigationDestination(
-                    selectedIcon: Icon(Icons.key, color: bento.primary),
-                    icon: Icon(Icons.key_outlined, color: bento.textMuted),
-                    label: 'Credentials',
-                  ),
-                  NavigationDestination(
-                    selectedIcon: Icon(Icons.settings, color: bento.primary),
-                    icon: Icon(Icons.settings_outlined, color: bento.textMuted),
-                    label: 'Settings',
+                shape: BoxShape.circle,
+                gradient: const LinearGradient(
+                  colors: [
+                    Color(0xFF74C7EC), 
+                    Color(0xFFCBA6F7), 
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFCBA6F7).withValues(alpha: 0.4),
+                    blurRadius: 16,
+                    offset: const Offset(0, 8),
                   ),
                 ],
+              ),
+              child: FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    selectedIndex = 0;
+                    _pageController.jumpToPage(0);
+                  });
+                },
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                child: const Icon(Icons.add, color: Colors.white, size: 32),
+              ),
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: bento.surfaceDark.withValues(alpha: 0.7),
+                    border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.1))),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          selectedIndex == 0 ? Icons.shield : Icons.shield_outlined,
+                          color: selectedIndex == 0 ? bento.primary : bento.textMuted,
+                          size: 28,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 0;
+                            _pageController.jumpToPage(0);
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          selectedIndex == 1 ? Icons.key : Icons.key_outlined,
+                          color: selectedIndex == 1 ? bento.primary : bento.textMuted,
+                          size: 28,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 1;
+                            _pageController.jumpToPage(1);
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          selectedIndex == 2 ? Icons.settings : Icons.settings_outlined,
+                          color: selectedIndex == 2 ? bento.primary : bento.textMuted,
+                          size: 28,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = 2;
+                            _pageController.jumpToPage(2);
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           );
