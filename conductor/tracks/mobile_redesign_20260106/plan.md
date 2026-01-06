@@ -5,8 +5,8 @@ This plan outlines the steps to overhaul the Password Manager's UI into a mobile
 ## Phase 1: Foundation & Theming Refinement
 Refine the global theme and constants to support the new "Stitch" aesthetic across all screens.
 
-- [~] Task: Update `BentoColors` and `BentoStyles` in `lib/bento_constants.dart` to match "Stitch" color palette and typography.
-- [ ] Task: Create reusable `StitchBottomSheet` wrapper for consistent modal interactions.
+- [x] Task: Update `BentoColors` and `BentoStyles` in `lib/bento_constants.dart` to match "Stitch" color palette and typography. 94959fb
+- [x] Task: Create reusable `StitchBottomSheet` wrapper for consistent modal interactions. 94959fb
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundation' (Protocol in workflow.md)
 
 ## Phase 2: Mobile-First Splash Screen
