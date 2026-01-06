@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'dbinit.dart';
+import 'core/dbinit.dart';
 import 'bento_constants.dart';
 import 'credentials_header.dart';
 import 'category_selector.dart';

@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'dbinit.dart';
+import 'core/dbinit.dart';
 import 'bento_constants.dart';
 import 'identity_tile.dart';
 import 'otp_island.dart';

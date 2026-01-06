@@ -6,7 +6,7 @@ import 'package:path/path.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:password_manager/dbinit.dart';
+import 'package:password_manager/core/dbinit.dart';
 
 // Mock PathProvider
 class MockPathProviderPlatform extends Fake with MockPlatformInterfaceMixin implements PathProviderPlatform {

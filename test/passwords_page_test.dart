@@ -4,7 +4,7 @@ import 'package:password_manager/passwords_page.dart';
 import 'package:password_manager/providers/theme_provider.dart';
 import 'package:password_manager/theme_service.dart';
 import 'package:password_manager/theme_model.dart';
-import 'package:password_manager/dbinit.dart';
+import 'package:password_manager/core/dbinit.dart';
 import 'package:provider/provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:mocktail/mocktail.dart';
