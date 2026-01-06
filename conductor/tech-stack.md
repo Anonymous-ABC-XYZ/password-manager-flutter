@@ -2,7 +2,7 @@
 
 ## Core
 - **Language:** Dart
-- **Framework:** Flutter (Desktop - Linux)
+- **Framework:** Flutter (Mobile & Desktop - Linux)
 - **Architecture:** MVC-inspired separation with Providers for state and Services for external APIs.
 
 ## Data & Security
@@ -16,7 +16,7 @@
 
 ## UI & State
 - **State Management:** `provider` for global application state (authentication, settings).
-- **UI Framework:** Material Design 3 with custom vibrant themes.
+- **UI Framework:** Material Design 3 with custom "Stitch" aesthetic (Catppuccin Mocha palette) and Glassmorphism effects.
 - **Typography:** `google_fonts`.
 - **Utilities:** `fuzzywuzzy` for intelligent credential searching.
 - **File Management:** `path_provider` for accessing platform-agnostic file system paths.

@@ -36,20 +36,28 @@ Redesign the "Home" screen as a dashboard for adding and managing credentials wi
 
 - [x] Task: Write tests for the mobile-optimized credential entry form. 0a3b232
 - [x] Task: Redesign `lib/home_screen.dart` using "Stitch" input fields and dashboard components. af0dfa9
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Vault Dashboard' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Vault Dashboard' (Protocol in workflow.md) [checkpoint: 558a619]
 
 ## Phase 5: Credentials List & Detail View
 Modernize the password list and implement a dedicated detail view for viewing specific credential data.
 
-- [ ] Task: Write tests for the `CredentialDetailScreen`.
-- [ ] Task: Redesign `lib/passwords_page.dart` list items and search bar.
-- [ ] Task: Create `lib/credential_detail_screen.dart` based on the `entry_screen` design assets.
-- [ ] Task: Conductor - User Manual Verification 'Phase 5: List & Details' (Protocol in workflow.md)
+- [x] Task: Write tests for the `CredentialDetailScreen`. 06a4355
+- [x] Task: Redesign `lib/passwords_page.dart` list items and search bar. dff63d3
+- [x] Task: Create `lib/credential_detail_screen.dart` based on the `entry_screen` design assets. 06a4355
+- [x] Task: Conductor - User Manual Verification 'Phase 5: List & Details' (Protocol in workflow.md) [checkpoint: dff63d3]
 
 ## Phase 6: Settings & Configuration
 Redesign the Settings screen to use mobile-native patterns and Bottom Sheets for all sub-configurations.
 
-- [ ] Task: Write tests for Settings interaction and Bottom Sheet persistence.
-- [ ] Task: Redesign `lib/settings_screen.dart` with a clean, list-based layout.
-- [ ] Task: Implement sub-settings (Theme, API Keys) as interactive Bottom Sheets.
-- [ ] Task: Conductor - User Manual Verification 'Phase 6: Settings' (Protocol in workflow.md)
+- [x] Task: Write tests for Settings interaction and Bottom Sheet persistence. 55fa9a9
+- [x] Task: Redesign `lib/settings_screen.dart` with a clean, list-based layout. 55fa9a9
+- [x] Task: Implement sub-settings (Theme, API Keys) as interactive Bottom Sheets. 55fa9a9
+- [x] Task: Conductor - User Manual Verification 'Phase 6: Settings' (Protocol in workflow.md) [checkpoint: 55fa9a9]
+
+## Phase 7: Final Polish (UI Overhaul)
+Implement high-fidelity "Pop-Out" focus view and Catppuccin theming per design requirements.
+
+- [x] Task: Refactor `PasswordsPage` to use `showGeneralDialog` for "Pop-Out" focus. dff63d3
+- [x] Task: Create `CredentialFocusCard` with Catppuccin palette. dff63d3
+- [x] Task: Update `ThemeModel` to Catppuccin Mocha defaults. dff63d3
+- [x] Task: Implement Glassmorphism Bottom Bar and Gradient FAB in `main.dart`. dff63d3

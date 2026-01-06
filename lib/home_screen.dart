@@ -9,7 +9,6 @@ import 'package:sqflite/sqflite.dart';
 import 'dbinit.dart';
 import 'bento_constants.dart';
 import 'identity_tile.dart';
-import 'notes_tile.dart';
 import 'otp_island.dart';
 import 'secure_credentials_tile.dart';
 import 'home_header.dart';
@@ -284,7 +283,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                initialCategory: _selectedCategory,
                              ),
                              const SizedBox(height: 24),
-                             const NotesTile(),
                            ],
                          ),
                        ),
@@ -329,7 +327,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                onGeneratePassword: generatePassword,
                        ),
                        const SizedBox(height: 24),
-                       const NotesTile(),
                        const SizedBox(height: 100), // Space for FAB
                      ],
                    );

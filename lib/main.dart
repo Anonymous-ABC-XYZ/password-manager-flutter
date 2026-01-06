@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final bento = BentoColors.of(context);
+    var bento = BentoColors.of(context);
     
     final List<Widget> pages = [
       HomeScreen(),
@@ -197,20 +197,17 @@ class _MyHomePageState extends State<MyHomePage> {
             floatingActionButton: Container(
               height: 64,
               width: 64,
-              margin: const EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   colors: [
-                    Color(0xFF74C7EC), 
-                    Color(0xFFCBA6F7), 
+                    bento.primary,
+                    bento.primaryDark,
                   ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFCBA6F7).withValues(alpha: 0.4),
+                    color: bento.primary.withOpacity(0.4),
                     blurRadius: 16,
                     offset: const Offset(0, 8),
                   ),
@@ -229,59 +226,56 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: ClipRRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: Container(
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: bento.surfaceDark.withValues(alpha: 0.7),
-                    border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.1))),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          selectedIndex == 0 ? Icons.shield : Icons.shield_outlined,
-                          color: selectedIndex == 0 ? bento.primary : bento.textMuted,
-                          size: 28,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 0;
-                            _pageController.jumpToPage(0);
-                          });
-                        },
+            bottomNavigationBar: BottomAppBar(
+              shape: const CircularNotchedRectangle(),
+              notchMargin: 8.0,
+              color: bento.surfaceDark.withOpacity(0.7),
+              child: SizedBox(
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        selectedIndex == 0 ? Icons.shield : Icons.shield_outlined,
+                        color: selectedIndex == 0 ? bento.primary : bento.textMuted,
+                        size: 28,
                       ),
-                      IconButton(
-                        icon: Icon(
-                          selectedIndex == 1 ? Icons.key : Icons.key_outlined,
-                          color: selectedIndex == 1 ? bento.primary : bento.textMuted,
-                          size: 28,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 1;
-                            _pageController.jumpToPage(1);
-                          });
-                        },
+                      onPressed: () {
+                        setState(() {
+                          selectedIndex = 0;
+                          _pageController.jumpToPage(0);
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        selectedIndex == 1 ? Icons.key : Icons.key_outlined,
+                        color: selectedIndex == 1 ? bento.primary : bento.textMuted,
+                        size: 28,
                       ),
-                      IconButton(
-                        icon: Icon(
-                          selectedIndex == 2 ? Icons.settings : Icons.settings_outlined,
-                          color: selectedIndex == 2 ? bento.primary : bento.textMuted,
-                          size: 28,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            selectedIndex = 2;
-                            _pageController.jumpToPage(2);
-                          });
-                        },
+                      onPressed: () {
+                        setState(() {
+                          selectedIndex = 1;
+                          _pageController.jumpToPage(1);
+                        });
+                      },
+                    ),
+                    const SizedBox(width: 48), // Gap for the FAB
+                    IconButton(
+                      icon: Icon(
+                        selectedIndex == 2 ? Icons.settings : Icons.settings_outlined,
+                        color: selectedIndex == 2 ? bento.primary : bento.textMuted,
+                        size: 28,
                       ),
-                    ],
-                  ),
+                      onPressed: () {
+                        setState(() {
+                          selectedIndex = 2;
+                          _pageController.jumpToPage(2);
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),

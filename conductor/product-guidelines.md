@@ -6,7 +6,7 @@
 - **Dynamic Theming:** Provide comprehensive support for both Light and Dark modes. The interface must adapt seamlessly to system brightness changes, ensuring optimal readability and aesthetic appeal in all environments.
 
 ## Interactive Design & UX
-- **Tactile Responsiveness:** Implement state-aware styling for all interactive elements using `WidgetStateProperty`. Incorporate subtle, high-quality animations to provide immediate visual feedback and a premium, high-end desktop feel.
+- **Tactile Responsiveness:** Implement state-aware styling for all interactive elements using `WidgetStateProperty`. Incorporate subtle, high-quality animations to provide immediate visual feedback and a premium, high-end cross-platform feel.
 - **Clear Visual Hierarchy:** Establish a strong hierarchy through the strategic use of elevation (shadows), color contrast, and typographic scale. Primary actions (e.g., "Add Credential") should be visually distinct from secondary or destructive operations.
 
 ## Prose & Communication
