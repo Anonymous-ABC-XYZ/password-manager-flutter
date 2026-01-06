@@ -17,12 +17,19 @@ Redesign the onboarding and authentication flow with a full-bleed layout and bot
 - [x] Task: Transition Google OAuth and DuckDuckGo configuration dialogs to Bottom Sheets. df20948
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Splash Screen' (Protocol in workflow.md) [checkpoint: 7f5b570]
 
+## Phase 2.5: Authentication Refinement
+Address user feedback to allow entry without Google/DuckDuckGo authentication (Offline/Guest Mode).
+
+- [ ] Task: Update `SplashScreen` to include a "Skip" or "Guest Mode" button.
+- [ ] Task: Ensure app functionality persists without auth tokens (graceful degradation).
+- [ ] Task: Conductor - User Manual Verification 'Phase 2.5: Auth Refinement' (Protocol in workflow.md)
+
 ## Phase 3: Main Navigation & App Scaffold
 Update the core navigation structure to prioritize a refined mobile Bottom Navigation Bar.
 
 - [x] Task: Refactor `MyHomePage` in `lib/main.dart` to use a modern `NavigationBar` with optimized icons and labels. 6c8cf9c
 - [x] Task: Implement smooth page transitions between Vault, Credentials, and Settings. 2d7a622
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Main Navigation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Main Navigation' (Protocol in workflow.md) [checkpoint: bbc5832]
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Main Navigation' (Protocol in workflow.md)
 
 ## Phase 4: Vault Dashboard & Entry Form
