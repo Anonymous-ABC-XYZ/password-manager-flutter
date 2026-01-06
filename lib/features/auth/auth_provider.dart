@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../gmail_service.dart';
+import 'package:password_manager/features/auth/gmail_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   final GmailService _gmailService;

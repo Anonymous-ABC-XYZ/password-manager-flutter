@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:password_manager/settings_screen.dart';
 import 'package:password_manager/stitch_bottom_sheet.dart';
-import 'package:password_manager/providers/auth_provider.dart';
+import 'package:password_manager/features/auth/auth_provider.dart';
 import 'package:password_manager/providers/theme_provider.dart';
 import 'package:password_manager/theme_service.dart';
 import 'package:password_manager/theme_model.dart';
-import 'package:password_manager/core/utils/bento_constants.dart';
 import 'package:provider/provider.dart';
 import 'package:mocktail/mocktail.dart';
 

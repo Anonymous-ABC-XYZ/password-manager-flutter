@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'splash_screen.dart';
-import 'main.dart';
-import 'providers/auth_provider.dart';
+import 'package:password_manager/features/auth/splash_screen.dart';
+import 'package:password_manager/main.dart';
+import 'package:password_manager/features/auth/auth_provider.dart';
 
 class AuthWrapper extends StatefulWidget {
   final VoidCallback toggleTheme;

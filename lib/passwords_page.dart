@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'core/dbinit.dart';
 import 'package:password_manager/core/utils/bento_constants.dart';
 import 'credentials_header.dart';
-import 'category_selector.dart';
 import 'category_filter_bar.dart';
 import 'credential_model.dart';
 import 'credential_focus_card.dart';

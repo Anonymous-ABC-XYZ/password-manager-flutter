@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
-import 'providers/auth_provider.dart';
+import 'package:password_manager/features/auth/auth_provider.dart';
 import 'package:password_manager/core/utils/bento_constants.dart';
-import 'stitch_bottom_sheet.dart';
+import 'package:password_manager/stitch_bottom_sheet.dart';
 
 class SplashScreen extends StatefulWidget {
   final Function(BuildContext)? onAuthComplete;

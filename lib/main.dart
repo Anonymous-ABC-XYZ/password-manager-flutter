@@ -1,13 +1,12 @@
 import 'dart:io';
-import 'dart:ui';
 import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:password_manager/home_screen.dart';
 import 'package:password_manager/passwords_page.dart';
 import 'package:password_manager/settings_screen.dart';
-import 'package:password_manager/auth_wrapper.dart';
-import 'package:password_manager/providers/auth_provider.dart';
+import 'package:password_manager/features/auth/auth_wrapper.dart';
+import 'package:password_manager/features/auth/auth_provider.dart';
 import 'package:password_manager/providers/theme_provider.dart';
 import 'package:password_manager/theme_service.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';

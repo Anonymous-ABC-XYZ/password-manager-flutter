@@ -1,10 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:password_manager/gmail_service.dart';
+import 'package:password_manager/features/auth/gmail_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:async';
 import 'dart:convert';
-import 'package:googleapis/gmail/v1.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
