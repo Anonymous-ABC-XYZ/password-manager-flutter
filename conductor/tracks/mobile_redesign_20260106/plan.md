@@ -15,7 +15,7 @@ Redesign the onboarding and authentication flow with a full-bleed layout and bot
 - [x] Task: Write tests for `SplashScreen` mobile layout and Bottom Sheet triggers. df20948
 - [x] Task: Implement new full-bleed UI in `lib/splash_screen.dart` with background blobs and branding. df20948
 - [x] Task: Transition Google OAuth and DuckDuckGo configuration dialogs to Bottom Sheets. df20948
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Splash Screen' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Splash Screen' (Protocol in workflow.md) [checkpoint: 7f5b570]
 
 ## Phase 3: Main Navigation & App Scaffold
 Update the core navigation structure to prioritize a refined mobile Bottom Navigation Bar.
