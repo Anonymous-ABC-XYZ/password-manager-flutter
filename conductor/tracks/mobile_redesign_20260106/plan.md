@@ -20,8 +20,8 @@ Redesign the onboarding and authentication flow with a full-bleed layout and bot
 ## Phase 2.5: Authentication Refinement
 Address user feedback to allow entry without Google/DuckDuckGo authentication (Offline/Guest Mode).
 
-- [ ] Task: Update `SplashScreen` to include a "Skip" or "Guest Mode" button.
-- [ ] Task: Ensure app functionality persists without auth tokens (graceful degradation).
+- [x] Task: Update `SplashScreen` to include a "Skip" or "Guest Mode" button. c315188
+- [x] Task: Ensure app functionality persists without auth tokens (graceful degradation). c315188
 - [ ] Task: Conductor - User Manual Verification 'Phase 2.5: Auth Refinement' (Protocol in workflow.md)
 
 ## Phase 3: Main Navigation & App Scaffold
