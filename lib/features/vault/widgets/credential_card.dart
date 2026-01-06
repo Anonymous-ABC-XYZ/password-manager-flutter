@@ -63,14 +63,16 @@ class _CredentialCardState extends State<CredentialCard> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Center(
-                         child: Text(
-                           widget.website.isNotEmpty ? widget.website[0].toUpperCase() : '?',
-                           style: TextStyle(
-                             color: BentoColors.of(context).backgroundDark,
-                             fontSize: 24,
-                             fontWeight: FontWeight.bold,
-                           ),
-                         ),
+                        child: Text(
+                          widget.website.isNotEmpty
+                              ? widget.website[0].toUpperCase()
+                              : '?',
+                          style: TextStyle(
+                            color: BentoColors.of(context).backgroundDark,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -88,11 +90,15 @@ class _CredentialCardState extends State<CredentialCard> {
                             overflow: TextOverflow.ellipsis,
                           ),
                           Text(
-                            widget.category ?? 'Uncategorized', 
+                            widget.category ?? 'Uncategorized',
                             style: BentoStyles.body.copyWith(
-                              color: widget.category != null ? BentoColors.of(context).primary : BentoColors.of(context).textMuted, 
+                              color: widget.category != null
+                                  ? BentoColors.of(context).primary
+                                  : BentoColors.of(context).textMuted,
                               fontSize: 12,
-                              fontWeight: widget.category != null ? FontWeight.bold : FontWeight.normal,
+                              fontWeight: widget.category != null
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                             ),
                           ),
                         ],
@@ -102,7 +108,10 @@ class _CredentialCardState extends State<CredentialCard> {
                 ),
               ),
               PopupMenuButton<String>(
-                icon: Icon(Icons.more_vert, color: BentoColors.of(context).textMuted),
+                icon: Icon(
+                  Icons.more_vert,
+                  color: BentoColors.of(context).textMuted,
+                ),
                 color: BentoColors.of(context).surfaceHover,
                 onSelected: (value) {
                   if (value == 'delete') {
@@ -112,23 +121,41 @@ class _CredentialCardState extends State<CredentialCard> {
                   }
                 },
                 itemBuilder: (context) => [
-                   PopupMenuItem(
+                  PopupMenuItem(
                     value: 'edit',
                     child: Row(
                       children: [
-                        Icon(Icons.edit, color: BentoColors.of(context).primary, size: 20),
+                        Icon(
+                          Icons.edit,
+                          color: BentoColors.of(context).primary,
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
-                        Text('Edit', style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite)),
+                        Text(
+                          'Edit',
+                          style: BentoStyles.body.copyWith(
+                            color: BentoColors.of(context).textWhite,
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                   PopupMenuItem(
+                  PopupMenuItem(
                     value: 'delete',
                     child: Row(
                       children: [
-                        Icon(Icons.delete, color: BentoColors.of(context).error, size: 20),
+                        Icon(
+                          Icons.delete,
+                          color: BentoColors.of(context).error,
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
-                        Text('Delete', style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite)),
+                        Text(
+                          'Delete',
+                          style: BentoStyles.body.copyWith(
+                            color: BentoColors.of(context).textWhite,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -137,7 +164,7 @@ class _CredentialCardState extends State<CredentialCard> {
             ],
           ),
           const SizedBox(height: 20),
-          
+
           // Fields
           _buildFieldRow('Username', widget.username),
           const SizedBox(height: 12),
@@ -183,12 +210,16 @@ class _CredentialCardState extends State<CredentialCard> {
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.content_copy, size: 18, color: BentoColors.of(context).textMuted),
+                icon: Icon(
+                  Icons.content_copy,
+                  size: 18,
+                  color: BentoColors.of(context).textMuted,
+                ),
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: value));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Copied $label')),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('Copied $label')));
                 },
                 constraints: const BoxConstraints(),
                 padding: EdgeInsets.zero,
@@ -201,7 +232,7 @@ class _CredentialCardState extends State<CredentialCard> {
     );
   }
 
-   Widget _buildPasswordField(String value) {
+  Widget _buildPasswordField(String value) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -239,9 +270,11 @@ class _CredentialCardState extends State<CredentialCard> {
                 children: [
                   IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility : Icons.visibility_off, 
-                      size: 18, 
-                      color: BentoColors.of(context).textMuted
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      size: 18,
+                      color: BentoColors.of(context).textMuted,
                     ),
                     onPressed: () {
                       setState(() {
@@ -253,7 +286,11 @@ class _CredentialCardState extends State<CredentialCard> {
                     splashRadius: 20,
                   ),
                   IconButton(
-                    icon: Icon(Icons.content_copy, size: 18, color: BentoColors.of(context).textMuted),
+                    icon: Icon(
+                      Icons.content_copy,
+                      size: 18,
+                      color: BentoColors.of(context).textMuted,
+                    ),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: value));
                       ScaffoldMessenger.of(context).showSnackBar(

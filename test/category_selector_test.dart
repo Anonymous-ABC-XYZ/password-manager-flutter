@@ -4,14 +4,14 @@ import 'package:password_manager/features/vault/widgets/category_selector.dart';
 import 'package:password_manager/features/settings/theme_model.dart';
 
 void main() {
-  testWidgets('CategorySelector displays chips and selects one', (WidgetTester tester) async {
+  testWidgets('CategorySelector displays chips and selects one', (
+    WidgetTester tester,
+  ) async {
     String? selectedCategory;
-    
+
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          extensions: [ThemeModel.bentoDefault.toBentoTheme()],
-        ),
+        theme: ThemeData(extensions: [ThemeModel.bentoDefault.toBentoTheme()]),
         home: Scaffold(
           body: CategorySelector(
             onSelected: (category) {

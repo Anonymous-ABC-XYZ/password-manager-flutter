@@ -13,9 +13,11 @@ void main() {
   setUp(() {
     mockThemeService = MockThemeService();
     // Default mock behaviors
-    when(() => mockThemeService.getSelectedThemeName()).thenAnswer((_) async => 'Bento Default');
+    when(
+      () => mockThemeService.getSelectedThemeName(),
+    ).thenAnswer((_) async => 'Bento Default');
     when(() => mockThemeService.getCustomThemes()).thenAnswer((_) async => []);
-    
+
     themeProvider = ThemeProvider(themeService: mockThemeService);
   });
 
@@ -25,8 +27,10 @@ void main() {
   });
 
   test('should switch theme and notify listeners', () async {
-    when(() => mockThemeService.setSelectedThemeName('Catppuccin Mocha')).thenAnswer((_) async {});
-    
+    when(
+      () => mockThemeService.setSelectedThemeName('Catppuccin Mocha'),
+    ).thenAnswer((_) async {});
+
     await themeProvider.init();
     bool notified = false;
     themeProvider.addListener(() {
@@ -34,9 +38,11 @@ void main() {
     });
 
     await themeProvider.setTheme(ThemeModel.catppuccinMocha);
-    
+
     expect(themeProvider.currentTheme.name, 'Catppuccin Mocha');
     expect(notified, true);
-    verify(() => mockThemeService.setSelectedThemeName('Catppuccin Mocha')).called(1);
+    verify(
+      () => mockThemeService.setSelectedThemeName('Catppuccin Mocha'),
+    ).called(1);
   });
 }

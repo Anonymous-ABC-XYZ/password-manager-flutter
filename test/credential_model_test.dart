@@ -12,22 +12,22 @@ void main() {
     );
 
     expect(credential.category, 'Work');
-    
+
     final map = credential.toMap();
     expect(map['category'], 'Work');
-    
+
     final fromMap = Credential.fromMap(map);
     expect(fromMap.category, 'Work');
   });
-  
+
   test('Credential model defaults category to null if missing', () {
-      final map = {
-          'Website': 'example.com',
-          'Username': 'user',
-          'Email': 'email',
-          'Password': 'pass',
-      };
-      final cred = Credential.fromMap(map);
-      expect(cred.category, null);
+    final map = {
+      'Website': 'example.com',
+      'Username': 'user',
+      'Email': 'email',
+      'Password': 'pass',
+    };
+    final cred = Credential.fromMap(map);
+    expect(cred.category, null);
   });
 }

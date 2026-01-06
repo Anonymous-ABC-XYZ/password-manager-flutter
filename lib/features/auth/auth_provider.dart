@@ -28,11 +28,9 @@ class AuthProvider extends ChangeNotifier {
   DateTime? get lastRefreshTime => _lastRefreshTime;
   DateTime? get initialLoginTime => _initialLoginTime;
 
-  AuthProvider({
-    GmailService? gmailService,
-    FlutterSecureStorage? storage,
-  })  : _gmailService = gmailService ?? GmailService(),
-        _storage = storage ?? const FlutterSecureStorage() {
+  AuthProvider({GmailService? gmailService, FlutterSecureStorage? storage})
+    : _gmailService = gmailService ?? GmailService(),
+      _storage = storage ?? const FlutterSecureStorage() {
     _initialize();
   }
 
@@ -123,7 +121,9 @@ class AuthProvider extends ChangeNotifier {
       await _clearSessionMetadata();
 
       _isAuthenticated = false;
-      _errorMessage = expired ? 'Access session has expired or been revoked' : null;
+      _errorMessage = expired
+          ? 'Access session has expired or been revoked'
+          : null;
       _lastRefreshTime = null;
       _initialLoginTime = null;
 
@@ -221,7 +221,9 @@ class AuthProvider extends ChangeNotifier {
       return;
     }
 
-    debugPrint('AuthProvider: Scheduling token refresh in ${timeUntilRefresh.inDays} days');
+    debugPrint(
+      'AuthProvider: Scheduling token refresh in ${timeUntilRefresh.inDays} days',
+    );
 
     _refreshTimer = Timer(timeUntilRefresh, () {
       debugPrint('AuthProvider: Automatic token refresh triggered');
@@ -259,7 +261,9 @@ class AuthProvider extends ChangeNotifier {
   Future<void> _loadSessionMetadata() async {
     try {
       final lastRefreshStr = await _storage.read(key: 'token_last_refresh');
-      final initialLoginStr = await _storage.read(key: 'google_initial_login_time');
+      final initialLoginStr = await _storage.read(
+        key: 'google_initial_login_time',
+      );
 
       if (lastRefreshStr != null) {
         _lastRefreshTime = DateTime.parse(lastRefreshStr);
@@ -268,7 +272,9 @@ class AuthProvider extends ChangeNotifier {
 
       if (initialLoginStr != null) {
         _initialLoginTime = DateTime.parse(initialLoginStr);
-        debugPrint('AuthProvider: Loaded initial login time: $_initialLoginTime');
+        debugPrint(
+          'AuthProvider: Loaded initial login time: $_initialLoginTime',
+        );
       } else if (_lastRefreshTime != null) {
         // Migration: if initial login time is missing but we have a refresh time,
         // use refresh time as initial login time for now.

@@ -13,13 +13,23 @@ class CategoryFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = ['All', 'Personal', 'Work', 'Finance', 'Social', 'Entertainment', 'Other'];
-    
+    final categories = [
+      'All',
+      'Personal',
+      'Work',
+      'Finance',
+      'Social',
+      'Entertainment',
+      'Other',
+    ];
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         children: categories.map((category) {
-          final isSelected = (category == 'All' && selectedCategory == null) || category == selectedCategory;
+          final isSelected =
+              (category == 'All' && selectedCategory == null) ||
+              category == selectedCategory;
           return Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: ChoiceChip(
@@ -35,13 +45,19 @@ class CategoryFilterBar extends StatelessWidget {
               selectedColor: BentoColors.of(context).primary,
               backgroundColor: BentoColors.of(context).inputBg,
               labelStyle: BentoStyles.body.copyWith(
-                color: isSelected ? BentoColors.of(context).onPrimary : BentoColors.of(context).textMuted,
+                color: isSelected
+                    ? BentoColors.of(context).onPrimary
+                    : BentoColors.of(context).textMuted,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20), // Slightly more rounded for filter style
+                borderRadius: BorderRadius.circular(
+                  20,
+                ), // Slightly more rounded for filter style
                 side: BorderSide(
-                  color: isSelected ? BentoColors.of(context).primary : BentoColors.of(context).inputBorder,
+                  color: isSelected
+                      ? BentoColors.of(context).primary
+                      : BentoColors.of(context).inputBorder,
                   width: 1,
                 ),
               ),

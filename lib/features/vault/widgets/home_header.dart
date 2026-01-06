@@ -17,7 +17,9 @@ class HomeHeader extends StatelessWidget {
             return Flex(
               direction: isDesktop ? Axis.horizontal : Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: isDesktop ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+              crossAxisAlignment: isDesktop
+                  ? CrossAxisAlignment.center
+                  : CrossAxisAlignment.start,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,11 +36,18 @@ class HomeHeader extends StatelessWidget {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        Icon(Icons.folder_open, size: 16, color: BentoColors.of(context).textMuted),
+                        Icon(
+                          Icons.folder_open,
+                          size: 16,
+                          color: BentoColors.of(context).textMuted,
+                        ),
                         const SizedBox(width: 8),
                         Text(
                           'Personal > Social Media',
-                          style: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted, fontSize: 14),
+                          style: BentoStyles.body.copyWith(
+                            color: BentoColors.of(context).textMuted,
+                            fontSize: 14,
+                          ),
                         ),
                       ],
                     ),
@@ -50,34 +59,57 @@ class HomeHeader extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: BentoColors.of(context).surfaceDark,
                     borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: BentoColors.of(context).inputBorder),
+                    border: Border.all(
+                      color: BentoColors.of(context).inputBorder,
+                    ),
                   ),
                   child: TextField(
-                    style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
+                    style: BentoStyles.body.copyWith(
+                      color: BentoColors.of(context).textWhite,
+                    ),
                     decoration: InputDecoration(
                       hintText: 'Search 245 passwords...',
-                      hintStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
-                      prefixIcon: Icon(Icons.search, color: BentoColors.of(context).textMuted),
+                      hintStyle: BentoStyles.body.copyWith(
+                        color: BentoColors.of(context).textMuted,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: BentoColors.of(context).textMuted,
+                      ),
                       suffixIcon: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: BentoColors.of(context).surfaceHover,
                             borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: BentoColors.of(context).inputBorder),
+                            border: Border.all(
+                              color: BentoColors.of(context).inputBorder,
+                            ),
                           ),
                           child: Text(
                             'CMD K',
-                            style: BentoStyles.body.copyWith(fontSize: 10, color: BentoColors.of(context).textMuted, fontWeight: FontWeight.bold),
+                            style: BentoStyles.body.copyWith(
+                              fontSize: 10,
+                              color: BentoColors.of(context).textMuted,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 14,
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(50),
-                        borderSide: BorderSide(color: BentoColors.of(context).secondary),
+                        borderSide: BorderSide(
+                          color: BentoColors.of(context).secondary,
+                        ),
                       ),
                     ),
                     onTap: onSearch,
@@ -85,7 +117,7 @@ class HomeHeader extends StatelessWidget {
                 ),
               ],
             );
-          }
+          },
         ),
       ],
     );

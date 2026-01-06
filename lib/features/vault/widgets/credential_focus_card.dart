@@ -31,7 +31,10 @@ class _CredentialFocusCardState extends State<CredentialFocusCard> {
           decoration: BoxDecoration(
             color: baseColor,
             borderRadius: BorderRadius.circular(28),
-            border: Border.all(color: sapphireColor.withOpacity(0.3), width: 1.5),
+            border: Border.all(
+              color: sapphireColor.withOpacity(0.3),
+              width: 1.5,
+            ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.5),
@@ -52,7 +55,11 @@ class _CredentialFocusCardState extends State<CredentialFocusCard> {
                       color: sapphireColor.withOpacity(0.1),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.shield, color: sapphireColor, size: 28),
+                    child: const Icon(
+                      Icons.shield,
+                      color: sapphireColor,
+                      size: 28,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -164,9 +171,9 @@ class _CredentialFocusCardState extends State<CredentialFocusCard> {
                 icon: Icon(Icons.copy, color: accentColor, size: 20),
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: value));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Copied $label')),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('Copied $label')));
                 },
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),

@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final otpController = TextEditingController();
-  
+
   String? _authKey;
   String? _selectedCategory;
 
@@ -60,11 +60,11 @@ class _HomeScreenState extends State<HomeScreen> {
       query: websiteController.text,
       choices: allWebsites,
     );
-    
+
     var result = await db.rawQuery("SELECT * FROM demo WHERE Website=?", [
       correctWeb.choice,
     ]);
-    
+
     if (result.isEmpty) return;
 
     if (context.mounted) {
@@ -74,40 +74,91 @@ class _HomeScreenState extends State<HomeScreen> {
           return SizedBox(
             child: AlertDialog(
               backgroundColor: BentoColors.of(context).surfaceDark,
-              title: Text("${result[0]['Website']}", style: TextStyle(color: BentoColors.of(context).textWhite)),
+              title: Text(
+                "${result[0]['Website']}",
+                style: TextStyle(color: BentoColors.of(context).textWhite),
+              ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                   ListTile(
-                     title: Text('Username', style: TextStyle(color: BentoColors.of(context).textMuted)),
-                     subtitle: Text(result[0]['Username'].toString(), style: TextStyle(color: BentoColors.of(context).textWhite)),
-                     trailing: IconButton(
-                       icon: Icon(Icons.copy, color: BentoColors.of(context).primary),
-                       onPressed: () => Clipboard.setData(ClipboardData(text: result[0]['Username'].toString())),
-                     ),
-                   ),
-                   ListTile(
-                     title: Text('Email', style: TextStyle(color: BentoColors.of(context).textMuted)),
-                     subtitle: Text(result[0]['Email'].toString(), style: TextStyle(color: BentoColors.of(context).textWhite)),
-                      trailing: IconButton(
-                       icon: Icon(Icons.copy, color: BentoColors.of(context).primary),
-                       onPressed: () => Clipboard.setData(ClipboardData(text: result[0]['Email'].toString())),
-                     ),
-                   ),
-                   ListTile(
-                     title: Text('Password', style: TextStyle(color: BentoColors.of(context).textMuted)),
-                     subtitle: Text(result[0]['Password'].toString(), style: TextStyle(color: BentoColors.of(context).textWhite)),
-                      trailing: IconButton(
-                       icon: Icon(Icons.copy, color: BentoColors.of(context).primary),
-                       onPressed: () => Clipboard.setData(ClipboardData(text: result[0]['Password'].toString())),
-                     ),
-                   ),
+                  ListTile(
+                    title: Text(
+                      'Username',
+                      style: TextStyle(
+                        color: BentoColors.of(context).textMuted,
+                      ),
+                    ),
+                    subtitle: Text(
+                      result[0]['Username'].toString(),
+                      style: TextStyle(
+                        color: BentoColors.of(context).textWhite,
+                      ),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.copy,
+                        color: BentoColors.of(context).primary,
+                      ),
+                      onPressed: () => Clipboard.setData(
+                        ClipboardData(text: result[0]['Username'].toString()),
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Email',
+                      style: TextStyle(
+                        color: BentoColors.of(context).textMuted,
+                      ),
+                    ),
+                    subtitle: Text(
+                      result[0]['Email'].toString(),
+                      style: TextStyle(
+                        color: BentoColors.of(context).textWhite,
+                      ),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.copy,
+                        color: BentoColors.of(context).primary,
+                      ),
+                      onPressed: () => Clipboard.setData(
+                        ClipboardData(text: result[0]['Email'].toString()),
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Password',
+                      style: TextStyle(
+                        color: BentoColors.of(context).textMuted,
+                      ),
+                    ),
+                    subtitle: Text(
+                      result[0]['Password'].toString(),
+                      style: TextStyle(
+                        color: BentoColors.of(context).textWhite,
+                      ),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.copy,
+                        color: BentoColors.of(context).primary,
+                      ),
+                      onPressed: () => Clipboard.setData(
+                        ClipboardData(text: result[0]['Password'].toString()),
+                      ),
+                    ),
+                  ),
                 ],
               ),
               actions: [
-                 TextButton(
+                TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text("Close", style: TextStyle(color: BentoColors.of(context).primary)),
+                  child: Text(
+                    "Close",
+                    style: TextStyle(color: BentoColors.of(context).primary),
+                  ),
                 ),
               ],
             ),
@@ -119,7 +170,34 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void generatePassword() {
     var pass = [];
-    var letters = <String>['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    var letters = <String>[
+      'a',
+      'b',
+      'c',
+      'd',
+      'e',
+      'f',
+      'g',
+      'h',
+      'i',
+      'j',
+      'k',
+      'l',
+      'm',
+      'n',
+      'o',
+      'p',
+      'q',
+      'r',
+      's',
+      't',
+      'u',
+      'v',
+      'w',
+      'x',
+      'y',
+      'z',
+    ];
     var numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     var specialChars = ['!', '@', '#', '<', '%', '^', '&'];
     var numLetters = Random().nextInt(9) + 5;
@@ -186,15 +264,21 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (BuildContext context) {
             return AlertDialog(
               backgroundColor: BentoColors.of(context).surfaceDark,
-              title: Text("Error", style: TextStyle(color: BentoColors.of(context).textWhite)),
+              title: Text(
+                "Error",
+                style: TextStyle(color: BentoColors.of(context).textWhite),
+              ),
               content: Text(
                 "Could not fetch the email. \nCheck if you have a working Internet connection.",
                 style: TextStyle(color: BentoColors.of(context).textMuted),
               ),
               actions: [
-                 TextButton(
+                TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text("OK", style: TextStyle(color: BentoColors.of(context).primary)),
+                  child: Text(
+                    "OK",
+                    style: TextStyle(color: BentoColors.of(context).primary),
+                  ),
                 ),
               ],
             );
@@ -227,13 +311,22 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-             backgroundColor: BentoColors.of(context).surfaceDark,
-            title: Text("Success", style: TextStyle(color: BentoColors.of(context).textWhite)),
-            content: Text("The details have been saved.", style: TextStyle(color: BentoColors.of(context).textMuted)),
+            backgroundColor: BentoColors.of(context).surfaceDark,
+            title: Text(
+              "Success",
+              style: TextStyle(color: BentoColors.of(context).textWhite),
+            ),
+            content: Text(
+              "The details have been saved.",
+              style: TextStyle(color: BentoColors.of(context).textMuted),
+            ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text("OK", style: TextStyle(color: BentoColors.of(context).primary)),
+                child: Text(
+                  "OK",
+                  style: TextStyle(color: BentoColors.of(context).primary),
+                ),
               ),
             ],
           );
@@ -259,79 +352,80 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             HomeHeader(onSearch: () => searchFn(context)),
             const SizedBox(height: 32),
-            
+
             // Bento Grid Layout
             LayoutBuilder(
               builder: (context, constraints) {
                 bool isDesktop = constraints.maxWidth > 900;
-                
+
                 if (isDesktop) {
-                   return Row(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                       // Left Column
-                       Expanded(
-                         flex: 7,
-                         child: Column(
-                           children: [
-                             IdentityTile(
-                               websiteController: websiteController,
-                               usernameController: userNameController,
-                               onSearchWebsite: () => searchFn(context),
-                               onSearchUsername: () => searchFn(context),
-                               onCategorySelected: (cat) => _selectedCategory = cat,
-                               initialCategory: _selectedCategory,
-                             ),
-                             const SizedBox(height: 24),
-                           ],
-                         ),
-                       ),
-                       const SizedBox(width: 24),
-                       // Right Column
-                       Expanded(
-                         flex: 5,
-                         child: Column(
-                           children: [
-                             OtpIsland(controller: otpController),
-                             const SizedBox(height: 24),
-                             SecureCredentialsTile(
-                               emailController: emailController,
-                               passwordController: passwordController,
-                               onAcquireEmail: () => emailGenerator(context),
-                               onGeneratePassword: generatePassword,
-                             ),
-                           ],
-                         ),
-                       ),
-                     ],
-                   );
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Left Column
+                      Expanded(
+                        flex: 7,
+                        child: Column(
+                          children: [
+                            IdentityTile(
+                              websiteController: websiteController,
+                              usernameController: userNameController,
+                              onSearchWebsite: () => searchFn(context),
+                              onSearchUsername: () => searchFn(context),
+                              onCategorySelected: (cat) =>
+                                  _selectedCategory = cat,
+                              initialCategory: _selectedCategory,
+                            ),
+                            const SizedBox(height: 24),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 24),
+                      // Right Column
+                      Expanded(
+                        flex: 5,
+                        child: Column(
+                          children: [
+                            OtpIsland(controller: otpController),
+                            const SizedBox(height: 24),
+                            SecureCredentialsTile(
+                              emailController: emailController,
+                              passwordController: passwordController,
+                              onAcquireEmail: () => emailGenerator(context),
+                              onGeneratePassword: generatePassword,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
                 } else {
                   // Mobile Layout
-                   return Column(
-                     children: [
-                       IdentityTile(
-                               websiteController: websiteController,
-                               usernameController: userNameController,
-                               onSearchWebsite: () => searchFn(context),
-                               onSearchUsername: () => searchFn(context),
-                               onCategorySelected: (cat) => _selectedCategory = cat,
-                               initialCategory: _selectedCategory,
-                       ),
-                       const SizedBox(height: 24),
-                       OtpIsland(controller: otpController),
-                       const SizedBox(height: 24),
-                       SecureCredentialsTile(
-                               emailController: emailController,
-                               passwordController: passwordController,
-                               onAcquireEmail: () => emailGenerator(context),
-                               onGeneratePassword: generatePassword,
-                       ),
-                       const SizedBox(height: 24),
-                       const SizedBox(height: 100), // Space for FAB
-                     ],
-                   );
+                  return Column(
+                    children: [
+                      IdentityTile(
+                        websiteController: websiteController,
+                        usernameController: userNameController,
+                        onSearchWebsite: () => searchFn(context),
+                        onSearchUsername: () => searchFn(context),
+                        onCategorySelected: (cat) => _selectedCategory = cat,
+                        initialCategory: _selectedCategory,
+                      ),
+                      const SizedBox(height: 24),
+                      OtpIsland(controller: otpController),
+                      const SizedBox(height: 24),
+                      SecureCredentialsTile(
+                        emailController: emailController,
+                        passwordController: passwordController,
+                        onAcquireEmail: () => emailGenerator(context),
+                        onGeneratePassword: generatePassword,
+                      ),
+                      const SizedBox(height: 24),
+                      const SizedBox(height: 100), // Space for FAB
+                    ],
+                  );
                 }
-              }
+              },
             ),
           ],
         ),

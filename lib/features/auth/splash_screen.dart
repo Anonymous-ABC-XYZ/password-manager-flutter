@@ -54,9 +54,9 @@ class _SplashScreenState extends State<SplashScreen> {
         });
       }
     }
-    
+
     if (_isGoogleSignedIn && _isDuckAuthSaved) {
-       // Ideally wait a moment or show a "Proceeding..." state
+      // Ideally wait a moment or show a "Proceeding..." state
     }
   }
 
@@ -85,12 +85,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: const Text('Successfully signed in to Google!'), backgroundColor: BentoColors.of(context).primary),
+        SnackBar(
+          content: const Text('Successfully signed in to Google!'),
+          backgroundColor: BentoColors.of(context).primary,
+        ),
       );
       _checkCompletion();
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Google Sign-In failed.'), backgroundColor: Colors.red),
+        const SnackBar(
+          content: Text('Google Sign-In failed.'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -106,7 +112,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: const Text('DuckDuckGo auth key saved'), backgroundColor: BentoColors.of(context).primary),
+        SnackBar(
+          content: const Text('DuckDuckGo auth key saved'),
+          backgroundColor: BentoColors.of(context).primary,
+        ),
       );
       Navigator.of(context).pop(); // Close sheet
       _checkCompletion();
@@ -115,9 +124,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _checkCompletion() {
     if (_isGoogleSignedIn && _isDuckAuthSaved) {
-       if (widget.onAuthComplete != null) {
-          widget.onAuthComplete!(context);
-       }
+      if (widget.onAuthComplete != null) {
+        widget.onAuthComplete!(context);
+      }
     }
   }
 
@@ -129,19 +138,27 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           TextField(
             controller: _clientIdController,
-            style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
+            style: BentoStyles.body.copyWith(
+              color: BentoColors.of(context).textWhite,
+            ),
             decoration: InputDecoration(
               labelText: 'Client ID',
-              labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+              labelStyle: BentoStyles.body.copyWith(
+                color: BentoColors.of(context).textMuted,
+              ),
               filled: true,
               fillColor: BentoColors.of(context).inputBg,
               border: OutlineInputBorder(
                 borderRadius: BentoStyles.inputBorderRadius,
-                borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+                borderSide: BorderSide(
+                  color: BentoColors.of(context).inputBorder,
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BentoStyles.inputBorderRadius,
-                borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+                borderSide: BorderSide(
+                  color: BentoColors.of(context).inputBorder,
+                ),
               ),
             ),
           ),
@@ -149,19 +166,27 @@ class _SplashScreenState extends State<SplashScreen> {
           TextField(
             controller: _clientSecretController,
             obscureText: true,
-            style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
+            style: BentoStyles.body.copyWith(
+              color: BentoColors.of(context).textWhite,
+            ),
             decoration: InputDecoration(
               labelText: 'Client Secret',
-              labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+              labelStyle: BentoStyles.body.copyWith(
+                color: BentoColors.of(context).textMuted,
+              ),
               filled: true,
               fillColor: BentoColors.of(context).inputBg,
               border: OutlineInputBorder(
                 borderRadius: BentoStyles.inputBorderRadius,
-                borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+                borderSide: BorderSide(
+                  color: BentoColors.of(context).inputBorder,
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BentoStyles.inputBorderRadius,
-                borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+                borderSide: BorderSide(
+                  color: BentoColors.of(context).inputBorder,
+                ),
               ),
             ),
           ),
@@ -176,7 +201,9 @@ class _SplashScreenState extends State<SplashScreen> {
           style: FilledButton.styleFrom(
             backgroundColor: BentoColors.of(context).primary,
             foregroundColor: BentoColors.of(context).onPrimary,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
           child: const Text('Sign In'),
         ),
@@ -193,19 +220,27 @@ class _SplashScreenState extends State<SplashScreen> {
           TextField(
             controller: _duckAuthController,
             obscureText: true,
-            style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
+            style: BentoStyles.body.copyWith(
+              color: BentoColors.of(context).textWhite,
+            ),
             decoration: InputDecoration(
               labelText: 'Authorization Key',
-              labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+              labelStyle: BentoStyles.body.copyWith(
+                color: BentoColors.of(context).textMuted,
+              ),
               filled: true,
               fillColor: BentoColors.of(context).inputBg,
               border: OutlineInputBorder(
                 borderRadius: BentoStyles.inputBorderRadius,
-                borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+                borderSide: BorderSide(
+                  color: BentoColors.of(context).inputBorder,
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BentoStyles.inputBorderRadius,
-                borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+                borderSide: BorderSide(
+                  color: BentoColors.of(context).inputBorder,
+                ),
               ),
             ),
           ),
@@ -217,7 +252,9 @@ class _SplashScreenState extends State<SplashScreen> {
           style: FilledButton.styleFrom(
             backgroundColor: BentoColors.of(context).primary,
             foregroundColor: BentoColors.of(context).onPrimary,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
           child: const Text('Save'),
         ),
@@ -264,7 +301,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
           ),
-          
+
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -279,24 +316,33 @@ class _SplashScreenState extends State<SplashScreen> {
                       decoration: BoxDecoration(
                         color: Colors.red.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                        border: Border.all(
+                          color: Colors.red.withValues(alpha: 0.3),
+                        ),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.error_outline, color: Colors.redAccent, size: 20),
+                          const Icon(
+                            Icons.error_outline,
+                            color: Colors.redAccent,
+                            size: 20,
+                          ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
                               context.watch<AuthProvider>().errorMessage!,
-                              style: BentoStyles.body.copyWith(color: Colors.redAccent, fontSize: 14),
+                              style: BentoStyles.body.copyWith(
+                                color: Colors.redAccent,
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    
+
                   const Spacer(),
-                  
+
                   // Branding
                   Icon(
                     Icons.lock_person_rounded,
@@ -323,17 +369,21 @@ class _SplashScreenState extends State<SplashScreen> {
                       height: 1.5,
                     ),
                   ),
-                  
+
                   const Spacer(),
 
                   // Auth Options (Full Bleed / Stretched)
                   _buildAuthButton(
                     context,
-                    icon: Icons.g_mobiledata, 
+                    icon: Icons.g_mobiledata,
                     title: 'Continue with Google',
                     color: const Color(0xFF4285F4),
                     isChecked: _isGoogleSignedIn,
-                    onTap: _isGoogleSignedIn ? null : (_clientIdController.text.isEmpty ? _showGoogleConfigSheet : _handleGoogleSignIn),
+                    onTap: _isGoogleSignedIn
+                        ? null
+                        : (_clientIdController.text.isEmpty
+                              ? _showGoogleConfigSheet
+                              : _handleGoogleSignIn),
                   ),
                   const SizedBox(height: 16),
                   _buildAuthButton(
@@ -344,13 +394,16 @@ class _SplashScreenState extends State<SplashScreen> {
                     isChecked: _isDuckAuthSaved,
                     onTap: _showDuckConfigSheet,
                   ),
-                  
+
                   const SizedBox(height: 24),
 
                   // Guest / Skip Option
                   TextButton(
                     onPressed: () {
-                      Provider.of<AuthProvider>(context, listen: false).enableGuestMode();
+                      Provider.of<AuthProvider>(
+                        context,
+                        listen: false,
+                      ).enableGuestMode();
                       // Also trigger callback if needed to refresh wrapper state immediately
                       if (widget.onAuthComplete != null) {
                         widget.onAuthComplete!(context);
@@ -364,14 +417,18 @@ class _SplashScreenState extends State<SplashScreen> {
                       children: [
                         const Text('Enter as Guest'),
                         const SizedBox(width: 8),
-                        Icon(Icons.arrow_forward, size: 16, color: BentoColors.of(context).textMuted),
+                        Icon(
+                          Icons.arrow_forward,
+                          size: 16,
+                          color: BentoColors.of(context).textMuted,
+                        ),
                       ],
                     ),
                   ),
 
                   const SizedBox(height: 32),
-                  
-                   /* TextButton.icon(
+
+                  /* TextButton.icon(
                      onPressed: () {
                        if (_isGoogleSignedIn && _isDuckAuthSaved) {
                          _checkCompletion();
@@ -387,17 +444,20 @@ class _SplashScreenState extends State<SplashScreen> {
                        style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
                      ),
                    ), */
-                   
-                   const SizedBox(height: 16),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
           ),
-          
+
           if (_isLoading)
             Container(
               color: Colors.black54,
-              child: Center(child: CircularProgressIndicator(color: BentoColors.of(context).primary)),
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: BentoColors.of(context).primary,
+                ),
+              ),
             ),
         ],
       ),
@@ -413,7 +473,7 @@ class _SplashScreenState extends State<SplashScreen> {
     VoidCallback? onTap,
   }) {
     final bento = BentoColors.of(context);
-    
+
     return Material(
       color: bento.surfaceHover,
       borderRadius: BorderRadius.circular(16),
@@ -423,12 +483,16 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
           decoration: BoxDecoration(
-             border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-             borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+            borderRadius: BorderRadius.circular(16),
           ),
           child: Row(
             children: [
-              Icon(isChecked ? Icons.check_circle : icon, color: isChecked ? bento.success : color, size: 28),
+              Icon(
+                isChecked ? Icons.check_circle : icon,
+                color: isChecked ? bento.success : color,
+                size: 28,
+              ),
               const SizedBox(width: 16),
               Expanded(
                 child: Text(

@@ -48,7 +48,9 @@ class ThemeService {
     final data = await _loadData();
     final List<dynamic>? themesJson = data['customThemes'] as List<dynamic>?;
     if (themesJson == null) return [];
-    return themesJson.map((e) => ThemeModel.fromJson(e as Map<String, dynamic>)).toList();
+    return themesJson
+        .map((e) => ThemeModel.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   Future<void> addCustomTheme(ThemeModel theme) async {

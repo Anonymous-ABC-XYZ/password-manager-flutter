@@ -58,20 +58,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
         final file = result.files.single;
         final content = utf8.decode(file.bytes!);
         final json = jsonDecode(content) as Map<String, dynamic>;
-        
+
         final newTheme = ThemeModel.fromJson(json);
         await themeProvider.addTheme(newTheme);
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Theme "${newTheme.name}" uploaded successfully!')),
+            SnackBar(
+              content: Text('Theme "${newTheme.name}" uploaded successfully!'),
+            ),
           );
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error uploading theme: $e')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Error uploading theme: $e')));
         }
       }
     }
@@ -79,7 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _showAppearanceSheet() {
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-    
+
     StitchBottomSheet.show(
       context: context,
       title: 'Theme',
@@ -107,7 +109,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             color: BentoColors.of(context).inputBg,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: isSelected ? BentoColors.of(context).primary : BentoColors.of(context).inputBorder,
+                              color: isSelected
+                                  ? BentoColors.of(context).primary
+                                  : BentoColors.of(context).inputBorder,
                               width: isSelected ? 2 : 1,
                             ),
                           ),
@@ -120,7 +124,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: theme.backgroundDark,
-                                  border: Border.all(color: BentoColors.of(context).inputBorder),
+                                  border: Border.all(
+                                    color: BentoColors.of(context).inputBorder,
+                                  ),
                                 ),
                                 child: Center(
                                   child: Container(
@@ -135,16 +141,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                               const SizedBox(height: 12),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                ),
                                 child: Text(
                                   theme.name,
                                   textAlign: TextAlign.center,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: BentoStyles.body.copyWith(
-                                    color: isSelected ? BentoColors.of(context).textWhite : BentoColors.of(context).textMuted,
+                                    color: isSelected
+                                        ? BentoColors.of(context).textWhite
+                                        : BentoColors.of(context).textMuted,
                                     fontSize: 12,
-                                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                    fontWeight: isSelected
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
                                   ),
                                 ),
                               ),
@@ -153,7 +165,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                     );
-                  }
+                  },
                 );
               },
             ),
@@ -166,7 +178,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             style: OutlinedButton.styleFrom(
               foregroundColor: BentoColors.of(context).textWhite,
               side: BorderSide(color: BentoColors.of(context).inputBorder),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           ),
         ],
@@ -185,14 +199,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
               TextField(
                 controller: _authController,
                 obscureText: _obscureAuthKey,
-                style: BentoStyles.mono.copyWith(color: BentoColors.of(context).textWhite),
+                style: BentoStyles.mono.copyWith(
+                  color: BentoColors.of(context).textWhite,
+                ),
                 decoration: InputDecoration(
                   labelText: 'Authorization Key',
-                  labelStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
+                  labelStyle: BentoStyles.body.copyWith(
+                    color: BentoColors.of(context).textMuted,
+                  ),
                   filled: true,
                   fillColor: BentoColors.of(context).inputBg,
                   suffixIcon: IconButton(
-                    icon: Icon(_obscureAuthKey ? Icons.visibility : Icons.visibility_off, color: BentoColors.of(context).textMuted),
+                    icon: Icon(
+                      _obscureAuthKey ? Icons.visibility : Icons.visibility_off,
+                      color: BentoColors.of(context).textMuted,
+                    ),
                     onPressed: () {
                       setState(() {
                         _obscureAuthKey = !_obscureAuthKey;
@@ -201,11 +222,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+                    borderSide: BorderSide(
+                      color: BentoColors.of(context).inputBorder,
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+                    borderSide: BorderSide(
+                      color: BentoColors.of(context).inputBorder,
+                    ),
                   ),
                 ),
               ),
@@ -218,14 +243,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     backgroundColor: BentoColors.of(context).primary,
                     foregroundColor: BentoColors.of(context).onPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   child: const Text('Save Key'),
                 ),
               ),
             ],
           );
-        }
+        },
       ),
     );
   }
@@ -250,7 +277,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             const SizedBox(height: 32),
-            
+
             _buildSettingTile(
               context,
               icon: Icons.palette_outlined,
@@ -304,7 +331,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   color: BentoColors.of(context).surfaceHover,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(icon, color: BentoColors.of(context).primary, size: 24),
+                child: Icon(
+                  icon,
+                  color: BentoColors.of(context).primary,
+                  size: 24,
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -329,7 +360,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right, color: BentoColors.of(context).textMuted),
+              Icon(
+                Icons.chevron_right,
+                color: BentoColors.of(context).textMuted,
+              ),
             ],
           ),
         ),

@@ -25,7 +25,8 @@ class GmailService {
     _instance = null;
   }
 
-  GmailService._internal({required FlutterSecureStorage storage}) : _storage = storage;
+  GmailService._internal({required FlutterSecureStorage storage})
+    : _storage = storage;
 
   static const _scopes = ['https://www.googleapis.com/auth/gmail.readonly'];
   static final _authorizationEndpoint = Uri.parse(
@@ -46,7 +47,9 @@ class GmailService {
     }
   }
 
-  Future<bool> signIn({oauth2.Client? Function(oauth2.Credentials, String, String)? clientFactory}) async {
+  Future<bool> signIn({
+    oauth2.Client? Function(oauth2.Credentials, String, String)? clientFactory,
+  }) async {
     try {
       final storedCredentials = await _storage.read(
         key: 'google_credentials_v2',
@@ -58,7 +61,9 @@ class GmailService {
 
           final clientCreds = await _getClientCreds();
           if (clientCreds == null) {
-            print('GmailService.signIn: Client credentials not found in storage.');
+            print(
+              'GmailService.signIn: Client credentials not found in storage.',
+            );
             return false;
           }
 
@@ -79,15 +84,16 @@ class GmailService {
           if (_authenticatedClient!.credentials.isExpired) {
             print('GmailService.signIn: Credentials expired, refreshing...');
             try {
-              _authenticatedClient = await _authenticatedClient!.refreshCredentials();
+              _authenticatedClient = await _authenticatedClient!
+                  .refreshCredentials();
               await _saveCredentials(_authenticatedClient!.credentials);
               print('GmailService.signIn: Refresh successful.');
             } catch (e) {
               print('GmailService.signIn: Failed to refresh credentials: $e');
               // Only delete if it's an authorization error, implying the refresh token is invalid/revoked
               if (e is oauth2.AuthorizationException) {
-                 print('GmailService.signIn: Deleting invalid credentials.');
-                 await _storage.delete(key: 'google_credentials_v2');
+                print('GmailService.signIn: Deleting invalid credentials.');
+                await _storage.delete(key: 'google_credentials_v2');
               }
               // For other errors (network, etc.), we keep the credentials to try again later.
               // But we return false to indicate we couldn't get a valid client NOW.
@@ -101,7 +107,7 @@ class GmailService {
           print('GmailService.signIn: Error loading credentials: $e');
           // If we can't even decode/load them, they are likely corrupted.
           if (e is FormatException || e is TypeError) {
-             await _storage.delete(key: 'google_credentials_v2');
+            await _storage.delete(key: 'google_credentials_v2');
           }
         }
       }
@@ -113,7 +119,11 @@ class GmailService {
     }
   }
 
-  Future<bool> authenticate(String clientId, String clientSecret, {Function(Uri)? onUrlLaunched}) async {
+  Future<bool> authenticate(
+    String clientId,
+    String clientSecret, {
+    Function(Uri)? onUrlLaunched,
+  }) async {
     try {
       print('Starting authentication flow...');
 
@@ -138,7 +148,7 @@ class GmailService {
       );
 
       print('Authorization URL: $authorizationUrl');
-      
+
       if (onUrlLaunched != null) {
         onUrlLaunched(authorizationUrl);
       }

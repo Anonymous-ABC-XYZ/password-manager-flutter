@@ -54,7 +54,7 @@ void main() {
 
     await themeService.addCustomTheme(theme);
     final themes = await themeService.getCustomThemes();
-    
+
     expect(themes.length, 1);
     expect(themes[0].name, 'My Custom Theme');
     expect(themes[0].primary.value, const Color(0xFF112233).value);

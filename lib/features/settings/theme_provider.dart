@@ -11,7 +11,8 @@ class ThemeProvider with ChangeNotifier {
     ThemeModel.rosePine,
   ];
 
-  ThemeProvider({required ThemeService themeService}) : _themeService = themeService;
+  ThemeProvider({required ThemeService themeService})
+    : _themeService = themeService;
 
   ThemeModel get currentTheme => _currentTheme;
   List<ThemeModel> get availableThemes => _availableThemes;
@@ -19,7 +20,7 @@ class ThemeProvider with ChangeNotifier {
   Future<void> init() async {
     final selectedName = await _themeService.getSelectedThemeName();
     final customThemes = await _themeService.getCustomThemes();
-    
+
     _availableThemes = [
       ThemeModel.bentoDefault,
       ThemeModel.catppuccinMocha,

@@ -25,7 +25,9 @@ void main() {
   Widget createWidgetUnderTest() {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider(themeService: ThemeService())),
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (_) => ThemeProvider(themeService: ThemeService()),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(extensions: [ThemeModel.bentoDefault.toBentoTheme()]),
@@ -34,17 +36,19 @@ void main() {
     );
   }
 
-  testWidgets('CredentialDetailScreen displays all credential info', (WidgetTester tester) async {
+  testWidgets('CredentialDetailScreen displays all credential info', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(createWidgetUnderTest());
     await tester.pumpAndSettle();
 
     // Header
     expect(find.text('example.com'), findsOneWidget);
-    
+
     // Fields
     expect(find.text('user123'), findsOneWidget);
     expect(find.text('user@example.com'), findsOneWidget);
-    
+
     // Password should be obscured initially, so we look for the field label or obscure widget
     expect(find.text('Password'), findsOneWidget);
     // expect(find.text('securePassword'), findsNothing); // Might fail if I use text directly
@@ -54,6 +58,9 @@ void main() {
     await tester.pumpWidget(createWidgetUnderTest());
     await tester.pumpAndSettle();
 
-    expect(find.byIcon(Icons.copy), findsAtLeastNWidgets(2)); // Username, Password
+    expect(
+      find.byIcon(Icons.copy),
+      findsAtLeastNWidgets(2),
+    ); // Username, Password
   });
 }

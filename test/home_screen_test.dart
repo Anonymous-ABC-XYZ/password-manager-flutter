@@ -21,7 +21,7 @@ void main() {
 
   setUp(() {
     mockAuthProvider = MockAuthProvider();
-    when(() => mockAuthProvider.isAuthenticated).thenReturn(false); 
+    when(() => mockAuthProvider.isAuthenticated).thenReturn(false);
     // Even if not authenticated, HomeScreen should render (Guest Mode context)
     // Though OTP island might behave differently, basic UI should be there.
   });
@@ -30,7 +30,9 @@ void main() {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthProvider>.value(value: mockAuthProvider),
-        ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider(themeService: ThemeService())),
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (_) => ThemeProvider(themeService: ThemeService()),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(extensions: [ThemeModel.bentoDefault.toBentoTheme()]),
@@ -39,13 +41,15 @@ void main() {
     );
   }
 
-  testWidgets('HomeScreen renders key input fields', (WidgetTester tester) async {
+  testWidgets('HomeScreen renders key input fields', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(createWidgetUnderTest());
     await tester.pumpAndSettle();
 
     // Verify main input sections
     expect(find.text('Add Entry'), findsOneWidget); // FAB
-    
+
     // We expect TextFields for Website, Username, Email, Password, OTP
     expect(find.byType(TextField), findsAtLeastNWidgets(4));
   });
@@ -55,11 +59,10 @@ void main() {
     await tester.pumpAndSettle();
 
     // Target the Website URL field specifically
-    final websiteFieldFinder = find.ancestor(
-      of: find.text('Website URL'),
-      matching: find.byType(Column),
-    ).first;
-    
+    final websiteFieldFinder = find
+        .ancestor(of: find.text('Website URL'), matching: find.byType(Column))
+        .first;
+
     final textFieldFinder = find.descendant(
       of: websiteFieldFinder,
       matching: find.byType(TextField),

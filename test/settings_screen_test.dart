@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAuthProvider extends Mock implements AuthProvider {}
+
 class MockThemeService extends Mock implements ThemeService {}
 
 void main() {
@@ -19,9 +20,11 @@ void main() {
   setUp(() {
     mockAuthProvider = MockAuthProvider();
     mockThemeService = MockThemeService();
-    
+
     // Stub theme service
-    when(() => mockThemeService.getSelectedThemeName()).thenAnswer((_) async => 'Bento Default');
+    when(
+      () => mockThemeService.getSelectedThemeName(),
+    ).thenAnswer((_) async => 'Bento Default');
     when(() => mockThemeService.getCustomThemes()).thenAnswer((_) async => []);
   });
 
@@ -29,7 +32,9 @@ void main() {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AuthProvider>.value(value: mockAuthProvider),
-        ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider(themeService: mockThemeService)),
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (_) => ThemeProvider(themeService: mockThemeService),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(extensions: [ThemeModel.bentoDefault.toBentoTheme()]),
@@ -38,7 +43,9 @@ void main() {
     );
   }
 
-  testWidgets('SettingsScreen displays options list', (WidgetTester tester) async {
+  testWidgets('SettingsScreen displays options list', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(createWidgetUnderTest());
     await tester.pumpAndSettle();
 
@@ -47,7 +54,9 @@ void main() {
     expect(find.text('API Keys'), findsOneWidget);
   });
 
-  testWidgets('Tapping Appearance opens StitchBottomSheet', (WidgetTester tester) async {
+  testWidgets('Tapping Appearance opens StitchBottomSheet', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(createWidgetUnderTest());
     await tester.pumpAndSettle();
 

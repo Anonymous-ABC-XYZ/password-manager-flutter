@@ -46,10 +46,16 @@ class _PasswordsPageState extends State<PasswordsPage> {
         final website = cred['Website'].toString().toLowerCase();
         final username = cred['Username'].toString().toLowerCase();
         final email = cred['Email'].toString().toLowerCase();
-        final matchesQuery = query.isEmpty || website.contains(query) || username.contains(query) || email.contains(query);
-        
+        final matchesQuery =
+            query.isEmpty ||
+            website.contains(query) ||
+            username.contains(query) ||
+            email.contains(query);
+
         final category = cred['category']?.toString();
-        final matchesCategory = _selectedFilterCategory == null || category == _selectedFilterCategory;
+        final matchesCategory =
+            _selectedFilterCategory == null ||
+            category == _selectedFilterCategory;
 
         return matchesQuery && matchesCategory;
       }).toList();
@@ -87,8 +93,12 @@ class _PasswordsPageState extends State<PasswordsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: BentoColors.of(context).backgroundDark,
-      body: _isLoading 
-          ? Center(child: CircularProgressIndicator(color: BentoColors.of(context).primary))
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                color: BentoColors.of(context).primary,
+              ),
+            )
           : Padding(
               padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
               child: Column(
@@ -115,11 +125,18 @@ class _PasswordsPageState extends State<PasswordsPage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.search_off, size: 64, color: BentoColors.of(context).surfaceHover),
+                                Icon(
+                                  Icons.search_off,
+                                  size: 64,
+                                  color: BentoColors.of(context).surfaceHover,
+                                ),
                                 const SizedBox(height: 16),
                                 Text(
                                   'No credentials found',
-                                  style: TextStyle(color: BentoColors.of(context).textMuted, fontSize: 18),
+                                  style: TextStyle(
+                                    color: BentoColors.of(context).textMuted,
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ],
                             ),
@@ -127,12 +144,13 @@ class _PasswordsPageState extends State<PasswordsPage> {
                         : ListView.separated(
                             padding: const EdgeInsets.only(bottom: 100),
                             itemCount: _filteredCredentials.length,
-                            separatorBuilder: (context, index) => const SizedBox(height: 12),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 12),
                             itemBuilder: (context, index) {
                               final item = _filteredCredentials[index];
                               final website = item['Website'].toString();
                               final username = item['Username'].toString();
-                              
+
                               return Material(
                                 color: BentoColors.of(context).surfaceDark,
                                 borderRadius: BorderRadius.circular(20),
@@ -147,14 +165,22 @@ class _PasswordsPageState extends State<PasswordsPage> {
                                           width: 48,
                                           height: 48,
                                           decoration: BoxDecoration(
-                                            color: BentoColors.of(context).primary.withValues(alpha: 0.1),
-                                            borderRadius: BorderRadius.circular(16),
+                                            color: BentoColors.of(
+                                              context,
+                                            ).primary.withValues(alpha: 0.1),
+                                            borderRadius: BorderRadius.circular(
+                                              16,
+                                            ),
                                           ),
                                           child: Center(
                                             child: Text(
-                                              website.isNotEmpty ? website[0].toUpperCase() : '?',
+                                              website.isNotEmpty
+                                                  ? website[0].toUpperCase()
+                                                  : '?',
                                               style: TextStyle(
-                                                color: BentoColors.of(context).primary,
+                                                color: BentoColors.of(
+                                                  context,
+                                                ).primary,
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -164,12 +190,15 @@ class _PasswordsPageState extends State<PasswordsPage> {
                                         const SizedBox(width: 16),
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 website,
                                                 style: TextStyle(
-                                                  color: BentoColors.of(context).textWhite,
+                                                  color: BentoColors.of(
+                                                    context,
+                                                  ).textWhite,
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -179,7 +208,9 @@ class _PasswordsPageState extends State<PasswordsPage> {
                                               Text(
                                                 username,
                                                 style: TextStyle(
-                                                  color: BentoColors.of(context).textMuted,
+                                                  color: BentoColors.of(
+                                                    context,
+                                                  ).textMuted,
                                                   fontSize: 14,
                                                 ),
                                                 overflow: TextOverflow.ellipsis,
@@ -190,7 +221,9 @@ class _PasswordsPageState extends State<PasswordsPage> {
                                         Icon(
                                           Icons.arrow_forward_ios,
                                           size: 16,
-                                          color: BentoColors.of(context).textMuted.withValues(alpha: 0.5),
+                                          color: BentoColors.of(
+                                            context,
+                                          ).textMuted.withValues(alpha: 0.5),
                                         ),
                                       ],
                                     ),

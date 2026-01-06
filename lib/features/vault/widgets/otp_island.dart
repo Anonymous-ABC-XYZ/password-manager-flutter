@@ -74,7 +74,7 @@ class _OtpIslandState extends State<OtpIsland> {
     } catch (e) {
       if (mounted) {
         String errorMessage = 'Error fetching OTP';
-         if (e.toString().contains('Gmail API is not enabled')) {
+        if (e.toString().contains('Gmail API is not enabled')) {
           errorMessage = 'Gmail API not enabled. Check console.';
         } else if (e.toString().contains('Not signed in')) {
           errorMessage = 'Not signed in to Gmail.';
@@ -104,7 +104,7 @@ class _OtpIslandState extends State<OtpIsland> {
         gradient: LinearGradient(
           colors: [
             BentoColors.of(context).otpIsland.withValues(alpha: 0.8),
-            BentoColors.of(context).otpIsland.withValues(alpha: 0.6)
+            BentoColors.of(context).otpIsland.withValues(alpha: 0.6),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -124,7 +124,7 @@ class _OtpIslandState extends State<OtpIsland> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header
-           Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
@@ -137,15 +137,19 @@ class _OtpIslandState extends State<OtpIsland> {
                 ),
               ),
               if (_isLoading)
-                 SizedBox(
-                    width: 12, height: 12, 
-                    child: CircularProgressIndicator(strokeWidth: 2, color: BentoColors.of(context).onPrimary)
-                 )
-              else 
+                SizedBox(
+                  width: 12,
+                  height: 12,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: BentoColors.of(context).onPrimary,
+                  ),
+                )
+              else
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                     Container(
+                    Container(
                       width: 12,
                       height: 12,
                       decoration: const BoxDecoration(
@@ -172,7 +176,9 @@ class _OtpIslandState extends State<OtpIsland> {
             animation: widget.controller,
             builder: (context, child) {
               return Text(
-                widget.controller.text.isEmpty ? '--- ---' : widget.controller.text,
+                widget.controller.text.isEmpty
+                    ? '--- ---'
+                    : widget.controller.text,
                 style: BentoStyles.mono.copyWith(
                   color: BentoColors.of(context).onPrimary,
                   fontSize: 36, // Adjusted for space
@@ -182,7 +188,7 @@ class _OtpIslandState extends State<OtpIsland> {
               );
             },
           ),
-          
+
           const SizedBox(height: 16),
 
           // Footer
@@ -190,11 +196,16 @@ class _OtpIslandState extends State<OtpIsland> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.1),
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -211,30 +222,46 @@ class _OtpIslandState extends State<OtpIsland> {
                     const SizedBox(width: 8),
                     Text(
                       '${_timeLeft}s left',
-                      style: BentoStyles.body.copyWith(color: BentoColors.of(context).onPrimary, fontSize: 12),
+                      style: BentoStyles.body.copyWith(
+                        color: BentoColors.of(context).onPrimary,
+                        fontSize: 12,
+                      ),
                     ),
                   ],
                 ),
               ),
               ElevatedButton(
-                onPressed: _isLoading ? null : () {
-                   if (widget.controller.text.isEmpty) {
-                     _fetchOTP();
-                   } else {
-                     Clipboard.setData(ClipboardData(text: widget.controller.text));
-                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Copied!')));
-                   }
-                },
+                onPressed: _isLoading
+                    ? null
+                    : () {
+                        if (widget.controller.text.isEmpty) {
+                          _fetchOTP();
+                        } else {
+                          Clipboard.setData(
+                            ClipboardData(text: widget.controller.text),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Copied!')),
+                          );
+                        }
+                      },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: BentoColors.of(context).otpIsland,
                   shape: const StadiumBorder(),
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
                   elevation: 8,
                   shadowColor: Colors.black.withValues(alpha: 0.2),
-                  textStyle: BentoStyles.body.copyWith(fontWeight: FontWeight.bold),
+                  textStyle: BentoStyles.body.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                child: Text(widget.controller.text.isEmpty ? 'Fetch' : 'Copy Code'),
+                child: Text(
+                  widget.controller.text.isEmpty ? 'Fetch' : 'Copy Code',
+                ),
               ),
             ],
           ),

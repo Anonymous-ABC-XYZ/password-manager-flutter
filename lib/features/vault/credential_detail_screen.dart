@@ -23,12 +23,18 @@ class _CredentialDetailScreenState extends State<CredentialDetailScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: BentoColors.of(context).textWhite),
+          icon: Icon(
+            Icons.arrow_back,
+            color: BentoColors.of(context).textWhite,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           widget.credential.website,
-          style: BentoStyles.header.copyWith(color: BentoColors.of(context).textWhite, fontSize: 20),
+          style: BentoStyles.header.copyWith(
+            color: BentoColors.of(context).textWhite,
+            fontSize: 20,
+          ),
         ),
         centerTitle: true,
       ),
@@ -43,7 +49,9 @@ class _CredentialDetailScreenState extends State<CredentialDetailScreen> {
               decoration: BoxDecoration(
                 color: BentoColors.of(context).primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
-                border: Border.all(color: BentoColors.of(context).primary.withValues(alpha: 0.3)),
+                border: Border.all(
+                  color: BentoColors.of(context).primary.withValues(alpha: 0.3),
+                ),
               ),
               child: Icon(
                 Icons.language, // Placeholder for favicon
@@ -64,31 +72,31 @@ class _CredentialDetailScreenState extends State<CredentialDetailScreen> {
               child: Column(
                 children: [
                   _buildDetailRow(
-                    context, 
-                    label: 'Username', 
+                    context,
+                    label: 'Username',
                     value: widget.credential.username,
                     icon: Icons.person_outline,
                   ),
                   const Divider(height: 32, color: Colors.white10),
                   _buildDetailRow(
-                    context, 
-                    label: 'Email', 
+                    context,
+                    label: 'Email',
                     value: widget.credential.email,
                     icon: Icons.email_outlined,
                   ),
                   const Divider(height: 32, color: Colors.white10),
                   _buildDetailRow(
-                    context, 
-                    label: 'Password', 
-                    value: widget.credential.password, 
+                    context,
+                    label: 'Password',
+                    value: widget.credential.password,
                     isPassword: true,
                     icon: Icons.lock_outline,
                   ),
                   if (widget.credential.category != null) ...[
                     const Divider(height: 32, color: Colors.white10),
                     _buildDetailRow(
-                      context, 
-                      label: 'Category', 
+                      context,
+                      label: 'Category',
                       value: widget.credential.category!,
                       icon: Icons.folder_open,
                       allowCopy: false,
@@ -148,7 +156,9 @@ class _CredentialDetailScreenState extends State<CredentialDetailScreen> {
         if (isPassword)
           IconButton(
             icon: Icon(
-              _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+              _obscurePassword
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
               color: BentoColors.of(context).textMuted,
               size: 20,
             ),
@@ -160,12 +170,16 @@ class _CredentialDetailScreenState extends State<CredentialDetailScreen> {
           ),
         if (allowCopy)
           IconButton(
-            icon: Icon(Icons.copy, color: BentoColors.of(context).textMuted, size: 20),
+            icon: Icon(
+              Icons.copy,
+              color: BentoColors.of(context).textMuted,
+              size: 20,
+            ),
             onPressed: () {
               Clipboard.setData(ClipboardData(text: value));
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Copied $label')),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text('Copied $label')));
             },
           ),
       ],

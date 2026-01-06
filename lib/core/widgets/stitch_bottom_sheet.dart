@@ -23,18 +23,15 @@ class StitchBottomSheet extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => StitchBottomSheet(
-        title: title,
-        actions: actions,
-        child: child,
-      ),
+      builder: (context) =>
+          StitchBottomSheet(title: title, actions: actions, child: child),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final bento = BentoColors.of(context);
-    
+
     return Container(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -80,10 +77,7 @@ class StitchBottomSheet extends StatelessWidget {
             ),
           ),
           const Divider(color: Colors.white10),
-          Padding(
-            padding: const EdgeInsets.all(24),
-            child: child,
-          ),
+          Padding(padding: const EdgeInsets.all(24), child: child),
           if (actions != null) ...[
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),

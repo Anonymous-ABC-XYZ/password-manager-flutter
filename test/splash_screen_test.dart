@@ -22,7 +22,7 @@ void main() {
 
   setUp(() {
     mockAuthProvider = MockAuthProvider();
-    themeProvider = ThemeProvider(themeService: ThemeService()); 
+    themeProvider = ThemeProvider(themeService: ThemeService());
 
     // Stub necessary methods for AuthProvider
     when(() => mockAuthProvider.isAuthenticated).thenReturn(false);
@@ -42,35 +42,41 @@ void main() {
     );
   }
 
-  testWidgets('SplashScreen displays branding and auth buttons', (WidgetTester tester) async {
+  testWidgets('SplashScreen displays branding and auth buttons', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(createWidgetUnderTest());
     await tester.pumpAndSettle();
 
     // Verify Header
     expect(find.text("Let's get you secured"), findsOneWidget);
-    
+
     // Verify Buttons
     expect(find.text('Continue with Google'), findsOneWidget);
     expect(find.text('Continue with DuckDuckGo'), findsOneWidget);
-    
+
     // Verify Guest Option
     expect(find.text('Enter as Guest'), findsOneWidget);
   });
 
-  testWidgets('Tapping Google button opens StitchBottomSheet', (WidgetTester tester) async {
+  testWidgets('Tapping Google button opens StitchBottomSheet', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(createWidgetUnderTest());
     await tester.pumpAndSettle();
 
     final googleButton = find.text('Continue with Google');
     await tester.tap(googleButton);
-    await tester.pumpAndSettle(); 
+    await tester.pumpAndSettle();
 
     // Verify StitchBottomSheet is used instead of AlertDialog
     expect(find.byType(StitchBottomSheet), findsOneWidget);
     expect(find.text('Configure Google OAuth'), findsOneWidget);
   });
 
-  testWidgets('Tapping DuckDuckGo button opens StitchBottomSheet', (WidgetTester tester) async {
+  testWidgets('Tapping DuckDuckGo button opens StitchBottomSheet', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(createWidgetUnderTest());
     await tester.pumpAndSettle();
 

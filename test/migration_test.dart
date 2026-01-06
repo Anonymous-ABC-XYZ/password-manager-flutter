@@ -8,7 +8,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:password_manager/core/dbinit.dart';
 
 // Mock PathProvider
-class MockPathProviderPlatform extends Fake with MockPlatformInterfaceMixin implements PathProviderPlatform {
+class MockPathProviderPlatform extends Fake
+    with MockPlatformInterfaceMixin
+    implements PathProviderPlatform {
   final String tmpPath;
   MockPathProviderPlatform(this.tmpPath);
 
@@ -16,7 +18,7 @@ class MockPathProviderPlatform extends Fake with MockPlatformInterfaceMixin impl
   Future<String?> getApplicationDocumentsPath() async {
     return tmpPath;
   }
-  
+
   // Implement other required methods with simple mocks or throws if needed
   // Since we only expect getApplicationDocumentsDirectoryPath, others can throw UnimplementedError (default behavior of Fake)
 }
@@ -27,31 +29,35 @@ void main() {
   setUpAll(() {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
-    
+
     // Mock Secure Storage
-    FlutterSecureStorage.setMockInitialValues({'db_encryption_key': 'dummy_key'});
+    FlutterSecureStorage.setMockInitialValues({
+      'db_encryption_key': 'dummy_key',
+    });
   });
 
   setUp(() async {
     // Create a temp directory for each test
     final directory = await Directory.systemTemp.createTemp('migration_test_');
     tmpPath = directory.path;
-    
+
     PathProviderPlatform.instance = MockPathProviderPlatform(tmpPath);
   });
 
   tearDown(() async {
     // Cleanup
     if (await Directory(tmpPath).exists()) {
-        await Directory(tmpPath).delete(recursive: true);
+      await Directory(tmpPath).delete(recursive: true);
     }
   });
 
   test('InitDB migrates to version 2 and adds category column', () async {
     final dbPath = join(tmpPath, '.pass.db');
-    
+
     // 1. Manually create a V1 database
-    var db = await openDatabase(dbPath, version: 1, 
+    var db = await openDatabase(
+      dbPath,
+      version: 1,
       onConfigure: (db) async {
         await db.execute("PRAGMA key = 'dummy_key'");
       },
@@ -64,34 +70,36 @@ void main() {
             Password TEXT
           )
         ''');
-      }
+      },
     );
-    
+
     await db.insert('demo', {
       'Website': 'test.com',
       'Username': 'user',
       'Email': 'user@example.com',
-      'Password': 'password'
+      'Password': 'password',
     });
-    
+
     await db.close();
-    
+
     // 2. Initialize InitDB (which should trigger migration when we implement it)
     final database = await InitDB().initDB();
-    
+
     // 3. Verify schema
     try {
-        final result = await database.rawQuery("SELECT category FROM demo LIMIT 1");
-        // If we get here, the column exists
+      final result = await database.rawQuery(
+        "SELECT category FROM demo LIMIT 1",
+      );
+      // If we get here, the column exists
     } catch (e) {
-        fail('Column category does not exist: $e');
+      fail('Column category does not exist: $e');
     }
-    
+
     // Also verify data is still there
     final rows = await database.query('demo');
     expect(rows.length, 1);
     expect(rows.first['Website'], 'test.com');
-    
+
     await database.close();
   });
 }

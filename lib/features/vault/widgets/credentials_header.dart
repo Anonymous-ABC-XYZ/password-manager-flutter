@@ -25,7 +25,9 @@ class CredentialsHeader extends StatelessWidget {
             return Flex(
               direction: isDesktop ? Axis.horizontal : Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: isDesktop ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              crossAxisAlignment: isDesktop
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +44,10 @@ class CredentialsHeader extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       '$count passwords stored',
-                      style: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted, fontSize: 14),
+                      style: BentoStyles.body.copyWith(
+                        color: BentoColors.of(context).textMuted,
+                        fontSize: 14,
+                      ),
                     ),
                   ],
                 ),
@@ -58,31 +63,44 @@ class CredentialsHeader extends StatelessWidget {
                       child: TextField(
                         controller: searchController,
                         onChanged: (_) => onSearchChanged(),
-                        style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
+                        style: BentoStyles.body.copyWith(
+                          color: BentoColors.of(context).textWhite,
+                        ),
                         decoration: InputDecoration(
                           hintText: 'Search logins...',
-                          hintStyle: BentoStyles.body.copyWith(color: BentoColors.of(context).textMuted),
-                          prefixIcon: Icon(Icons.search, color: BentoColors.of(context).textMuted),
+                          hintStyle: BentoStyles.body.copyWith(
+                            color: BentoColors.of(context).textMuted,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: BentoColors.of(context).textMuted,
+                          ),
                           border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 14,
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Container(
-                      width: 48, 
+                      width: 48,
                       height: 48,
                       decoration: BoxDecoration(
                         color: BentoColors.of(context).surfaceDark,
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(Icons.sort, color: BentoColors.of(context).textWhite),
+                      child: Icon(
+                        Icons.sort,
+                        color: BentoColors.of(context).textWhite,
+                      ),
                     ),
                   ],
                 ),
               ],
             );
-          }
+          },
         ),
         // Filter Chips removed - functionality moved to CategoryFilterBar
       ],

@@ -54,13 +54,17 @@ class _CategorySelectorState extends State<CategorySelector> {
           selectedColor: BentoColors.of(context).primary,
           backgroundColor: BentoColors.of(context).inputBg,
           labelStyle: BentoStyles.body.copyWith(
-            color: isSelected ? BentoColors.of(context).onPrimary : BentoColors.of(context).textMuted,
+            color: isSelected
+                ? BentoColors.of(context).onPrimary
+                : BentoColors.of(context).textMuted,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
             side: BorderSide(
-              color: isSelected ? BentoColors.of(context).primary : BentoColors.of(context).inputBorder,
+              color: isSelected
+                  ? BentoColors.of(context).primary
+                  : BentoColors.of(context).inputBorder,
               width: 1,
             ),
           ),

@@ -145,7 +145,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var bento = BentoColors.of(context);
-    
+
     final List<Widget> pages = [
       HomeScreen(),
       PasswordsPage(),
@@ -199,10 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
-                  colors: [
-                    bento.primary,
-                    bento.primaryDark,
-                  ],
+                  colors: [bento.primary, bento.primaryDark],
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -224,7 +221,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: const Icon(Icons.add, color: Colors.white, size: 32),
               ),
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: BottomAppBar(
               shape: const CircularNotchedRectangle(),
               notchMargin: 8.0,
@@ -236,8 +234,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     IconButton(
                       icon: Icon(
-                        selectedIndex == 0 ? Icons.shield : Icons.shield_outlined,
-                        color: selectedIndex == 0 ? bento.primary : bento.textMuted,
+                        selectedIndex == 0
+                            ? Icons.shield
+                            : Icons.shield_outlined,
+                        color: selectedIndex == 0
+                            ? bento.primary
+                            : bento.textMuted,
                         size: 28,
                       ),
                       onPressed: () {
@@ -250,7 +252,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     IconButton(
                       icon: Icon(
                         selectedIndex == 1 ? Icons.key : Icons.key_outlined,
-                        color: selectedIndex == 1 ? bento.primary : bento.textMuted,
+                        color: selectedIndex == 1
+                            ? bento.primary
+                            : bento.textMuted,
                         size: 28,
                       ),
                       onPressed: () {
@@ -263,8 +267,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     const SizedBox(width: 48), // Gap for the FAB
                     IconButton(
                       icon: Icon(
-                        selectedIndex == 2 ? Icons.settings : Icons.settings_outlined,
-                        color: selectedIndex == 2 ? bento.primary : bento.textMuted,
+                        selectedIndex == 2
+                            ? Icons.settings
+                            : Icons.settings_outlined,
+                        color: selectedIndex == 2
+                            ? bento.primary
+                            : bento.textMuted,
                         size: 28,
                       ),
                       onPressed: () {

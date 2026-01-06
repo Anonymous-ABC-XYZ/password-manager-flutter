@@ -144,7 +144,11 @@ class BentoStyles {
   static final cardBorderRadius = BorderRadius.circular(16.0);
 
   // Hybrid Font Strategy - Optimized for Stitch (Mobile-First)
-  static TextStyle get header => GoogleFonts.outfit(textStyle: const TextStyle(inherit: true, fontWeight: FontWeight.bold));
-  static TextStyle get body => GoogleFonts.inter(textStyle: const TextStyle(inherit: true));
-  static TextStyle get mono => GoogleFonts.jetBrainsMono(textStyle: const TextStyle(inherit: true));
+  static TextStyle get header => GoogleFonts.outfit(
+    textStyle: const TextStyle(inherit: true, fontWeight: FontWeight.bold),
+  );
+  static TextStyle get body =>
+      GoogleFonts.inter(textStyle: const TextStyle(inherit: true));
+  static TextStyle get mono =>
+      GoogleFonts.jetBrainsMono(textStyle: const TextStyle(inherit: true));
 }

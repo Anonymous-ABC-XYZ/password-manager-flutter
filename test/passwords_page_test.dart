@@ -32,7 +32,9 @@ void main() {
   Widget createWidgetUnderTest() {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider(themeService: ThemeService())),
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (_) => ThemeProvider(themeService: ThemeService()),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(extensions: [ThemeModel.bentoDefault.toBentoTheme()]),
@@ -41,9 +43,11 @@ void main() {
     );
   }
 
-  testWidgets('PasswordsPage renders list on mobile width', (WidgetTester tester) async {
+  testWidgets('PasswordsPage renders list on mobile width', (
+    WidgetTester tester,
+  ) async {
     await populateDb();
-    
+
     // Set small screen size
     tester.view.physicalSize = const Size(400, 800);
     tester.view.devicePixelRatio = 1.0;
@@ -55,7 +59,7 @@ void main() {
     expect(find.byType(ListView), findsOneWidget);
     expect(find.text('test.com'), findsOneWidget);
     expect(find.text('user'), findsOneWidget);
-    
+
     // Verify NOT GridView
     expect(find.byType(GridView), findsNothing);
   });

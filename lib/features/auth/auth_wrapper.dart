@@ -68,7 +68,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
             final hasDuckAuth = snapshot.data != null;
             final isFullyAuthenticated =
-                (hasDuckAuth && authProvider.isAuthenticated) || authProvider.isGuestMode;
+                (hasDuckAuth && authProvider.isAuthenticated) ||
+                authProvider.isGuestMode;
 
             if (isFullyAuthenticated) {
               return MyHomePage(

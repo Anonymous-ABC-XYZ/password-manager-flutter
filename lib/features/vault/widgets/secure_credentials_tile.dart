@@ -29,7 +29,9 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
       decoration: BoxDecoration(
         color: BentoColors.of(context).surfaceDark,
         borderRadius: BentoStyles.borderRadius,
-        border: Border.all(color: BentoColors.of(context).inputBorder.withValues(alpha: 0.5)),
+        border: Border.all(
+          color: BentoColors.of(context).inputBorder.withValues(alpha: 0.5),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.2),
@@ -42,7 +44,7 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header
-           Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
@@ -53,7 +55,10 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Icon(Icons.vpn_key, color: BentoColors.of(context).secondary), // Changed tertiary to secondary for simplicity as tertiary not in bento_of
+              Icon(
+                Icons.vpn_key,
+                color: BentoColors.of(context).secondary,
+              ), // Changed tertiary to secondary for simplicity as tertiary not in bento_of
             ],
           ),
           const SizedBox(height: 24),
@@ -64,7 +69,11 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
             controller: widget.emailController,
             inputType: TextInputType.emailAddress,
             iconActions: [
-              _buildIconButton(Icons.mail, 'Acquire Alias', widget.onAcquireEmail),
+              _buildIconButton(
+                Icons.mail,
+                'Acquire Alias',
+                widget.onAcquireEmail,
+              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -84,10 +93,14 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
                   });
                 },
               ),
-              _buildIconButton(Icons.autorenew, 'Generate New', widget.onGeneratePassword),
+              _buildIconButton(
+                Icons.autorenew,
+                'Generate New',
+                widget.onGeneratePassword,
+              ),
             ],
           ),
-          
+
           const SizedBox(height: 12),
           // Strength Indicator
           AnimatedBuilder(
@@ -99,7 +112,7 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
               if (length > 8) strength = 2;
               if (length > 12) strength = 3;
               if (length > 16) strength = 4;
-              
+
               return Row(
                 children: List.generate(4, (index) {
                   return Expanded(
@@ -107,7 +120,9 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
                       height: 4,
                       margin: const EdgeInsets.symmetric(horizontal: 2),
                       decoration: BoxDecoration(
-                        color: index < strength ? BentoColors.of(context).secondary : BentoColors.of(context).surfaceHover,
+                        color: index < strength
+                            ? BentoColors.of(context).secondary
+                            : BentoColors.of(context).surfaceHover,
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -149,31 +164,36 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
               controller: controller,
               obscureText: obscureText,
               keyboardType: inputType,
-              style: BentoStyles.body.copyWith(color: BentoColors.of(context).textWhite),
+              style: BentoStyles.body.copyWith(
+                color: BentoColors.of(context).textWhite,
+              ),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: BentoColors.of(context).inputBg,
                 border: OutlineInputBorder(
                   borderRadius: BentoStyles.inputBorderRadius,
-                  borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+                  borderSide: BorderSide(
+                    color: BentoColors.of(context).inputBorder,
+                  ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BentoStyles.inputBorderRadius,
-                  borderSide: BorderSide(color: BentoColors.of(context).inputBorder),
+                  borderSide: BorderSide(
+                    color: BentoColors.of(context).inputBorder,
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BentoStyles.inputBorderRadius,
-                  borderSide: BorderSide(color: BentoColors.of(context).secondary),
+                  borderSide: BorderSide(
+                    color: BentoColors.of(context).secondary,
+                  ),
                 ),
                 contentPadding: const EdgeInsets.fromLTRB(16, 16, 80, 16),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: iconActions,
-              ),
+              child: Row(mainAxisSize: MainAxisSize.min, children: iconActions),
             ),
           ],
         ),
@@ -181,7 +201,11 @@ class _SecureCredentialsTileState extends State<SecureCredentialsTile> {
     );
   }
 
-  Widget _buildIconButton(IconData icon, String tooltip, VoidCallback onPressed) {
+  Widget _buildIconButton(
+    IconData icon,
+    String tooltip,
+    VoidCallback onPressed,
+  ) {
     return Material(
       color: Colors.transparent,
       child: IconButton(
