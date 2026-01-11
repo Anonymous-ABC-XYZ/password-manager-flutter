@@ -154,3 +154,33 @@ Using `google_sign_in`, the `GmailService` can be refactored as follows:
 ### iOS
 
 (To be documented in next task)
+
+### iOS
+
+#### 1. GoogleService-Info.plist
+- **Location:** ios/Runner/GoogleService-Info.plist
+- **Source:** Download from Firebase Console or Google Cloud Console.
+
+#### 2. Info.plist
+- **Location:** ios/Runner/Info.plist
+- **Configuration:**
+  - Add `GIDClientID` with your iOS Client ID.
+  - Add `CFBundleURLTypes` with your `REVERSED_CLIENT_ID`.
+  ```xml
+  <key>GIDClientID</key>
+  <string>[YOUR_IOS_CLIENT_ID]</string>
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleTypeRole</key>
+      <string>Editor</string>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>[YOUR_REVERSED_CLIENT_ID]</string>
+      </array>
+    </dict>
+  </array>
+  ```
+
+#### 3. Entitlements (Optional)
+- Generally not required for basic Google Sign-In unless using advanced keychain sharing features.
