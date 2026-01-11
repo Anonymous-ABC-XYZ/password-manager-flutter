@@ -43,3 +43,20 @@ final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 final authClient = await _googleSignIn.authenticatedClient();
 // authClient is now a googleapis_auth.AuthClient ready for Gmail API
 ```
+
+## 5. Scope Verification & Consent Screen
+
+### Requesting Scopes
+When using `google_sign_in`, the required scopes must be passed to the constructor. For this project:
+- `https://www.googleapis.com/auth/gmail.readonly`
+
+### User Experience
+On mobile, calling `_googleSignIn.signIn()` will:
+1.  Show a native system dialog listing accounts signed in on the device.
+2.  After account selection, if it's the first time or if scopes have changed, it will show the **Google OAuth Consent Screen**.
+3.  The user must explicitly grant permission for the app to "Read your emails".
+
+### Security & Verification
+- **Sensitive Scopes:** `gmail.readonly` is categorized as a "Sensitive" scope by Google.
+- **Verification:** Apps using sensitive scopes typically need to undergo a verification process by Google before they can be used by "External" users. While in "Testing" mode in the Google Cloud Console, up to 100 test users can use the app without verification.
+- **Verification Requirement:** For a production password manager, this verification will be necessary to avoid a "Unverified App" warning.
