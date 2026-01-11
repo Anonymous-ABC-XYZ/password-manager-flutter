@@ -1,18 +1,21 @@
-# Plan: Mobile Native Gmail Sign-In Research
+# Plan: Mobile Native Gmail Sign-In Implementation
 
-## Phase 1: Package Discovery & Scope Verification [checkpoint: 910300e]
-- [x] Task: Research `google_sign_in` package and alternative Flutter plugins for native authentication. 2e681fb
-- [x] Task: Verify the process for requesting `https://www.googleapis.com/auth/gmail.readonly` via native pop-up. 62e6d15
-- [x] Task: Identify how the native flow returns credentials and how they integrate with `googleapis_auth`. 77a061d
-- [x] Task: Conductor - User Manual Verification 'Package Discovery & Scope Verification' (Protocol in workflow.md)
+## Phase 1: Project Setup & Platform Configuration
+- [x] Task: Document Google Cloud Console setup (Android/iOS Client IDs, SHA-1). 0019db6
+- [ ] Task: Add dependencies `google_sign_in` and `extension_google_sign_in_as_googleapis_auth` to `pubspec.yaml`.
+- [ ] Task: Configure Android `AndroidManifest.xml` and `build.gradle` for Google services.
+- [ ] Task: Configure iOS `Info.plist` with URL Schemes and `GIDClientID`.
+- [ ] Task: Conductor - User Manual Verification 'Project Setup & Platform Configuration' (Protocol in workflow.md)
 
-## Phase 2: Platform & Infrastructure Requirements [checkpoint: f6885a0]
-- [x] Task: Document required Google Cloud Console configurations (Android/iOS Client IDs, SHA-1 fingerprints). d9f6769
-- [x] Task: Research Android-specific configuration (build.gradle, manifest, internet permissions). 1b1017c
-- [x] Task: Research iOS-specific configuration (Info.plist, URL Schemes, entitlements). 79358a5
-- [x] Task: Conductor - User Manual Verification 'Platform & Infrastructure Requirements' (Protocol in workflow.md)
+## Phase 2: GmailService & AuthProvider Refactoring (TDD)
+- [ ] Task: Write unit tests for native authentication flow in `GmailService`.
+- [ ] Task: Implement native `authenticate()` method in `GmailService` for mobile platforms.
+- [ ] Task: Implement `signInSilently()` in `GmailService` to restore sessions.
+- [ ] Task: Update `AuthProvider` to integrate with the new native flow.
+- [ ] Task: Conductor - User Manual Verification 'GmailService & AuthProvider Refactoring' (Protocol in workflow.md)
 
-## Phase 3: Final Documentation [checkpoint: bac5f50]
-- [x] Task: Compile all findings into a comprehensive `RESEARCH.md` or similar document in the track directory. 76ac524
-- [x] Task: Create a high-level Implementation Plan (sequence of tasks) for the future coding phase. da48a12
-- [x] Task: Conductor - User Manual Verification 'Final Documentation' (Protocol in workflow.md)
+## Phase 3: UI Integration & Verification
+- [ ] Task: Update `SplashScreen` / `AuthWrapper` to trigger `signInSilently()` on startup.
+- [ ] Task: Update `SettingsScreen` (or relevant UI) to trigger the native sign-in popup.
+- [ ] Task: Verify end-to-end OTP fetching functionality on a mobile device/emulator.
+- [ ] Task: Conductor - User Manual Verification 'UI Integration & Verification' (Protocol in workflow.md)
