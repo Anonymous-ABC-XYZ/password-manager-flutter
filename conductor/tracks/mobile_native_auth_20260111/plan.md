@@ -2,7 +2,7 @@
 
 ## Phase 1: Project Setup & Platform Configuration
 - [x] Task: Document Google Cloud Console setup (Android/iOS Client IDs, SHA-1). 0019db6
-- [ ] Task: Add dependencies `google_sign_in` and `extension_google_sign_in_as_googleapis_auth` to `pubspec.yaml`.
+- [x] Task: Add dependencies `google_sign_in` and `extension_google_sign_in_as_googleapis_auth` to `pubspec.yaml`. e20be47
 - [ ] Task: Configure Android `AndroidManifest.xml` and `build.gradle` for Google services.
 - [ ] Task: Configure iOS `Info.plist` with URL Schemes and `GIDClientID`.
 - [ ] Task: Conductor - User Manual Verification 'Project Setup & Platform Configuration' (Protocol in workflow.md)
