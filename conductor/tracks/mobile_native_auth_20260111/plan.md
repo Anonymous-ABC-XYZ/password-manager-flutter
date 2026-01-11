@@ -12,7 +12,7 @@
 - [x] Task: Research iOS-specific configuration (Info.plist, URL Schemes, entitlements). 79358a5
 - [x] Task: Conductor - User Manual Verification 'Platform & Infrastructure Requirements' (Protocol in workflow.md)
 
-## Phase 3: Final Documentation
+## Phase 3: Final Documentation [checkpoint: bac5f50]
 - [x] Task: Compile all findings into a comprehensive `RESEARCH.md` or similar document in the track directory. 76ac524
 - [x] Task: Create a high-level Implementation Plan (sequence of tasks) for the future coding phase. da48a12
-- [ ] Task: Conductor - User Manual Verification 'Final Documentation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Final Documentation' (Protocol in workflow.md)
