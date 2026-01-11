@@ -6,11 +6,11 @@
 - [x] Task: Identify how the native flow returns credentials and how they integrate with `googleapis_auth`. 77a061d
 - [x] Task: Conductor - User Manual Verification 'Package Discovery & Scope Verification' (Protocol in workflow.md)
 
-## Phase 2: Platform & Infrastructure Requirements
+## Phase 2: Platform & Infrastructure Requirements [checkpoint: f6885a0]
 - [x] Task: Document required Google Cloud Console configurations (Android/iOS Client IDs, SHA-1 fingerprints). d9f6769
 - [x] Task: Research Android-specific configuration (build.gradle, manifest, internet permissions). 1b1017c
 - [x] Task: Research iOS-specific configuration (Info.plist, URL Schemes, entitlements). 79358a5
-- [ ] Task: Conductor - User Manual Verification 'Platform & Infrastructure Requirements' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Platform & Infrastructure Requirements' (Protocol in workflow.md)
 
 ## Phase 3: Final Documentation
 - [ ] Task: Compile all findings into a comprehensive `RESEARCH.md` or similar document in the track directory.
