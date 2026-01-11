@@ -33,16 +33,47 @@ final GoogleSignIn _googleSignIn = GoogleSignIn(
 );
 ```
 
-## 4. Integration with `googleapis_auth`
-Using the extension package:
+## 4. Integration with `googleapis_auth` & `GmailService`
 
-```dart
-import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
+### Current Implementation
+The existing `GmailService` in `lib/features/auth/gmail_service.dart`:
+- Uses `oauth2.AuthorizationCodeGrant` for the browser flow.
+- Manually starts a localhost server to catch the callback.
+- Stores `oauth2.Credentials` in `FlutterSecureStorage`.
+- Initializes `GmailApi` with an `oauth2.Client`.
 
-final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-final authClient = await _googleSignIn.authenticatedClient();
-// authClient is now a googleapis_auth.AuthClient ready for Gmail API
-```
+### Proposed Integration
+Using `google_sign_in`, the `GmailService` can be refactored as follows:
+
+1.  **Dependency Change:** Add `google_sign_in` and `extension_google_sign_in_as_googleapis_auth`.
+2.  **Authentication Flow:**
+    ```dart
+    final GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: ['https://www.googleapis.com/auth/gmail.readonly'],
+    );
+
+    Future<bool> authenticateNative() async {
+      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+      if (account == null) return false;
+
+      final authClient = await account.authenticatedClient();
+      if (authClient == null) return false;
+
+      _gmailApi = GmailApi(authClient);
+      
+      // PERSISTENCE:
+      // google_sign_in persists the session natively. 
+      // We can use _googleSignIn.signInSilently() on app startup to restore.
+      return true;
+    }
+    ```
+3.  **Compatibility:** Since `GmailApi` takes an `http.Client`, the `authClient` returned by the extension package is perfectly compatible.
+
+### Persistent Storage Migration
+- **Current:** `google_credentials_v2` key in secure storage.
+- **Native:** `google_sign_in` manages its own persistence.
+- **Recommendation:** During transition, we should decide if we want to store the `oauth2.Credentials` obtained from the native flow into our current secure storage key to maintain a "unified" way of checking `isSignedIn`. However, `google_sign_in` is generally more reliable for managing Google sessions on mobile.
+
 
 ## 5. Scope Verification & Consent Screen
 
