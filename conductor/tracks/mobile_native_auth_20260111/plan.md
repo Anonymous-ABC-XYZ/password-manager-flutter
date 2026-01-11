@@ -7,7 +7,7 @@
 - [x] Task: Configure iOS `Info.plist` with URL Schemes and `GIDClientID`. eac8817
 - [x] Task: Conductor - User Manual Verification 'Project Setup & Platform Configuration' (Protocol in workflow.md)
 
-## Phase 2: GmailService & AuthProvider Refactoring (TDD)
+## Phase 2: GmailService & AuthProvider Refactoring (TDD) [checkpoint: 0fe767e]
 - [x] Task: Write unit tests for native authentication flow in `GmailService`. 92bbafc
 - [x] Task: Implement native `authenticate()` method in `GmailService` for mobile platforms. 92bbafc
 - [x] Task: Implement `signInSilently()` in `GmailService` to restore sessions. 92bbafc
