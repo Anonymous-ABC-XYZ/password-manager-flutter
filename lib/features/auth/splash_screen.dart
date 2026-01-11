@@ -69,11 +69,20 @@ class _SplashScreenState extends State<SplashScreen> {
             defaultTargetPlatform == TargetPlatform.iOS);
 
     if (isMobile) {
+      // For mobile, the input 'Client ID' is treated as the 'Server Client ID' (Web Client ID)
+      // needed to get the idToken for backend access (or Google APIs via extension).
+      final serverClientId =
+          _clientIdController.text.isNotEmpty
+              ? _clientIdController.text.trim()
+              : null;
+
       setState(() {
         _isLoading = true;
       });
 
-      final success = await authProvider.authenticateNative();
+      final success = await authProvider.authenticateNative(
+        serverClientId: serverClientId,
+      );
 
       setState(() {
         _isLoading = false;

@@ -131,12 +131,14 @@ class AuthProvider extends ChangeNotifier {
   }
 
   /// Authenticate with Native Google Sign-In (Mobile)
-  Future<bool> authenticateNative() async {
+  Future<bool> authenticateNative({String? serverClientId}) async {
     try {
       _errorMessage = null;
       notifyListeners();
 
-      final success = await _gmailService.authenticateNative();
+      final success = await _gmailService.authenticateNative(
+        serverClientId: serverClientId,
+      );
       _isAuthenticated = success;
 
       if (success) {

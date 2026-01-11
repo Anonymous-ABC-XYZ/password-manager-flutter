@@ -12,7 +12,7 @@ import 'dart:io';
 
 class GmailService {
   final FlutterSecureStorage _storage;
-  final GoogleSignIn _googleSignIn;
+  GoogleSignIn _googleSignIn;
 
   // Singleton pattern
   static GmailService? _instance;
@@ -23,7 +23,10 @@ class GmailService {
   }) {
     _instance ??= GmailService._internal(
       storage: storage ?? const FlutterSecureStorage(),
-      googleSignIn: googleSignIn ?? GoogleSignIn.instance,
+      googleSignIn: googleSignIn ??
+          GoogleSignIn.standard(
+            scopes: _scopes,
+          ),
     );
     return _instance!;
   }
@@ -516,11 +519,21 @@ class GmailService {
     _gmailApi = null;
   }
 
-  Future<bool> authenticateNative() async {
+  Future<bool> authenticateNative({String? serverClientId}) async {
     try {
-      final account = await _googleSignIn.authenticate(scopeHint: _scopes);
-      final auth = await account.authorizationClient.authorizeScopes(_scopes);
-      final authClient = auth.authClient(scopes: _scopes);
+      if (serverClientId != null) {
+        // Re-initialize with serverClientId if provided
+        _googleSignIn = GoogleSignIn(
+          serverClientId: serverClientId,
+          scopes: _scopes,
+        );
+      }
+
+      final account = await _googleSignIn.signIn();
+      if (account == null) return false;
+
+      final authClient = await account.authenticatedClient();
+      if (authClient == null) return false;
 
       _authenticatedClient = authClient;
       _gmailApi = GmailApi(authClient);

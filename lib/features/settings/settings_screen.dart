@@ -21,11 +21,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final TextEditingController _authController = TextEditingController();
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   bool _obscureAuthKey = true;
+  String? _serverClientId;
 
   @override
   void initState() {
     super.initState();
     _loadAuthKey();
+    _loadGoogleClientId();
+  }
+
+  Future<void> _loadGoogleClientId() async {
+    final clientId = await _storage.read(key: 'google_client_id');
+    if (mounted) {
+      setState(() {
+        _serverClientId = clientId;
+      });
+    }
   }
 
   Future<void> _loadAuthKey() async {
@@ -308,7 +319,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Provider.of<AuthProvider>(context, listen: false);
                 if (defaultTargetPlatform == TargetPlatform.android ||
                     defaultTargetPlatform == TargetPlatform.iOS) {
-                  authProvider.authenticateNative();
+                  authProvider.authenticateNative(
+                    serverClientId: _serverClientId,
+                  );
                 } else {
                   // Show current browser config or just inform
                   ScaffoldMessenger.of(context).showSnackBar(
