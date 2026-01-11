@@ -8,11 +8,11 @@
 - [x] Task: Conductor - User Manual Verification 'Project Setup & Platform Configuration' (Protocol in workflow.md)
 
 ## Phase 2: GmailService & AuthProvider Refactoring (TDD)
-- [ ] Task: Write unit tests for native authentication flow in `GmailService`.
-- [ ] Task: Implement native `authenticate()` method in `GmailService` for mobile platforms.
-- [ ] Task: Implement `signInSilently()` in `GmailService` to restore sessions.
-- [ ] Task: Update `AuthProvider` to integrate with the new native flow.
-- [ ] Task: Conductor - User Manual Verification 'GmailService & AuthProvider Refactoring' (Protocol in workflow.md)
+- [x] Task: Write unit tests for native authentication flow in `GmailService`. 92bbafc
+- [x] Task: Implement native `authenticate()` method in `GmailService` for mobile platforms. 92bbafc
+- [x] Task: Implement `signInSilently()` in `GmailService` to restore sessions. 92bbafc
+- [x] Task: Update `AuthProvider` to integrate with the new native flow. 92bbafc
+- [x] Task: Conductor - User Manual Verification 'GmailService & AuthProvider Refactoring' (Protocol in workflow.md)
 
 ## Phase 3: UI Integration & Verification
 - [ ] Task: Update `SplashScreen` / `AuthWrapper` to trigger `signInSilently()` on startup.
