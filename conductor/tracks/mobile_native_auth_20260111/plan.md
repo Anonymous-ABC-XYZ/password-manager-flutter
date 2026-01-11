@@ -15,7 +15,7 @@
 - [x] Task: Conductor - User Manual Verification 'GmailService & AuthProvider Refactoring' (Protocol in workflow.md)
 
 ## Phase 3: UI Integration & Verification
-- [ ] Task: Update `SplashScreen` / `AuthWrapper` to trigger `signInSilently()` on startup.
-- [ ] Task: Update `SettingsScreen` (or relevant UI) to trigger the native sign-in popup.
-- [ ] Task: Verify end-to-end OTP fetching functionality on a mobile device/emulator.
+- [x] Task: Update `SplashScreen` / `AuthWrapper` to trigger `signInSilently()` on startup. 92bbafc
+- [x] Task: Update `SettingsScreen` (or relevant UI) to trigger the native sign-in popup. 870c3fe
+- [x] Task: Verify end-to-end OTP fetching functionality on a mobile device/emulator. 870c3fe
 - [ ] Task: Conductor - User Manual Verification 'UI Integration & Verification' (Protocol in workflow.md)
