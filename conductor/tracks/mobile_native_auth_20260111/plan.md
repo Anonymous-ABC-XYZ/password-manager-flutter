@@ -1,11 +1,11 @@
 # Plan: Mobile Native Gmail Sign-In Implementation
 
-## Phase 1: Project Setup & Platform Configuration
+## Phase 1: Project Setup & Platform Configuration [checkpoint: 790e6e8]
 - [x] Task: Document Google Cloud Console setup (Android/iOS Client IDs, SHA-1). 0019db6
 - [x] Task: Add dependencies `google_sign_in` and `extension_google_sign_in_as_googleapis_auth` to `pubspec.yaml`. e20be47
 - [x] Task: Configure Android `AndroidManifest.xml` and `build.gradle` for Google services. 1083391
 - [x] Task: Configure iOS `Info.plist` with URL Schemes and `GIDClientID`. eac8817
-- [ ] Task: Conductor - User Manual Verification 'Project Setup & Platform Configuration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Project Setup & Platform Configuration' (Protocol in workflow.md)
 
 ## Phase 2: GmailService & AuthProvider Refactoring (TDD)
 - [ ] Task: Write unit tests for native authentication flow in `GmailService`.
