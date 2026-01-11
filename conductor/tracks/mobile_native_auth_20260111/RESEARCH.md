@@ -121,3 +121,36 @@ Using `google_sign_in`, the `GmailService` can be refactored as follows:
 - **Test Users:** While in "Testing" state, add developer/tester emails.
 
 
+
+## 7. Platform Specific Configurations
+
+### Android
+
+#### 1. AndroidManifest.xml
+- **Location:** android/app/src/main/AndroidManifest.xml
+- **Permission:** Ensure INTERNET permission is present.
+  ```xml
+  <uses-permission android:name="android.permission.INTERNET"/>
+  ```
+
+#### 2. build.gradle (Project-level)
+- **Location:** android/build.gradle
+- **Plugin:** Add the google-services classpath.
+  ```gradle
+  dependencies {
+      classpath 'com.google.gms:google-services:4.3.15' // or latest
+  }
+  ```
+
+#### 3. build.gradle (App-level)
+- **Location:** android/app/build.gradle
+- **Apply Plugin:** Add 'com.google.gms.google-services' to the plugins block or at the bottom.
+- **minSdkVersion:** Should be at least 21.
+
+#### 4. google-services.json
+- **Location:** android/app/google-services.json
+- **Source:** Download from Firebase Console or Google Cloud Console (APIs & Services).
+
+### iOS
+
+(To be documented in next task)
