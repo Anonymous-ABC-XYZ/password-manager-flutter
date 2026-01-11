@@ -8,7 +8,7 @@
 
 ## Phase 2: Platform & Infrastructure Requirements
 - [x] Task: Document required Google Cloud Console configurations (Android/iOS Client IDs, SHA-1 fingerprints). d9f6769
-- [ ] Task: Research Android-specific configuration (build.gradle, manifest, internet permissions).
+- [x] Task: Research Android-specific configuration (build.gradle, manifest, internet permissions). 1b1017c
 - [ ] Task: Research iOS-specific configuration (Info.plist, URL Schemes, entitlements).
 - [ ] Task: Conductor - User Manual Verification 'Platform & Infrastructure Requirements' (Protocol in workflow.md)
 
