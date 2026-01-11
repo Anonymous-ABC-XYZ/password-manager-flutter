@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
@@ -6,6 +7,7 @@ import 'dart:convert';
 import 'package:password_manager/core/utils/bento_constants.dart';
 import 'package:password_manager/features/settings/theme_provider.dart';
 import 'package:password_manager/features/settings/theme_model.dart';
+import 'package:password_manager/features/auth/auth_provider.dart';
 import 'package:password_manager/core/widgets/stitch_bottom_sheet.dart';
 
 class SettingsScreen extends StatefulWidget {
