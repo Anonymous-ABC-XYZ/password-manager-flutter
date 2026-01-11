@@ -47,7 +47,24 @@ class AuthProvider extends ChangeNotifier {
       _errorMessage = null;
       notifyListeners();
 
-      // Attempt silent sign-in with stored credentials
+      // 1. Attempt Native Silent Sign-In (Mobile)
+      if (kIsWeb == false &&
+          (defaultTargetPlatform == TargetPlatform.android ||
+              defaultTargetPlatform == TargetPlatform.iOS)) {
+        final success = await _gmailService.signInSilently();
+        if (success) {
+          _isAuthenticated = true;
+          await _loadSessionMetadata();
+          if (isSessionExpired) {
+            await signOut(expired: true);
+          } else {
+            _scheduleTokenRefresh();
+          }
+          return;
+        }
+      }
+
+      // 2. Attempt standard silent sign-in (Desktop fallback)
       final isSignedIn = await _gmailService.isSignedIn;
 
       if (isSignedIn) {
@@ -86,7 +103,7 @@ class AuthProvider extends ChangeNotifier {
     return now.difference(_initialLoginTime!) >= sessionDuration;
   }
 
-  /// Authenticate with Google OAuth
+  /// Authenticate with Google OAuth (Browser)
   Future<bool> authenticate(String clientId, String clientSecret) async {
     try {
       _errorMessage = null;
@@ -109,6 +126,31 @@ class AuthProvider extends ChangeNotifier {
       _isAuthenticated = false;
       notifyListeners();
       debugPrint('AuthProvider authentication error: $e');
+      return false;
+    }
+  }
+
+  /// Authenticate with Native Google Sign-In (Mobile)
+  Future<bool> authenticateNative() async {
+    try {
+      _errorMessage = null;
+      notifyListeners();
+
+      final success = await _gmailService.authenticateNative();
+      _isAuthenticated = success;
+
+      if (success) {
+        await _saveSessionMetadata(isNewLogin: true);
+        _scheduleTokenRefresh();
+      }
+
+      notifyListeners();
+      return success;
+    } catch (e) {
+      _errorMessage = 'Native authentication failed: $e';
+      _isAuthenticated = false;
+      notifyListeners();
+      debugPrint('AuthProvider native authentication error: $e');
       return false;
     }
   }

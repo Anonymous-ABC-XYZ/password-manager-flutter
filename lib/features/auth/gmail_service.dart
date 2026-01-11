@@ -1,7 +1,10 @@
 import 'package:googleapis/gmail/v1.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -9,13 +12,18 @@ import 'dart:io';
 
 class GmailService {
   final FlutterSecureStorage _storage;
+  final GoogleSignIn _googleSignIn;
 
   // Singleton pattern
   static GmailService? _instance;
 
-  factory GmailService({FlutterSecureStorage? storage}) {
+  factory GmailService({
+    FlutterSecureStorage? storage,
+    GoogleSignIn? googleSignIn,
+  }) {
     _instance ??= GmailService._internal(
       storage: storage ?? const FlutterSecureStorage(),
+      googleSignIn: googleSignIn ?? GoogleSignIn.instance,
     );
     return _instance!;
   }
@@ -25,8 +33,11 @@ class GmailService {
     _instance = null;
   }
 
-  GmailService._internal({required FlutterSecureStorage storage})
-    : _storage = storage;
+  GmailService._internal({
+    required FlutterSecureStorage storage,
+    required GoogleSignIn googleSignIn,
+  })  : _storage = storage,
+        _googleSignIn = googleSignIn;
 
   static const _scopes = ['https://www.googleapis.com/auth/gmail.readonly'];
   static final _authorizationEndpoint = Uri.parse(
@@ -36,15 +47,22 @@ class GmailService {
     'https://oauth2.googleapis.com/token',
   );
 
-  oauth2.Client? _authenticatedClient;
+  http.Client? _authenticatedClient;
   GmailApi? _gmailApi;
 
   @visibleForTesting
-  set authenticatedClient(oauth2.Client? client) {
+  set authenticatedClient(http.Client? client) {
     _authenticatedClient = client;
     if (client != null) {
       _gmailApi = GmailApi(client);
     }
+  }
+
+  Future<void> initializeNative({String? clientId, String? serverClientId}) async {
+    await _googleSignIn.initialize(
+      clientId: clientId,
+      serverClientId: serverClientId,
+    );
   }
 
   Future<bool> signIn({
@@ -67,45 +85,42 @@ class GmailService {
             return false;
           }
 
+          oauth2.Client client;
           if (clientFactory != null) {
-            _authenticatedClient = clientFactory(
+            client = clientFactory(
               credentials,
               clientCreds['id']!,
               clientCreds['secret']!,
-            );
+            )!;
           } else {
-            _authenticatedClient = oauth2.Client(
+            client = oauth2.Client(
               credentials,
               identifier: clientCreds['id'],
               secret: clientCreds['secret'],
             );
           }
 
-          if (_authenticatedClient!.credentials.isExpired) {
+          if (client.credentials.isExpired) {
             print('GmailService.signIn: Credentials expired, refreshing...');
             try {
-              _authenticatedClient = await _authenticatedClient!
-                  .refreshCredentials();
-              await _saveCredentials(_authenticatedClient!.credentials);
+              client = await client.refreshCredentials();
+              await _saveCredentials(client.credentials);
               print('GmailService.signIn: Refresh successful.');
             } catch (e) {
               print('GmailService.signIn: Failed to refresh credentials: $e');
-              // Only delete if it's an authorization error, implying the refresh token is invalid/revoked
               if (e is oauth2.AuthorizationException) {
                 print('GmailService.signIn: Deleting invalid credentials.');
                 await _storage.delete(key: 'google_credentials_v2');
               }
-              // For other errors (network, etc.), we keep the credentials to try again later.
-              // But we return false to indicate we couldn't get a valid client NOW.
               return false;
             }
           }
 
-          _gmailApi = GmailApi(_authenticatedClient!);
+          _authenticatedClient = client;
+          _gmailApi = GmailApi(client);
           return true;
         } catch (e) {
           print('GmailService.signIn: Error loading credentials: $e');
-          // If we can't even decode/load them, they are likely corrupted.
           if (e is FormatException || e is TypeError) {
             await _storage.delete(key: 'google_credentials_v2');
           }
@@ -121,7 +136,8 @@ class GmailService {
 
   Future<bool> authenticate(
     String clientId,
-    String clientSecret, {
+    String clientSecret,
+  {
     Function(Uri)? onUrlLaunched,
   }) async {
     try {
@@ -178,20 +194,15 @@ class GmailService {
         },
       );
 
-      print('Received callback: $responseUri');
-      print('Query parameters: ${responseUri.queryParameters}');
-
       final client = await grant.handleAuthorizationResponse(
         responseUri.queryParameters,
       );
-
-      print('Successfully obtained OAuth client');
 
       await setClientCredentials(clientId, clientSecret);
       await _saveCredentials(client.credentials);
 
       _authenticatedClient = client;
-      _gmailApi = GmailApi(_authenticatedClient!);
+      _gmailApi = GmailApi(client);
 
       print('Authentication complete!');
       return true;
@@ -305,7 +316,7 @@ class GmailService {
 
     if (_gmailApi == null) {
       print(
-        'fetchOTPFromGmail: Gmail API not initialized, attempting sign in...',
+        'fetchOTPFromGmail: Gmail API not initialized, attempting sign in...', 
       );
       final signedIn = await signIn();
       if (!signedIn) {
@@ -377,8 +388,8 @@ class GmailService {
       if (e.toString().contains('Gmail API has not been used') ||
           e.toString().contains('it is disabled')) {
         throw Exception(
-          'Gmail API is not enabled in your Google Cloud project.\n\n'
-          'Please visit: https://console.developers.google.com/apis/api/gmail.googleapis.com/overview\n'
+          'Gmail API is not enabled in your Google Cloud project.\n\n' 
+          'Please visit: https://console.developers.google.com/apis/api/gmail.googleapis.com/overview\n' 
           'and enable the Gmail API for your project.',
         );
       }
@@ -499,13 +510,55 @@ class GmailService {
 
   Future<void> signOut() async {
     await _storage.delete(key: 'google_credentials_v2');
+    await _googleSignIn.signOut();
     _authenticatedClient?.close();
     _authenticatedClient = null;
     _gmailApi = null;
   }
 
+  Future<bool> authenticateNative() async {
+    try {
+      final account = await _googleSignIn.authenticate(scopeHint: _scopes);
+      final auth = await account.authorizationClient.authorizeScopes(_scopes);
+      final authClient = auth.authClient(scopes: _scopes);
+
+      _authenticatedClient = authClient;
+      _gmailApi = GmailApi(authClient);
+      return true;
+    } catch (e) {
+      print('Native authentication error: $e');
+      return false;
+    }
+  }
+
+  Future<bool> signInSilently() async {
+    try {
+      final accountFuture = _googleSignIn.attemptLightweightAuthentication();
+      if (accountFuture == null) return false;
+      
+      final account = await accountFuture;
+      if (account == null) return false;
+
+      final auth = await account.authorizationClient.authorizationForScopes(_scopes);
+      if (auth == null) return false;
+      
+      final authClient = auth.authClient(scopes: _scopes);
+
+      _authenticatedClient = authClient;
+      _gmailApi = GmailApi(authClient);
+      return true;
+    } catch (e) {
+      print('Silent sign-in error: $e');
+      return false;
+    }
+  }
+
   Future<bool> get isSignedIn async {
     final storedCredentials = await _storage.read(key: 'google_credentials_v2');
-    return storedCredentials != null;
+    if (storedCredentials != null) return true;
+    // We don't have a direct sync way to check if signed in with new API without calling methods.
+    // But we can check if a previous lightweight attempt might succeed or just rely on storage/events.
+    // For now, let's just return true if we have an authenticated client.
+    return _authenticatedClient != null;
   }
 }
