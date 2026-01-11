@@ -184,3 +184,22 @@ Using `google_sign_in`, the `GmailService` can be refactored as follows:
 
 #### 3. Entitlements (Optional)
 - Generally not required for basic Google Sign-In unless using advanced keychain sharing features.
+
+## 8. Implementation Roadmap
+
+### Phase 1: Environment Setup
+1. Create Android Client ID in Google Cloud Console.
+2. Create iOS Client ID in Google Cloud Console.
+3. Configure OAuth Consent Screen with `gmail.readonly` scope.
+4. Download and add `google-services.json` (Android) and `GoogleService-Info.plist` (iOS).
+
+### Phase 2: Project Configuration
+1. Add `google_sign_in` and `extension_google_sign_in_as_googleapis_auth` to `pubspec.yaml`.
+2. Update Android `build.gradle` and `AndroidManifest.xml`.
+3. Update iOS `Info.plist` with URL Schemes.
+
+### Phase 3: Code Implementation
+1. Refactor `GmailService` to include a native authentication method.
+2. Implement `signInSilently()` on app initialization to restore sessions.
+3. Update UI (Splash Screen/Settings) to trigger the native sign-in flow on mobile.
+4. Test end-to-end OTP fetching using the native flow.
