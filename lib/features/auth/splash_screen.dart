@@ -62,6 +62,45 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _handleGoogleSignIn() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    final isMobile = kIsWeb == false &&
+        (defaultTargetPlatform == TargetPlatform.android ||
+            defaultTargetPlatform == TargetPlatform.iOS);
+
+    if (isMobile) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      final success = await authProvider.authenticateNative();
+
+      setState(() {
+        _isLoading = false;
+        if (success) {
+          _isGoogleSignedIn = true;
+        }
+      });
+
+      if (success && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Successfully signed in to Google!'),
+            backgroundColor: BentoColors.of(context).primary,
+          ),
+        );
+        _checkCompletion();
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Google Sign-In failed.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+
+    // Desktop logic remains
     final clientId = _clientIdController.text.trim();
     final clientSecret = _clientSecretController.text.trim();
 

@@ -294,6 +294,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onTap: _showAuthKeySheet,
             ),
             const SizedBox(height: 16),
+            _buildSettingTile(
+              context,
+              icon: Icons.account_circle_outlined,
+              title: 'Google Account',
+              subtitle: context.watch<AuthProvider>().isAuthenticated
+                  ? 'Authenticated'
+                  : 'Not authenticated',
+              onTap: () {
+                final authProvider =
+                    Provider.of<AuthProvider>(context, listen: false);
+                if (defaultTargetPlatform == TargetPlatform.android ||
+                    defaultTargetPlatform == TargetPlatform.iOS) {
+                  authProvider.authenticateNative();
+                } else {
+                  // Show current browser config or just inform
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Browser authentication is handled at startup.',
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
+            const SizedBox(height: 16),
             // Placeholder for future settings
             _buildSettingTile(
               context,
