@@ -2,7 +2,7 @@
 
 ## Phase 1: Package Discovery & Scope Verification
 - [x] Task: Research `google_sign_in` package and alternative Flutter plugins for native authentication. 2e681fb
-- [ ] Task: Verify the process for requesting `https://www.googleapis.com/auth/gmail.readonly` via native pop-up.
+- [x] Task: Verify the process for requesting `https://www.googleapis.com/auth/gmail.readonly` via native pop-up. 62e6d15
 - [ ] Task: Identify how the native flow returns credentials and how they integrate with `googleapis_auth`.
 - [ ] Task: Conductor - User Manual Verification 'Package Discovery & Scope Verification' (Protocol in workflow.md)
 
