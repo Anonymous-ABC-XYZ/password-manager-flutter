@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:password_manager/features/vault/credential_model.dart';
 import 'package:password_manager/core/utils/bento_constants.dart';
+import 'package:password_manager/core/dbinit.dart';
+import 'package:password_manager/features/vault/home_screen.dart';
 
 class CredentialDetailScreen extends StatefulWidget {
   final Credential credential;
@@ -14,6 +16,68 @@ class CredentialDetailScreen extends StatefulWidget {
 
 class _CredentialDetailScreenState extends State<CredentialDetailScreen> {
   bool _obscurePassword = true;
+
+  Future<void> _deleteCredential() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            backgroundColor: BentoColors.of(context).surfaceDark,
+            title: Text(
+              'Delete Credential',
+              style: TextStyle(color: BentoColors.of(context).textWhite),
+            ),
+            content: Text(
+              'Are you sure you want to delete the credentials for ${widget.credential.website}?',
+              style: TextStyle(color: BentoColors.of(context).textMuted),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: BentoColors.of(context).textMuted),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text(
+                  'Delete',
+                  style: TextStyle(color: BentoColors.of(context).error),
+                ),
+              ),
+            ],
+          ),
+    );
+
+    if (confirm == true) {
+      final db = await InitDB().dB;
+      await db.delete(
+        'demo',
+        where: 'Website = ?',
+        whereArgs: [widget.credential.website],
+      );
+      if (mounted) {
+        Navigator.pop(context, true);
+      }
+    }
+  }
+
+  Future<void> _editCredential() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => HomeScreen(initialCredential: widget.credential),
+      ),
+    );
+
+    if (result == true) {
+      if (mounted) {
+        Navigator.pop(context, true); // Refresh PasswordsPage
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +101,23 @@ class _CredentialDetailScreenState extends State<CredentialDetailScreen> {
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.edit_outlined,
+              color: BentoColors.of(context).primary,
+            ),
+            onPressed: _editCredential,
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.delete_outline,
+              color: BentoColors.of(context).error,
+            ),
+            onPressed: _deleteCredential,
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),

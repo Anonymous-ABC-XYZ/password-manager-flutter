@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:password_manager/core/dbinit.dart';
 import 'package:password_manager/core/utils/bento_constants.dart';
@@ -6,6 +5,7 @@ import 'package:password_manager/features/vault/widgets/credentials_header.dart'
 import 'package:password_manager/features/vault/widgets/category_filter_bar.dart';
 import 'package:password_manager/features/vault/credential_model.dart';
 import 'package:password_manager/features/vault/widgets/credential_focus_card.dart';
+import 'dart:ui';
 
 class PasswordsPage extends StatefulWidget {
   const PasswordsPage({super.key});
@@ -36,6 +36,46 @@ class _PasswordsPageState extends State<PasswordsPage> {
         _filterCredentials();
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _deleteCredential(String website) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            backgroundColor: BentoColors.of(context).surfaceDark,
+            title: Text(
+              'Delete Credential',
+              style: TextStyle(color: BentoColors.of(context).textWhite),
+            ),
+            content: Text(
+              'Are you sure you want to delete the credentials for $website?',
+              style: TextStyle(color: BentoColors.of(context).textMuted),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: BentoColors.of(context).textMuted),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text(
+                  'Delete',
+                  style: TextStyle(color: BentoColors.of(context).error),
+                ),
+              ),
+            ],
+          ),
+    );
+
+    if (confirm == true) {
+      final db = await InitDB().dB;
+      await db.delete('demo', where: 'Website = ?', whereArgs: [website]);
+      _loadDB();
     }
   }
 
@@ -76,7 +116,10 @@ class _PasswordsPageState extends State<PasswordsPage> {
               filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
               child: Container(color: Colors.transparent),
             ),
-            CredentialFocusCard(credential: Credential.fromMap(item)),
+            CredentialFocusCard(
+              credential: Credential.fromMap(item),
+              onDeleteSuccess: _loadDB,
+            ),
           ],
         );
       },
@@ -217,13 +260,6 @@ class _PasswordsPageState extends State<PasswordsPage> {
                                               ),
                                             ],
                                           ),
-                                        ),
-                                        Icon(
-                                          Icons.arrow_forward_ios,
-                                          size: 16,
-                                          color: BentoColors.of(
-                                            context,
-                                          ).textMuted.withValues(alpha: 0.5),
                                         ),
                                       ],
                                     ),

@@ -46,6 +46,9 @@ class SidebarNavigation extends StatelessWidget {
             ),
           ),
 
+          // Add Entry Button
+          _buildAddButton(context),
+
           // Bottom Actions
           Divider(color: BentoColors.of(context).surfaceHover),
           const SizedBox(height: 16),
@@ -57,6 +60,52 @@ class SidebarNavigation extends StatelessWidget {
             onTap: onThemeToggle,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAddButton(BuildContext context) {
+    var bento = BentoColors.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Container(
+        width: double.infinity,
+        height: 52,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          gradient: LinearGradient(
+            colors: [bento.primary, bento.primaryDark],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: bento.primary.withValues(alpha: 0.3),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => onDestinationSelected(0),
+            borderRadius: BorderRadius.circular(50),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.add, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  'Add Entry',
+                  style: BentoStyles.header.copyWith(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -8,19 +8,21 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:password_manager/core/dbinit.dart';
 import 'package:password_manager/core/utils/bento_constants.dart';
+import 'package:password_manager/features/vault/credential_model.dart';
 import 'package:password_manager/features/vault/widgets/identity_tile.dart';
 import 'package:password_manager/features/vault/widgets/otp_island.dart';
 import 'package:password_manager/features/vault/widgets/secure_credentials_tile.dart';
 import 'package:password_manager/features/vault/widgets/home_header.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Credential? initialCredential;
+  const HomeScreen({super.key, this.initialCredential});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   final websiteController = TextEditingController();
   final userNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -29,11 +31,44 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String? _authKey;
   String? _selectedCategory;
+  List<Map<String, Object?>> _allCredentials = [];
 
   @override
   void initState() {
     super.initState();
     loadKey();
+    _loadDB();
+    if (widget.initialCredential != null) {
+      _populateFields(widget.initialCredential!);
+    }
+  }
+
+  Future<void> _loadDB() async {
+    final db = await InitDB().dB;
+    final result = await db.rawQuery("SELECT * FROM demo");
+    if (mounted) {
+      setState(() {
+        _allCredentials = result;
+      });
+    }
+  }
+
+  void _populateFields(Credential cred) {
+    websiteController.text = cred.website;
+    userNameController.text = cred.username;
+    emailController.text = cred.email;
+    passwordController.text = cred.password;
+    _selectedCategory = cred.category;
+  }
+
+  void clearFields() {
+    websiteController.text = "";
+    userNameController.text = "";
+    emailController.text = "";
+    passwordController.text = "";
+    setState(() {
+      _selectedCategory = null;
+    });
   }
 
   Future<void> loadKey() async {
@@ -306,6 +341,8 @@ class _HomeScreenState extends State<HomeScreen> {
       'category': category,
     }, conflictAlgorithm: ConflictAlgorithm.replace);
 
+    _loadDB();
+
     if (context.mounted) {
       showDialog(
         context: context,
@@ -317,12 +354,19 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(color: BentoColors.of(context).textWhite),
             ),
             content: Text(
-              "The details have been saved.",
+              widget.initialCredential != null
+                  ? "The details have been updated."
+                  : "The details have been saved.",
               style: TextStyle(color: BentoColors.of(context).textMuted),
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  if (widget.initialCredential != null) {
+                    Navigator.of(context).pop(true); // Return to detail screen with success
+                  }
+                },
                 child: Text(
                   "OK",
                   style: TextStyle(color: BentoColors.of(context).primary),
@@ -332,13 +376,9 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       );
-      websiteController.text = "";
-      userNameController.text = "";
-      emailController.text = "";
-      passwordController.text = "";
-      setState(() {
-        _selectedCategory = null;
-      });
+      if (widget.initialCredential == null) {
+        clearFields();
+      }
     }
   }
 
@@ -350,98 +390,73 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            HomeHeader(onSearch: () => searchFn(context)),
+            HomeHeader(
+              title:
+                  widget.initialCredential != null ? 'Edit Entry' : 'New Entry',
+              onSearch: () => searchFn(context),
+              count: _allCredentials.length,
+            ),
             const SizedBox(height: 32),
 
-            // Bento Grid Layout
-            LayoutBuilder(
-              builder: (context, constraints) {
-                bool isDesktop = constraints.maxWidth > 900;
-
-                if (isDesktop) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Left Column
-                      Expanded(
-                        flex: 7,
-                        child: Column(
-                          children: [
-                            IdentityTile(
-                              websiteController: websiteController,
-                              usernameController: userNameController,
-                              onSearchWebsite: () => searchFn(context),
-                              onSearchUsername: () => searchFn(context),
-                              onCategorySelected: (cat) =>
-                                  _selectedCategory = cat,
-                              initialCategory: _selectedCategory,
-                            ),
-                            const SizedBox(height: 24),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 24),
-                      // Right Column
-                      Expanded(
-                        flex: 5,
-                        child: Column(
-                          children: [
-                            OtpIsland(controller: otpController),
-                            const SizedBox(height: 24),
-                            SecureCredentialsTile(
-                              emailController: emailController,
-                              passwordController: passwordController,
-                              onAcquireEmail: () => emailGenerator(context),
-                              onGeneratePassword: generatePassword,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                } else {
-                  // Mobile Layout
-                  return Column(
-                    children: [
-                      IdentityTile(
-                        websiteController: websiteController,
-                        usernameController: userNameController,
-                        onSearchWebsite: () => searchFn(context),
-                        onSearchUsername: () => searchFn(context),
-                        onCategorySelected: (cat) => _selectedCategory = cat,
-                        initialCategory: _selectedCategory,
-                      ),
-                      const SizedBox(height: 24),
-                      OtpIsland(controller: otpController),
-                      const SizedBox(height: 24),
-                      SecureCredentialsTile(
-                        emailController: emailController,
-                        passwordController: passwordController,
-                        onAcquireEmail: () => emailGenerator(context),
-                        onGeneratePassword: generatePassword,
-                      ),
-                      const SizedBox(height: 24),
-                      const SizedBox(height: 100), // Space for FAB
-                    ],
-                  );
-                }
-              },
+            // Bento Grid Layout (Mobile Optimized)
+            Column(
+              children: [
+                IdentityTile(
+                  websiteController: websiteController,
+                  usernameController: userNameController,
+                  onSearchWebsite: () => searchFn(context),
+                  onSearchUsername: () => searchFn(context),
+                  onCategorySelected: (cat) => _selectedCategory = cat,
+                  initialCategory: _selectedCategory,
+                ),
+                const SizedBox(height: 24),
+                OtpIsland(controller: otpController),
+                const SizedBox(height: 24),
+                SecureCredentialsTile(
+                  emailController: emailController,
+                  passwordController: passwordController,
+                  onAcquireEmail: () => emailGenerator(context),
+                  onGeneratePassword: generatePassword,
+                ),
+                const SizedBox(height: 24),
+                const SizedBox(height: 100), // Space for FAB
+              ],
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => addData(context),
-        backgroundColor: BentoColors.of(context).primary,
-        foregroundColor: BentoColors.of(context).onPrimary,
-        elevation: 8,
-        icon: const Icon(Icons.add),
-        label: const Text(
-          'Add Entry',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      ),
+      floatingActionButton:
+          widget.initialCredential != null
+              ? Container(
+                height: 64,
+                width: 64,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [
+                      BentoColors.of(context).primary,
+                      BentoColors.of(context).primaryDark,
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: BentoColors.of(context).primary.withValues(
+                        alpha: 0.4,
+                      ),
+                      blurRadius: 16,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: FloatingActionButton(
+                  onPressed: () => addData(context),
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  child: const Icon(Icons.check, color: Colors.white, size: 32),
+                ),
+              )
+              : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

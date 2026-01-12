@@ -3,7 +3,7 @@
 ## Core
 - **Language:** Dart
 - **Framework:** Flutter (Mobile & Desktop - Linux)
-- **Architecture:** MVC-inspired separation with Providers for state and Services for external APIs.
+- **Architecture:** Feature-based organization with localized UI, logic, and models. Core infrastructure (DB, Security) is centralized in `lib/core/`.
 
 ## Data & Security
 - **Local Database:** SQLite (via `sqflite` and `sqflite_common_ffi` for desktop support).

@@ -3,7 +3,7 @@ import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in/google_sign_in.dart' as gsi;
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
@@ -12,19 +12,19 @@ import 'dart:io';
 
 class GmailService {
   final FlutterSecureStorage _storage;
-  GoogleSignIn _googleSignIn;
+  gsi.GoogleSignIn _googleSignIn;
 
   // Singleton pattern
   static GmailService? _instance;
 
   factory GmailService({
     FlutterSecureStorage? storage,
-    GoogleSignIn? googleSignIn,
+    gsi.GoogleSignIn? googleSignIn,
   }) {
     _instance ??= GmailService._internal(
       storage: storage ?? const FlutterSecureStorage(),
       googleSignIn: googleSignIn ??
-          GoogleSignIn.standard(
+          gsi.GoogleSignIn(
             scopes: _scopes,
           ),
     );
@@ -38,7 +38,7 @@ class GmailService {
 
   GmailService._internal({
     required FlutterSecureStorage storage,
-    required GoogleSignIn googleSignIn,
+    required gsi.GoogleSignIn googleSignIn,
   })  : _storage = storage,
         _googleSignIn = googleSignIn;
 
@@ -61,12 +61,7 @@ class GmailService {
     }
   }
 
-  Future<void> initializeNative({String? clientId, String? serverClientId}) async {
-    await _googleSignIn.initialize(
-      clientId: clientId,
-      serverClientId: serverClientId,
-    );
-  }
+
 
   Future<bool> signIn({
     oauth2.Client? Function(oauth2.Credentials, String, String)? clientFactory,
@@ -523,7 +518,7 @@ class GmailService {
     try {
       if (serverClientId != null) {
         // Re-initialize with serverClientId if provided
-        _googleSignIn = GoogleSignIn(
+        _googleSignIn = gsi.GoogleSignIn(
           serverClientId: serverClientId,
           scopes: _scopes,
         );
@@ -532,7 +527,7 @@ class GmailService {
       final account = await _googleSignIn.signIn();
       if (account == null) return false;
 
-      final authClient = await account.authenticatedClient();
+      final authClient = await _googleSignIn.authenticatedClient();
       if (authClient == null) return false;
 
       _authenticatedClient = authClient;
@@ -546,16 +541,11 @@ class GmailService {
 
   Future<bool> signInSilently() async {
     try {
-      final accountFuture = _googleSignIn.attemptLightweightAuthentication();
-      if (accountFuture == null) return false;
-      
-      final account = await accountFuture;
+      final account = await _googleSignIn.signInSilently();
       if (account == null) return false;
 
-      final auth = await account.authorizationClient.authorizationForScopes(_scopes);
-      if (auth == null) return false;
-      
-      final authClient = auth.authClient(scopes: _scopes);
+      final authClient = await _googleSignIn.authenticatedClient();
+      if (authClient == null) return false;
 
       _authenticatedClient = authClient;
       _gmailApi = GmailApi(authClient);

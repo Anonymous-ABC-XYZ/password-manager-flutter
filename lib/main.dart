@@ -12,7 +12,6 @@ import 'package:password_manager/features/settings/theme_service.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqlite3/open.dart';
 import 'package:password_manager/core/utils/bento_constants.dart';
-import 'package:password_manager/core/widgets/sidebar_navigation.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -129,6 +128,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   var selectedIndex = 0;
   late PageController _pageController;
+  final GlobalKey<HomeScreenState> _homeKey = GlobalKey<HomeScreenState>();
 
   @override
   void initState() {
@@ -147,148 +147,101 @@ class _MyHomePageState extends State<MyHomePage> {
     var bento = BentoColors.of(context);
 
     final List<Widget> pages = [
-      HomeScreen(),
+      HomeScreen(key: _homeKey),
       PasswordsPage(),
       SettingsScreen(),
     ];
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        bool isDesktop = constraints.maxWidth > 800;
-
-        if (isDesktop) {
-          return Scaffold(
-            body: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SidebarNavigation(
-                  selectedIndex: selectedIndex,
-                  onDestinationSelected: (value) {
-                    setState(() {
-                      selectedIndex = value;
-                      _pageController.jumpToPage(value);
-                    });
-                  },
-                  onThemeToggle: widget.toggleTheme,
-                ),
-                Expanded(
-                  child: Container(
-                    color: bento.backgroundDark,
-                    child: PageView(
-                      controller: _pageController,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: pages,
-                    ),
-                  ),
-                ),
-              ],
+    return Scaffold(
+      backgroundColor: bento.backgroundDark,
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: pages,
+      ),
+      floatingActionButton: Container(
+        height: 64,
+        width: 64,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            colors: [bento.primary, bento.primaryDark],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: bento.primary.withValues(alpha: 0.4),
+              blurRadius: 16,
+              offset: const Offset(0, 8),
             ),
-          );
-        } else {
-          return Scaffold(
-            backgroundColor: bento.backgroundDark,
-            extendBody: true,
-            body: PageView(
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: pages,
-            ),
-            floatingActionButton: Container(
-              height: 64,
-              width: 64,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [bento.primary, bento.primaryDark],
+          ],
+        ),
+        child: FloatingActionButton(
+          onPressed: () {
+            if (selectedIndex == 0) {
+              _homeKey.currentState?.addData(context);
+            } else {
+              setState(() {
+                selectedIndex = 0;
+                _pageController.jumpToPage(0);
+              });
+            }
+          },
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: const Icon(Icons.add, color: Colors.white, size: 32),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar: BottomAppBar(
+        color: bento.surfaceDark.withValues(alpha: 0.7),
+        child: SizedBox(
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: Icon(
+                  selectedIndex == 0 ? Icons.shield : Icons.shield_outlined,
+                  color: selectedIndex == 0 ? bento.primary : bento.textMuted,
+                  size: 28,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: bento.primary.withOpacity(0.4),
-                    blurRadius: 16,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: FloatingActionButton(
                 onPressed: () {
                   setState(() {
                     selectedIndex = 0;
                     _pageController.jumpToPage(0);
                   });
                 },
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                child: const Icon(Icons.add, color: Colors.white, size: 32),
               ),
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: BottomAppBar(
-              shape: const CircularNotchedRectangle(),
-              notchMargin: 8.0,
-              color: bento.surfaceDark.withOpacity(0.7),
-              child: SizedBox(
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        selectedIndex == 0
-                            ? Icons.shield
-                            : Icons.shield_outlined,
-                        color: selectedIndex == 0
-                            ? bento.primary
-                            : bento.textMuted,
-                        size: 28,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          selectedIndex = 0;
-                          _pageController.jumpToPage(0);
-                        });
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        selectedIndex == 1 ? Icons.key : Icons.key_outlined,
-                        color: selectedIndex == 1
-                            ? bento.primary
-                            : bento.textMuted,
-                        size: 28,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          selectedIndex = 1;
-                          _pageController.jumpToPage(1);
-                        });
-                      },
-                    ),
-                    const SizedBox(width: 48), // Gap for the FAB
-                    IconButton(
-                      icon: Icon(
-                        selectedIndex == 2
-                            ? Icons.settings
-                            : Icons.settings_outlined,
-                        color: selectedIndex == 2
-                            ? bento.primary
-                            : bento.textMuted,
-                        size: 28,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          selectedIndex = 2;
-                          _pageController.jumpToPage(2);
-                        });
-                      },
-                    ),
-                  ],
+              IconButton(
+                icon: Icon(
+                  selectedIndex == 1 ? Icons.key : Icons.key_outlined,
+                  color: selectedIndex == 1 ? bento.primary : bento.textMuted,
+                  size: 28,
                 ),
+                onPressed: () {
+                  setState(() {
+                    selectedIndex = 1;
+                    _pageController.jumpToPage(1);
+                  });
+                },
               ),
-            ),
-          );
-        }
-      },
+              IconButton(
+                icon: Icon(
+                  selectedIndex == 2 ? Icons.settings : Icons.settings_outlined,
+                  color: selectedIndex == 2 ? bento.primary : bento.textMuted,
+                  size: 28,
+                ),
+                onPressed: () {
+                  setState(() {
+                    selectedIndex = 2;
+                    _pageController.jumpToPage(2);
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

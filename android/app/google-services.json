@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "897892887111",
+    "project_id": "gen-lang-client-0595605952",
+    "storage_bucket": "gen-lang-client-0595605952.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:897892887111:android:67ff650c08b373ce121f62",
+        "android_client_info": {
+          "package_name": "com.example.password_manager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "897892887111-2eivqnsr7ppaqms894mgp1kgj9m5qngr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2et3UfXoGgKdwVfyV0m7UkrBgKlSjgCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "897892887111-2eivqnsr7ppaqms894mgp1kgj9m5qngr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
